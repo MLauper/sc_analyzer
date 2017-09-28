@@ -1,0 +1,21 @@
+# Debug Output
+**/Debug/
+**/*.pdb
+
+# Visual Studio Project Files
+**/*.sln
+**/*.vcxproj
+**/*.vcxproj.user
+**/*.vcxproj.filters
+
+# CMake Temp Files
+**/CMakeFiles/
+**/CMakeCache.txt
+**/cmake_install.cmake
+
+# Doxygen Output files
+html/
+latex/
+
+# VSCode Project Files
+.vscode
