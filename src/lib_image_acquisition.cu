@@ -1,4 +1,5 @@
 #include "lib_image_acquisition.h"
+#include <cstdio>
 
 /*! \brief Dummy CUDA kernel with no practical use
  *
@@ -9,3 +10,13 @@
 //{
 //	return;
 //}
+
+void printSomething()
+{
+	printf("something");
+}
+
+__global__ void dummyKernel()
+{
+	return;
+}

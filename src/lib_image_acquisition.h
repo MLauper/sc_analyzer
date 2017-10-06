@@ -13,4 +13,6 @@
 
  __global__ void dummyKernel();
 
+ void printSomething();
+
 #endif // LIB_IMAGE_ACQUISITION
