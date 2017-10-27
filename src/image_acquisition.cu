@@ -1,4 +1,5 @@
 #include "image_acquisition.h"
+#include <arrayfire.h>
 #include <windows.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -6,17 +7,11 @@
 #include <strsafe.h>
 #include <filesystem>
 #include <iostream>
-#include <fstream>
 #include <iostream>
-#include <chrono>
-#include <iomanip>
-#include <fstream>
-#include <experimental/filesystem>
-#include <windows.h>
-#include <tchar.h>
-#include <strsafe.h>
+
+using namespace af;
+
 namespace fs = std::experimental::filesystem;
-using namespace std::chrono_literals;
 
 void RefreshDirectory(LPTSTR);
 void RefreshTree(LPTSTR);
@@ -205,9 +200,15 @@ void RefreshDirectory(LPTSTR lpDir)
 		CloseHandle(hFile);
 	
 		std::cout << "file: " << p << ", Last modified timestamp: " << szBuf << std::endl;
+
+
+		array I1 = af::loadImage(fPath);
+		array I2 = af::loadImage(fPath);
+
 	}
 
 
+	
 
 	_tprintf(TEXT(" Directory (%s) changed.\n"), lpDir);
 }
