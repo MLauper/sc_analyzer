@@ -18,13 +18,12 @@ void RefreshTree(LPTSTR);
 void WatchDirectory(LPTSTR);
 
 
-int main(){
-
+int main()
+{
 	WatchDirectory("D:\\data\\image");
 
 
 	return 0;
-
 }
 
 void ErrorExit(LPTSTR lpszFunction)
@@ -39,21 +38,21 @@ void ErrorExit(LPTSTR lpszFunction)
 		FORMAT_MESSAGE_ALLOCATE_BUFFER |
 		FORMAT_MESSAGE_FROM_SYSTEM |
 		FORMAT_MESSAGE_IGNORE_INSERTS,
-		NULL,
+		nullptr,
 		dw,
 		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
 		(LPTSTR)&lpMsgBuf,
-		0, NULL);
+		0, nullptr);
 
 	// Display the error message and exit the process
 
 	lpDisplayBuf = (LPVOID)LocalAlloc(LMEM_ZEROINIT,
-		(lstrlen((LPCTSTR)lpMsgBuf) + lstrlen((LPCTSTR)lpszFunction) + 40) * sizeof(TCHAR));
+	                                  (lstrlen((LPCTSTR)lpMsgBuf) + lstrlen((LPCTSTR)lpszFunction) + 40) * sizeof(TCHAR));
 	StringCchPrintf((LPTSTR)lpDisplayBuf,
-		LocalSize(lpDisplayBuf) / sizeof(TCHAR),
-		TEXT("%s failed with error %d: %s"),
-		lpszFunction, dw, lpMsgBuf);
-	MessageBox(NULL, (LPCTSTR)lpDisplayBuf, TEXT("Error"), MB_OK);
+	                LocalSize(lpDisplayBuf) / sizeof(TCHAR),
+	                TEXT("%s failed with error %d: %s"),
+	                lpszFunction, dw, lpMsgBuf);
+	MessageBox(nullptr, (LPCTSTR)lpDisplayBuf, TEXT("Error"), MB_OK);
 
 	LocalFree(lpMsgBuf);
 	LocalFree(lpDisplayBuf);
@@ -69,7 +68,7 @@ void WatchDirectory(LPTSTR lpDir)
 	TCHAR lpFile[_MAX_FNAME];
 	TCHAR lpExt[_MAX_EXT];
 
-	_tsplitpath_s(lpDir, lpDrive, 4, NULL, 0, lpFile, _MAX_FNAME, lpExt, _MAX_EXT);
+	_tsplitpath_s(lpDir, lpDrive, 4, nullptr, 0, lpFile, _MAX_FNAME, lpExt, _MAX_EXT);
 
 	lpDrive[2] = (TCHAR)'\\';
 	lpDrive[3] = (TCHAR)'\0';
@@ -77,8 +76,8 @@ void WatchDirectory(LPTSTR lpDir)
 	// Watch the directory for file creation and deletion. 
 
 	dwChangeHandle = FindFirstChangeNotification(
-		lpDir,                         // directory to watch 
-		FALSE,                         // do not watch subtree 
+		lpDir, // directory to watch 
+		FALSE, // do not watch subtree 
 		FILE_NOTIFY_CHANGE_FILE_NAME); // watch file name changes 
 
 	if (dwChangeHandle == INVALID_HANDLE_VALUE)
@@ -156,7 +155,8 @@ void RefreshDirectory(LPTSTR lpDir)
 	//}
 
 	std::string path = "C:\\data\\image\\";
-	for (auto & p : fs::directory_iterator("D:\\data\\image")) {
+	for (auto& p : fs::directory_iterator("D:\\data\\image"))
+	{
 		std::string fPathS = p.path().string();
 		LPCSTR fPath = fPathS.c_str();
 		std::cout << fPath << "\n";
@@ -164,17 +164,17 @@ void RefreshDirectory(LPTSTR lpDir)
 		HANDLE hFile = CreateFile(
 			fPath,
 			GENERIC_READ,
-			(FILE_SHARE_READ | FILE_SHARE_WRITE, FILE_SHARE_DELETE),
+			(FILE_SHARE_READ | FILE_SHARE_WRITE , FILE_SHARE_DELETE),
 			nullptr,
 			OPEN_EXISTING,
 			0,
-			NULL
+			nullptr
 		);
 		if (hFile == INVALID_HANDLE_VALUE)
 		{
 			printf("CreateFile failed with %d\n", GetLastError());
 		}
-		
+
 
 		FILETIME ftCreate, ftAccess, ftWrite;
 		SYSTEMTIME stUTC, stLocal;
@@ -193,22 +193,31 @@ void RefreshDirectory(LPTSTR lpDir)
 		// Build a string showing the date and time.
 		TCHAR szBuf[MAX_PATH];
 		dwRet = StringCchPrintf(szBuf, MAX_PATH,
-			TEXT("%02d/%02d/%d  %02d:%02d"),
-			stLocal.wMonth, stLocal.wDay, stLocal.wYear,
-			stLocal.wHour, stLocal.wMinute);
+		                        TEXT("%02d/%02d/%d  %02d:%02d"),
+		                        stLocal.wMonth, stLocal.wDay, stLocal.wYear,
+		                        stLocal.wHour, stLocal.wMinute);
 
 		CloseHandle(hFile);
-	
+
 		std::cout << "file: " << p << ", Last modified timestamp: " << szBuf << std::endl;
 
 
-		array I1 = af::loadImage(fPath);
-		array I2 = af::loadImage(fPath);
+		array I1 = loadImage(fPath);
+		array I2 = loadImage(fPath);
 
+		saveImage("c:\\temp\\out_image.jpg", I1);
+
+		I1 = I1 /= 255.f;
+
+		const static int width = 1024, height = 768;
+		Window window(width, height, "Image Viewer");
+		do
+		{
+			window.image(I1, "Image Titlte");
+		}
+		while (!window.close());
 	}
 
-
-	
 
 	_tprintf(TEXT(" Directory (%s) changed.\n"), lpDir);
 }
