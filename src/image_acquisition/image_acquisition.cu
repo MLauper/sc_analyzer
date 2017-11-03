@@ -155,8 +155,14 @@ void RefreshDirectory(LPTSTR lpDir)
 	//}
 
 	std::string path = "C:\\data\\image\\";
-	for (auto& p : fs::directory_iterator("D:\\data\\image"))
+	
+	//for (auto& p : fs::directory_iterator("D:\\data\\image"))
+	auto di = fs::directory_iterator("D:\\data\\image");
+	auto begin = fs::begin(di);
+	auto end = fs::end(di);	
+	for(auto it=begin; begin != end; it++)
 	{
+		auto p = *it;
 		std::string fPathS = p.path().string();
 		LPCSTR fPath = fPathS.c_str();
 		std::cout << fPath << "\n";
@@ -199,23 +205,43 @@ void RefreshDirectory(LPTSTR lpDir)
 
 		CloseHandle(hFile);
 
-		std::cout << "file: " << p << ", Last modified timestamp: " << szBuf << std::endl;
+		//std::cout << "file: " << p << ", Last modified timestamp: " << szBuf << std::endl;
 
 
-		array I1 = loadImage(fPath);
-		array I2 = loadImage(fPath);
 
-		saveImage("c:\\temp\\out_image.jpg", I1);
+		auto image_1 = *it;
+		std::string image_1_path = image_1.path().string();
+		LPCSTR image_1_path_c = image_1_path.c_str();
 
-		I1 = I1 /= 255.f;
+		it++;
 
-		const static int width = 1024, height = 768;
-		Window window(width, height, "Image Viewer");
-		do
-		{
-			window.image(I1, "Image Titlte");
-		}
-		while (!window.close());
+		auto image_2 = *it;
+		std::string image_2_path = image_2.path().string();
+		LPCSTR image_2_path_c = image_2_path.c_str();
+
+
+		array I1_color = loadImage(image_1_path_c, true);
+		array I2_color = loadImage(image_2_path_c, true);
+		array I1 = colorSpace(I1_color, AF_GRAY, AF_RGB);
+		array I2 = colorSpace(I2_color, AF_GRAY, AF_RGB);
+
+		//saveImage("c:\\temp\\out_image.jpg", I1);
+
+		array I3 = I1 - I2;
+
+		I3 = af::abs(I3);
+
+		I3 = (I3<50.0f)*0.0f + 255.0f*(I3>50.0f);
+
+		I3 /= 255.f;
+
+		//const static int width = 1024, height = 768;
+		//Window window(width, height, "Image Viewer");
+		//do
+		//{
+		//	window.image(I3, "Image Titlte");
+		//}
+		//while (!window.close());
 	}
 
 
