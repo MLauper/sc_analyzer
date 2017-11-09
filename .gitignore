@@ -2,12 +2,6 @@
 **/Debug/
 **/*.pdb
 
-# Visual Studio Project Files
-**/*.sln
-**/*.vcxproj
-**/*.vcxproj.user
-**/*.vcxproj.filters
-
 # CMake Temp Files
 **/CMakeFiles/
 **/CMakeCache.txt
