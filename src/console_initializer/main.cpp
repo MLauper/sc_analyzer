@@ -7,8 +7,9 @@ int main()
 
 	image_segmentation::Controller* controller = new image_segmentation::Controller();
 
-	image_acquisition::FileLoader file_loader("D:\\data\\image", "out_CAMERA_door_", controller);
+	image_acquisition::FileLoader file_loader("D:\\data\\room_walk_with_different_lighting\\image\\", "out_CAMERA_door_", controller);
 
+	file_loader.ProcessFiles();
 	file_loader.WatchDirectory();
 
 	return 0;
