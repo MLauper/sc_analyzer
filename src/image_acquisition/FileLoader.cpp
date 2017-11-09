@@ -1,67 +1,22 @@
-#include "image_acquisition.h"
-#include <arrayfire.h>
-#include <windows.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include "FileLoader.h"
+#include <string>
+#include <bemapiset.h>
 #include <tchar.h>
-#include <strsafe.h>
 #include <filesystem>
-#include <iostream>
-#include <iostream>
-
-using namespace af;
+#include <arrayfire.h>
+#include <strsafe.h>
 
 namespace fs = std::experimental::filesystem;
 
-void RefreshDirectory(LPTSTR);
-void RefreshTree(LPTSTR);
-void WatchDirectory(LPTSTR);
-
-
-int main()
+void image_acquisition::FileLoader::SetPrefix(std::string prefix)
 {
-	WatchDirectory("D:\\data\\image");
-
-
-	return 0;
+	this->prefix = prefix;
 }
 
-void ErrorExit(LPTSTR lpszFunction)
+void image_acquisition::FileLoader::WatchDirectory()
 {
-	// Retrieve the system error message for the last-error code
+	LPCTSTR lpDir = this->directory.c_str();
 
-	LPVOID lpMsgBuf;
-	LPVOID lpDisplayBuf;
-	DWORD dw = GetLastError();
-
-	FormatMessage(
-		FORMAT_MESSAGE_ALLOCATE_BUFFER |
-		FORMAT_MESSAGE_FROM_SYSTEM |
-		FORMAT_MESSAGE_IGNORE_INSERTS,
-		nullptr,
-		dw,
-		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-		(LPTSTR)&lpMsgBuf,
-		0, nullptr);
-
-	// Display the error message and exit the process
-
-	lpDisplayBuf = (LPVOID)LocalAlloc(LMEM_ZEROINIT,
-	                                  (lstrlen((LPCTSTR)lpMsgBuf) + lstrlen((LPCTSTR)lpszFunction) + 40) * sizeof(TCHAR));
-	StringCchPrintf((LPTSTR)lpDisplayBuf,
-	                LocalSize(lpDisplayBuf) / sizeof(TCHAR),
-	                TEXT("%s failed with error %d: %s"),
-	                lpszFunction, dw, lpMsgBuf);
-	MessageBox(nullptr, (LPCTSTR)lpDisplayBuf, TEXT("Error"), MB_OK);
-
-	LocalFree(lpMsgBuf);
-	LocalFree(lpDisplayBuf);
-	ExitProcess(dw);
-}
-
-
-void WatchDirectory(LPTSTR lpDir)
-{
 	DWORD dwWaitStatus;
 	HANDLE dwChangeHandle;
 	TCHAR lpDrive[4];
@@ -105,7 +60,7 @@ void WatchDirectory(LPTSTR lpDir)
 			// A file was created, renamed, or deleted in the directory.
 			// Refresh this directory and restart the notification.
 
-			RefreshDirectory(lpDir);
+			this->ProcessFiles();
 			if (FindNextChangeNotification(dwChangeHandle) == FALSE)
 			{
 				printf("\n ERROR: FindNextChangeNotification function failed.\n");
@@ -131,36 +86,23 @@ void WatchDirectory(LPTSTR lpDir)
 	}
 }
 
-void RefreshDirectory(LPTSTR lpDir)
+void image_acquisition::FileLoader::ProcessFiles()
 {
+	LPCSTR lpDir = this->directory.c_str();
+
 	// This is where you might place code to refresh your
 	// directory listing, but not the subtree because it
 	// would not be necessary.
 
 	printf("\n Using Directory: %s\n", lpDir);
 
-	//HANDLE hDir = CreateFile(
-	//	lpDir,
-	//	GENERIC_READ,
-	//	(FILE_SHARE_DELETE | FILE_SHARE_READ | FILE_SHARE_WRITE),
-	//	nullptr,
-	//	OPEN_EXISTING,
-	//	FILE_FLAG_BACKUP_SEMANTICS,
-	//	nullptr
-	//);
-	//
-	//if (hDir == INVALID_HANDLE_VALUE){
-	//	printf("\n ERROR: Cannot create a handle for directory.\n");
-	//	ErrorExit(TEXT("RefreshDirectory"));
-	//}
-
 	std::string path = "C:\\data\\image\\";
-	
+
 	//for (auto& p : fs::directory_iterator("D:\\data\\image"))
 	auto di = fs::directory_iterator("D:\\data\\image");
 	auto begin = fs::begin(di);
-	auto end = fs::end(di);	
-	for(auto it=begin; begin != end; it++)
+	auto end = fs::end(di);
+	for (auto it = begin; begin != end; ++it)
 	{
 		auto p = *it;
 		std::string fPathS = p.path().string();
@@ -170,7 +112,7 @@ void RefreshDirectory(LPTSTR lpDir)
 		HANDLE hFile = CreateFile(
 			fPath,
 			GENERIC_READ,
-			(FILE_SHARE_READ | FILE_SHARE_WRITE , FILE_SHARE_DELETE),
+			(FILE_SHARE_READ | FILE_SHARE_WRITE, FILE_SHARE_DELETE),
 			nullptr,
 			OPEN_EXISTING,
 			0,
@@ -208,30 +150,29 @@ void RefreshDirectory(LPTSTR lpDir)
 		//std::cout << "file: " << p << ", Last modified timestamp: " << szBuf << std::endl;
 
 
-
 		auto image_1 = *it;
 		std::string image_1_path = image_1.path().string();
 		LPCSTR image_1_path_c = image_1_path.c_str();
 
-		it++;
+		++it;
 
 		auto image_2 = *it;
 		std::string image_2_path = image_2.path().string();
 		LPCSTR image_2_path_c = image_2_path.c_str();
 
 
-		array I1_color = loadImage(image_1_path_c, true);
-		array I2_color = loadImage(image_2_path_c, true);
-		array I1 = colorSpace(I1_color, AF_GRAY, AF_RGB);
-		array I2 = colorSpace(I2_color, AF_GRAY, AF_RGB);
+		af::array I1_color = af::loadImage(image_1_path_c, true);
+		af::array I2_color = af::loadImage(image_2_path_c, true);
+		af::array I1 = colorSpace(I1_color, AF_GRAY, AF_RGB);
+		af::array I2 = colorSpace(I2_color, AF_GRAY, AF_RGB);
 
 		//saveImage("c:\\temp\\out_image.jpg", I1);
 
-		array I3 = I1 - I2;
+		af::array I3 = I1 - I2;
 
 		I3 = af::abs(I3);
 
-		I3 = (I3<50.0f)*0.0f + 255.0f*(I3>50.0f);
+		I3 = (I3 < 50.0f) * 0.0f + 255.0f * (I3 > 50.0f);
 
 		I3 /= 255.f;
 
@@ -246,4 +187,30 @@ void RefreshDirectory(LPTSTR lpDir)
 
 
 	_tprintf(TEXT(" Directory (%s) changed.\n"), lpDir);
+}
+
+image_acquisition::FileLoader::FileLoader(std::string directory, std::string prefix,
+                                          image_segmentation::Controller* segmentation_controller)
+{
+	this->directory = directory;
+	this->prefix = prefix;
+	this->segmentation_controller = segmentation_controller;
+
+	this->WatchDirectory();
+}
+
+void image_acquisition::FileLoader::SetDirectory(std::string directory)
+{
+	this->directory = directory;
+}
+
+void image_acquisition::FileLoader::SetImageSegmentationController(
+	image_segmentation::Controller* segmentation_controller)
+{
+	this->segmentation_controller = segmentation_controller;
+}
+
+
+image_acquisition::FileLoader::~FileLoader()
+{
 }
