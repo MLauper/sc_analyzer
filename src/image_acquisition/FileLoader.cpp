@@ -5,6 +5,7 @@
 #include <filesystem>
 #include <arrayfire.h>
 #include <strsafe.h>
+#include <set>
 
 namespace fs = std::experimental::filesystem;
 
@@ -81,7 +82,7 @@ void image_acquisition::FileLoader::ProcessFiles()
 		auto p = *it;
 		std::string fPathS = p.path().string();
 		LPCSTR fPath = fPathS.c_str();
-		std::cout << "comparing " << fPath << " with " << this->path_prefix_c << "\n";
+		//std::cout << "comparing " << fPath << " with " << this->path_prefix_c << "\n";
 		if (FileLoader::isPrefix(fPath, this->path_prefix_c))
 		{
 			std::cout << "Processing " << fPath << "\n";
@@ -119,13 +120,13 @@ void image_acquisition::FileLoader::ProcessFiles()
 		FileTimeToSystemTime(&ftWrite, &stUTC);
 		SystemTimeToTzSpecificLocalTime(nullptr, &stUTC, &stLocal);
 
-		// Build a string showing the date and time.
-		TCHAR szBuf[MAX_PATH];
-		DWORD dwRet = StringCchPrintf(szBuf, MAX_PATH,
-		                              TEXT("  FileTime: %02d/%02d/%d  %02d:%02d:%02d.%03d"),
-		                              stLocal.wMonth, stLocal.wDay, stLocal.wYear,
-		                              stLocal.wHour, stLocal.wMinute, stLocal.wSecond, stLocal.wMilliseconds);
-		printf("%s\n", szBuf);
+		//// Build a string showing the date and time.
+		//TCHAR szBuf[MAX_PATH];
+		//DWORD dwRet = StringCchPrintf(szBuf, MAX_PATH,
+		//                              TEXT("  FileTime: %02d/%02d/%d  %02d:%02d:%02d.%03d"),
+		//                              stLocal.wMonth, stLocal.wDay, stLocal.wYear,
+		//                              stLocal.wHour, stLocal.wMinute, stLocal.wSecond, stLocal.wMilliseconds);
+		//printf("%s\n", szBuf);
 
 		CloseHandle(hFile);
 
@@ -135,8 +136,11 @@ void image_acquisition::FileLoader::ProcessFiles()
 		LPCSTR image_1_path_c = image_1_path.c_str();
 		af::array I1_color = af::loadImage(image_1_path_c, true);
 
+		// Extract FileName
+		std::string filename = this->extract_filename(image_1_path_c);
+
 		//Process image
-		this->segmentation_controller->ProcessImage(I1_color);
+		this->segmentation_controller->ProcessImage(&stLocal, I1_color, filename);
 		
 		//af::array I1 = colorSpace(I1_color, AF_GRAY, AF_RGB);
 		//af::array I2 = colorSpace(I2_color, AF_GRAY, AF_RGB);
@@ -200,3 +204,33 @@ bool image_acquisition::FileLoader::isPrefix(const char* s1, const char* s2)
 image_acquisition::FileLoader::~FileLoader()
 {
 }
+
+std::string image_acquisition::FileLoader::extract_filename(char const* path_c)
+{
+	const std::set<char> delimiters = { '\\' };;
+
+	std::vector<std::string> ret;
+
+	char const* start = path_c;
+	for (; *path_c; ++path_c)
+	{
+		if (delimiters.find(*path_c) != delimiters.end())
+		{
+			if (start != path_c)
+			{
+				std::string str(start, path_c);
+				ret.push_back(str);
+			}
+			else
+			{
+				ret.push_back("");
+			}
+			start = path_c + 1;
+		}
+	}
+	ret.push_back(start);
+
+	return ret.back();
+}
+
+
