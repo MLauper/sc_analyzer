@@ -22,10 +22,12 @@
     <ClInclude Include="BackgroundRemover.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="image_segmentation.h" />
+    <ClInclude Include="PersonDetector.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="BackgroundRemover.cpp" />
+    <ClCompile Include="PersonDetector.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{13E823EB-9E09-4262-9B18-F2A83B9DE2B5}</ProjectGuid>
@@ -126,7 +128,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
       </AdditionalDependencies>
     </CudaLink>
     <Lib>
-      <AdditionalDependencies>opencv_core331d.lib;opencv_imgproc331d.lib;opencv_imgcodecs331d.lib;opencv_highgui331d.lib;opencv_bgsegm331d.lib;opencv_video331d.lib;opencv_cudabgsegm331d.lib;opencv_cudalegacy331d.lib</AdditionalDependencies>
+      <AdditionalDependencies>opencv_core331d.lib;opencv_imgproc331d.lib;opencv_imgcodecs331d.lib;opencv_highgui331d.lib;opencv_bgsegm331d.lib;opencv_video331d.lib;opencv_cudabgsegm331d.lib;opencv_cudalegacy331d.lib;opencv_cudaobjdetect331d.lib;opencv_cudaimgproc331d.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>C:\Program Files\opencv\x64\vc14\lib</AdditionalLibraryDirectories>

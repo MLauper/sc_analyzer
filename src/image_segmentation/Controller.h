@@ -2,6 +2,7 @@
 #include <arrayfire.h>
 #include <fstream>
 #include "BackgroundRemover.h"
+#include "PersonDetector.h"
 #define NOMINMAX
 
 namespace image_segmentation
@@ -30,5 +31,6 @@ namespace image_segmentation
 		static af::array binThreshold(const af::array& in, float thresholdValue);
 		static void drawRectangle(af::array& out, unsigned x, unsigned y, unsigned dim0, unsigned dim1);
 		BackgroundRemover br;
+		//PersonDetector pd;
 	};
 }

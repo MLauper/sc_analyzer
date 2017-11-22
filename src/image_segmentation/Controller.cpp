@@ -33,7 +33,9 @@ void image_segmentation::Controller::ProcessImage(SYSTEMTIME* time, af::array& i
 {
 	std::cout << "Controller is processing data\n";
 
-	br.removeBackground(path);
+	cv::cuda::GpuMat d_img = br.removeBackground(path, filename);
+	//pd.detectPerson(d_img);
+
 
 	
 //	this->current_image = image;
