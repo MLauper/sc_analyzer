@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <arrayfire.h>
 #include <fstream>
+#include "BackgroundRemover.h"
 #define NOMINMAX
 
 namespace image_segmentation
@@ -9,7 +10,7 @@ namespace image_segmentation
 	{
 	public:
 		Controller(int imageHeight, int imageWidth);
-		void ProcessImage(SYSTEMTIME* time, af::array& image, std::string filename);
+		void ProcessImage(SYSTEMTIME* time, af::array& image, std::string path, std::string filename);
 	private:
 		af::array current_image;
 		SYSTEMTIME* current_image_time;
@@ -28,5 +29,6 @@ namespace image_segmentation
 		std::ofstream stat_out;
 		static af::array binThreshold(const af::array& in, float thresholdValue);
 		static void drawRectangle(af::array& out, unsigned x, unsigned y, unsigned dim0, unsigned dim1);
+		BackgroundRemover br;
 	};
 }

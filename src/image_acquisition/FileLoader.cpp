@@ -140,7 +140,7 @@ void image_acquisition::FileLoader::ProcessFiles()
 		std::string filename = this->extract_filename(image_1_path_c);
 
 		//Process image
-		this->segmentation_controller->ProcessImage(&stLocal, I1_color, filename);
+		this->segmentation_controller->ProcessImage(&stLocal, I1_color, image_1_path, filename);
 		
 		//af::array I1 = colorSpace(I1_color, AF_GRAY, AF_RGB);
 		//af::array I2 = colorSpace(I2_color, AF_GRAY, AF_RGB);
