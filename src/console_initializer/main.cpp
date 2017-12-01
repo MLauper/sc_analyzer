@@ -13,6 +13,8 @@ int main()
 	camera.entrance_side = dto::Camera::side::bottom;
 	camera.width = 1920;
 	camera.height = 1080;
+	camera.gateMode = dto::Camera::gateMode::minBottom;
+	camera.gateValue = 150;
 
 	image_segmentation::Controller* controller = new image_segmentation::Controller(camera);
 

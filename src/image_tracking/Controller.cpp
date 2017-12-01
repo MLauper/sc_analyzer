@@ -9,15 +9,11 @@ image_tracking::Controller::Controller()
 
 }
 
-void image_tracking::Controller::ProcessImage(dto::Image image, dto::Camera camera)
+void image_tracking::Controller::ProcessImage(dto::Image& image, dto::Camera& camera)
 {
 
 	ot.apply(image);
+	ot.SendFinishedTracksTo(this->feature_extraction_controller, camera);
 
-	while (ot.hasFinishedTracks())
-	{
-		dto::Track t = ot.getFinishedTrack();
-		this->feature_extraction_controller.processTrack(t, camera);
-	}
 }
 

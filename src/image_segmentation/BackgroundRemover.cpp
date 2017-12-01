@@ -14,7 +14,7 @@ image_segmentation::BackgroundRemover::BackgroundRemover()
 	namedWindow("Contours", cv::WINDOW_AUTOSIZE);
 }
 
-dto::Image image_segmentation::BackgroundRemover::removeBackground(dto::Image image)
+void image_segmentation::BackgroundRemover::removeBackground(dto::Image& image)
 {
 	//read the first file of the sequence
 	image.cv_image = cv::imread(image.path);
@@ -41,11 +41,11 @@ dto::Image image_segmentation::BackgroundRemover::removeBackground(dto::Image im
 	//show the current frame and the fg masks
 
 	//this->d_fgmask.download(this->fgmask);
-	imshow("Frame", image.cv_image);
+	cv::imshow("Frame", image.cv_image);
 	//imshow("FG Mask MOG 2", this->fgmask);
 
-	//get the input from the keyboard
-	this->keyboard = (char)cv::waitKey(100);
+	// Witkey is required, otherwise all imshow will not work
+	this->keyboard = (char)cv::waitKey(1);
 	//search for the next image in the sequence
 	std::ostringstream oss;
 	//oss << (frameNumber + 1);
@@ -91,6 +91,4 @@ dto::Image image_segmentation::BackgroundRemover::removeBackground(dto::Image im
 
 	cv::imshow("FG Image", image.cv_fgimg);
 	cv::imshow("FG Mask", image.cv_fgmask);
-
-	return image;
 }

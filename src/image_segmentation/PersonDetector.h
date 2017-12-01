@@ -9,7 +9,7 @@ namespace image_segmentation
 	{
 	public:
 		PersonDetector();
-		dto::Image extractPersonContours(dto::Image Image);
+		void extractPersonContours(dto::Image& Image);
 	private:
 		int minRegionWidth;
 		int minRegionHeight;

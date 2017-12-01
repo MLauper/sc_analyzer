@@ -11,7 +11,7 @@ namespace image_tracking
 	{
 	public:
 		Controller();
-		void ProcessImage(dto::Image image, dto::Camera camera);
+		void ProcessImage(dto::Image& image, dto::Camera& camera);
 	private:
 		ObjectTracker ot;
 		feature_extraction::Controller feature_extraction_controller;

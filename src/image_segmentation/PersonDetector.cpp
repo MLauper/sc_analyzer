@@ -29,8 +29,8 @@ image_segmentation::PersonDetector::PersonDetector()
 
 }
 
-dto::Image image_segmentation::PersonDetector::extractPersonContours(
-	dto::Image image)
+void image_segmentation::PersonDetector::extractPersonContours(
+	dto::Image& image)
 {
 	std::vector<std::vector<cv::Point>> contours;
 	std::vector<cv::Vec4i> hierarchy;
@@ -57,7 +57,7 @@ dto::Image image_segmentation::PersonDetector::extractPersonContours(
 		int width = maxX - minX;
 		float ratio = (float)width / (float)height;
 
-		std::cout << "CONTOUR: " << width << "x" << height << ", ration: " << ratio << "\n";
+		//std::cout << "CONTOUR: " << width << "x" << height << ", ration: " << ratio << "\n";
 
 		if (width < this->minRegionWidth) continue;
 		if (width > this->maxRegionWidth) continue;
@@ -125,5 +125,4 @@ dto::Image image_segmentation::PersonDetector::extractPersonContours(
 	//	cv::imwrite(image_out_path_passed.str().c_str(), drawing);
 	//}
 
-	return image;
 }

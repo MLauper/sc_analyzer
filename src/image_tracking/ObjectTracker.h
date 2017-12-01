@@ -4,6 +4,7 @@
 #include "../dto/Image.h"
 #include "../dto/Track.h"
 #include <random>
+#include "../feature_extraction/Controller.h"
 
 namespace image_tracking
 {
@@ -11,9 +12,10 @@ namespace image_tracking
 	{
 	public:
 		ObjectTracker();
-		void apply(dto::Image image);
+		void apply(dto::Image& image);
 		bool hasFinishedTracks();
 		dto::Track getFinishedTrack();
+		void SendFinishedTracksTo(feature_extraction::Controller& controller, dto::Camera& camera);
 	private:
 		std::vector<dto::Track> currentTracks;
 		int maxNumberOfMissingFramesInTrack;

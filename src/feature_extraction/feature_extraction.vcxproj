@@ -21,10 +21,12 @@
   <ItemGroup>
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="DirectionExtractor.cpp" />
+    <ClCompile Include="RegionSelector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Controller.h" />
     <ClInclude Include="DirectionExtractor.h" />
+    <ClInclude Include="RegionSelector.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F207B469-3362-4F94-9232-04A56D78D847}</ProjectGuid>

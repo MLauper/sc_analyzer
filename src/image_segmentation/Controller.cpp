@@ -27,17 +27,19 @@ image_segmentation::Controller::Controller(dto::Camera camera)
 	this->morphMask2 = af::constant(1, 19, 19);
 
 	this->stat_out = std::ofstream("c:\\temp\\\extracted_persons\\_statistics.txt");
+
+	namedWindow("Frame", cv::WINDOW_AUTOSIZE);
 }
 
 void image_segmentation::Controller::ProcessImage(dto::Image& image)
 {
-	std::cout << "Controller is processing data\n";
+	//std::cout << "Controller is processing data\n";
 
-	dto::Image image2 = br.removeBackground(image);
-	dto::Image image3 = pd.extractPersonContours(image2);
+	br.removeBackground(image);
+	pd.extractPersonContours(image);
 
 	//std::vector<std::vector<cv::Point>> contours = pd.extractPersonContours(temp_image, temp_mask, image.filename);
-	this->image_tracking_controller.ProcessImage(image3, camera);
+	this->image_tracking_controller.ProcessImage(image, camera);
 
 }
 

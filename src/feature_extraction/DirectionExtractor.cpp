@@ -12,8 +12,9 @@ void feature_extraction::DirectionExtractor::extractDirection(dto::Track& track,
 	bool isFirstRegionOnEntranceSide = false;
 	bool isLastRegionOnEntranceSide = false;
 
-	float borderPercentage = 0.05f;
+	float borderPercentage = 0.03f;
 
+	// Analyse Region Positions
 	if (camera.entrance_side == dto::Camera::side::bottom){
 		if (track.regions.at(0).maxY >= (camera.height - (int)(camera.height * borderPercentage)))
 		{
@@ -57,6 +58,12 @@ void feature_extraction::DirectionExtractor::extractDirection(dto::Track& track,
 			isLastRegionOnEntranceSide = true;
 		}
 	}
-	
+
+
+	// Get walking direction
+	if (isFirstRegionOnEntranceSide == true && isLastRegionOnEntranceSide == true) track.walkingDirection = dto::Track::WalkingDirection::out_out;
+	if (isFirstRegionOnEntranceSide == true && isLastRegionOnEntranceSide == false) track.walkingDirection = dto::Track::WalkingDirection::out_in;
+	if (isFirstRegionOnEntranceSide == false && isLastRegionOnEntranceSide == true) track.walkingDirection = dto::Track::WalkingDirection::in_out;
+	if (isFirstRegionOnEntranceSide == false && isLastRegionOnEntranceSide == false) track.walkingDirection = dto::Track::WalkingDirection::in_in;
 
 }

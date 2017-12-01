@@ -17,7 +17,7 @@ image_tracking::ObjectTracker::ObjectTracker()
 	this->drawingAll = cv::Mat::zeros(cv::Size(1920, 1080), CV_8UC3);
 }
 
-void image_tracking::ObjectTracker::apply(dto::Image image)
+void image_tracking::ObjectTracker::apply(dto::Image& image)
 {
 	
 	std::vector<int> updatedTracks;
@@ -56,32 +56,32 @@ void image_tracking::ObjectTracker::apply(dto::Image image)
 	{
 		this->currentTracks.at(i).numImagesWithoutRegion++;
 		
-		if (this->currentTracks.at(i).numImagesWithoutRegion >= this->maxNumberOfMissingFramesInTrack)
-		{
-			// Track is finished
-			std::cout << "============== TRACK IS FINISHED";
-	
-			int y = 0;
-			
-			cv::Vec3b color(0, 255 * this->currentTracks.at(i).trackId, 255);
-	
-			for (int j = 0; j < this->currentTracks.at(i).regions.size(); j ++)
-			{
-				dto::Image im = this->currentTracks.at(i).images.at(j);
-				dto::Region re = this->currentTracks.at(i).regions.at(j);
-	
-				for (int n = 0; n < re.contour.size(); n++)
-				{
-					drawingAll.at<cv::Vec3b>(re.contour.at(n).y, re.contour.at(n).x) = color;
-				}
-	
-				std::stringstream image_out_path;
-				image_out_path << "c:\\temp\\\extracted_persons\\track-" << this->currentTracks.at(i).trackId << "_image-" << y << ".jpg";
-				y += 1;
-				cv::imwrite(image_out_path.str().c_str(), drawingAll);
-			}
-	
-		}
+		//if (this->currentTracks.at(i).numImagesWithoutRegion >= this->maxNumberOfMissingFramesInTrack)
+		//{
+		//	// Track is finished
+		//	std::cout << "============== TRACK IS FINISHED";
+		//
+		//	int y = 0;
+		//	
+		//	cv::Vec3b color(0, 255 * this->currentTracks.at(i).trackId, 255);
+		//
+		//	for (int j = 0; j < this->currentTracks.at(i).regions.size(); j ++)
+		//	{
+		//		dto::Image im = this->currentTracks.at(i).images.at(j);
+		//		dto::Region re = this->currentTracks.at(i).regions.at(j);
+		//
+		//		for (int n = 0; n < re.contour.size(); n++)
+		//		{
+		//			drawingAll.at<cv::Vec3b>(re.contour.at(n).y, re.contour.at(n).x) = color;
+		//		}
+		//
+		//		std::stringstream image_out_path;
+		//		image_out_path << "c:\\temp\\\extracted_persons\\track-" << this->currentTracks.at(i).trackId << "_image-" << y << ".jpg";
+		//		y += 1;
+		//		cv::imwrite(image_out_path.str().c_str(), drawingAll);
+		//	}
+		//
+		//}
 	}
 
 	//this->currentTracks.erase(std::remove_if(this->currentTracks.begin(), this->currentTracks.end(),
@@ -130,6 +130,18 @@ dto::Track image_tracking::ObjectTracker::getFinishedTrack()
 		}
 	}
 
+}
+
+void image_tracking::ObjectTracker::SendFinishedTracksTo(feature_extraction::Controller& controller, dto::Camera& camera)
+{
+	for (int i = 0; i < this->currentTracks.size(); i++)
+	{
+		if (this->currentTracks.at(i).numImagesWithoutRegion >= this->maxNumberOfMissingFramesInTrack)
+		{
+			controller.processTrack(this->currentTracks.at(i), camera);
+			this->currentTracks.erase(this->currentTracks.begin() + i);
+		}
+	}
 }
 
 //void image_tracking::ObjectTracker::apply(cv::Mat image, cv::Mat mask)
