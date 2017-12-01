@@ -10,7 +10,7 @@
 
 using namespace std;
 using namespace cv;
-using namespace cv::cuda;
+using namespace cuda;
 
 enum Method
 {
@@ -22,11 +22,11 @@ enum Method
 
 int main(int argc, const char** argv)
 {
-	cv::CommandLineParser cmd(argc, argv,
-		"{ c camera |                    | use camera }"
-		"{ f file   | ../data/vtest.avi  | input video file }"
-		"{ m method | mog                | method (mog, mog2, gmg, fgd) }"
-		"{ h help   |                    | print help message }");
+	CommandLineParser cmd(argc, argv,
+	                      "{ c camera |                    | use camera }"
+	                      "{ f file   | ../data/vtest.avi  | input video file }"
+	                      "{ m method | mog                | method (mog, mog2, gmg, fgd) }"
+	                      "{ h help   |                    | print help message }");
 
 	if (cmd.has("help") || !cmd.check())
 	{
@@ -47,10 +47,7 @@ int main(int argc, const char** argv)
 		return -1;
 	}
 
-	Method m = method == "mog" ? MOG :
-		method == "mog2" ? MOG2 :
-		method == "fgd" ? FGD_STAT :
-		GMG;
+	Method m = method == "mog" ? MOG : method == "mog2" ? MOG2 : method == "fgd" ? FGD_STAT : GMG;
 
 	VideoCapture cap;
 
@@ -70,10 +67,10 @@ int main(int argc, const char** argv)
 
 	GpuMat d_frame(frame);
 
-	Ptr<BackgroundSubtractor> mog = cuda::createBackgroundSubtractorMOG();
+	Ptr<BackgroundSubtractor> mog = createBackgroundSubtractorMOG();
 	Ptr<BackgroundSubtractor> mog2 = cuda::createBackgroundSubtractorMOG2();
-	Ptr<BackgroundSubtractor> gmg = cuda::createBackgroundSubtractorGMG(40);
-	Ptr<BackgroundSubtractor> fgd = cuda::createBackgroundSubtractorFGD();
+	Ptr<BackgroundSubtractor> gmg = createBackgroundSubtractorGMG(40);
+	Ptr<BackgroundSubtractor> fgd = createBackgroundSubtractorFGD();
 
 	GpuMat d_fgmask;
 	GpuMat d_fgimg;
@@ -117,7 +114,7 @@ int main(int argc, const char** argv)
 			break;
 		d_frame.upload(frame);
 
-		int64 start = cv::getTickCount();
+		int64 start = getTickCount();
 
 		//update the model
 		switch (m)
@@ -142,8 +139,8 @@ int main(int argc, const char** argv)
 			break;
 		}
 
-		double fps = cv::getTickFrequency() / (cv::getTickCount() - start);
-		std::cout << "FPS : " << fps << std::endl;
+		double fps = getTickFrequency() / (getTickCount() - start);
+		cout << "FPS : " << fps << endl;
 
 		d_fgimg.create(d_frame.size(), d_frame.type());
 		d_fgimg.setTo(Scalar::all(0));

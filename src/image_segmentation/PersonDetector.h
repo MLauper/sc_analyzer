@@ -1,8 +1,7 @@
 #pragma once
-#include <opencv2/core.hpp>
-#include <opencv2/core/cuda.hpp>
-#include <opencv2/core/utility.hpp>
-#include <opencv2/highgui.hpp>
+#include <opencv2/core/base.hpp>
+#include <opencv2/core/mat.hpp>
+#include "../dto/Image.h"
 
 namespace image_segmentation
 {
@@ -10,11 +9,19 @@ namespace image_segmentation
 	{
 	public:
 		PersonDetector();
-		void detectPerson(cv::cuda::GpuMat image);
+		dto::Image extractPersonContours(dto::Image Image);
 	private:
-
-		cv::Mat frame;
+		int minRegionWidth;
+		int minRegionHeight;
+		int maxRegionWidth;
+		int maxRegionHeight;
+		float minRatio;
+		float maxRatio;
+		int imageHeight;
+		int imageWidth;
+		int minRegionX;
+		int maxRegionX;
+		int minRegionY;
+		int maxRegionY;
 	};
-
-
 }

@@ -124,7 +124,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
     </ProjectReference>
     <Lib>
-      <AdditionalDependencies>image_segmentation.lib</AdditionalDependencies>
+      <AdditionalDependencies>image_segmentation.lib; dto.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(OutputPath);</AdditionalLibraryDirectories>

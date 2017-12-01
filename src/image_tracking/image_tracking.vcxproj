@@ -19,21 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BackgroundRemover.h" />
-    <ClInclude Include="Controller.h" />
-    <ClInclude Include="image_segmentation.h" />
-    <ClInclude Include="PersonDetector.h" />
-    <ClInclude Include="PersonDetectorHog.h" />
+    <ClCompile Include="Controller.cpp" />
+    <ClCompile Include="ObjectTracker.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Controller.cpp" />
-    <ClCompile Include="BackgroundRemover.cpp" />
-    <ClCompile Include="PersonDetector.cpp" />
-    <ClCompile Include="PersonDetectorHog.cpp" />
+    <ClInclude Include="Controller.h" />
+    <ClInclude Include="ObjectTracker.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{13E823EB-9E09-4262-9B18-F2A83B9DE2B5}</ProjectGuid>
-    <RootNamespace>image_segmentation</RootNamespace>
+    <ProjectGuid>{F058FE43-911B-47F8-BEDF-F6244335B134}</ProjectGuid>
+    <RootNamespace>image_tracking</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -112,8 +107,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>afcuda.lib;cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(AF_PATH)\lib;%(AdditionalLibraryDirectories);$(CudaToolkitLibDir)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>echo copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"
@@ -122,22 +116,10 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile>
       <TargetMachinePlatform>64</TargetMachinePlatform>
     </CudaCompile>
-    <CudaLink>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </CudaLink>
-    <CudaLink>
-      <AdditionalDependencies>
-      </AdditionalDependencies>
-    </CudaLink>
-    <Lib>
-      <AdditionalDependencies>opencv_core331d.lib;opencv_imgproc331d.lib;opencv_imgcodecs331d.lib;opencv_highgui331d.lib;opencv_bgsegm331d.lib;opencv_video331d.lib;opencv_cudabgsegm331d.lib;opencv_cudalegacy331d.lib;opencv_cudaobjdetect331d.lib;opencv_cudaimgproc331d.lib</AdditionalDependencies>
-    </Lib>
     <Lib>
       <AdditionalLibraryDirectories>C:\Program Files\opencv\x64\vc14\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opencv_core331d.lib;opencv_cudaimgproc331d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
-    <ProjectReference>
-      <LinkLibraryDependencies>true</LinkLibraryDependencies>
-    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -173,8 +155,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>afcuda.lib;cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(AF_PATH)\lib;%(AdditionalLibraryDirectories);$(CudaToolkitLibDir)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>echo copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"
@@ -183,22 +164,10 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile>
       <TargetMachinePlatform>64</TargetMachinePlatform>
     </CudaCompile>
-    <CudaLink>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </CudaLink>
-    <CudaLink>
-      <AdditionalDependencies>
-      </AdditionalDependencies>
-    </CudaLink>
-    <Lib>
-      <AdditionalDependencies>opencv_world331.lib</AdditionalDependencies>
-    </Lib>
     <Lib>
       <AdditionalLibraryDirectories>C:\Program Files\opencv\x64\vc14\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opencv_core331d.lib;opencv_cudaimgproc331d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
-    <ProjectReference>
-      <LinkLibraryDependencies>true</LinkLibraryDependencies>
-    </ProjectReference>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

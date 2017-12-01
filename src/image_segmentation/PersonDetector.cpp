@@ -1,78 +1,129 @@
 #include "PersonDetector.h"
-#include <opencv2/cudaobjdetect.hpp>
-#include <opencv2/videostab/ring_buffer.hpp>
 #include <iostream>
-#include <opencv2/videostab/global_motion.hpp>
+#include "opencv2/objdetect.hpp"
+#include <opencv2/videostab/ring_buffer.hpp>
+#include <opencv2/highgui.hpp>
+#include "../dto/Image.h"
+#include "../dto/Region.h"
 
 image_segmentation::PersonDetector::PersonDetector()
 {
-	cv::namedWindow("PersonDetector");
+	this->imageHeight = 1080;
+	this->imageWidth = 1920;
+
+	this->minRegionX = 100;
+	this->maxRegionX = 1080;
+	this->minRegionY = 100;
+	this->maxRegionY = 1820;
+
+	this->minRegionWidth = 80;
+	this->minRegionHeight = 300;
+
+	this->maxRegionWidth = 360;
+	this->maxRegionHeight = 600;
+
+	// Width / Height
+	this->minRatio = 0.3f;
+	this->maxRatio = 0.625f;
+
+
 }
 
- void image_segmentation::PersonDetector::detectPerson(cv::cuda::GpuMat d_image)
- {
-	 int win_width = 48;
-	 int win_stride_width = 8;
-	 int win_stride_height = 8;
-	 int block_width = 16;
-	 int block_stride_width = 8;
-	 int block_stride_height = 8;
-	 int cell_width = 8;
-	 int nbins = 9;
+dto::Image image_segmentation::PersonDetector::extractPersonContours(
+	dto::Image image)
+{
+	std::vector<std::vector<cv::Point>> contours;
+	std::vector<cv::Vec4i> hierarchy;
 
-	 cv::Size win_size(win_width, win_width * 2);
-	 cv::Size block_size(block_width, block_width);
-	 cv::Size block_stride(block_stride_width, block_stride_height);
-	 cv::Size cell_size(cell_width, cell_width);
-	 
-	 cv::Ptr<cv::cuda::HOG> gpu_hog = cv::cuda::HOG::create(win_size, block_size, block_stride, cell_size, nbins);
-	 cv::Mat detector = gpu_hog->getDefaultPeopleDetector();
-	 gpu_hog->setSVMDetector(detector);
+	try {
+		cv::findContours(image.cv_fgmask, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
+	}
+	catch (std::exception e)
+	{
+		std::cerr << e.what();
+	}
 
-	 std::vector<cv::Rect> found;
+	for (int i = 0; i < contours.size(); i++)
+	{
+		int minX = INT_MAX, maxX = 0, minY = INT_MAX , maxY = 0;
+		for (cv::Point p : contours.at(i))
+		{
+			if (p.x < minX) minX = p.x;
+			if (p.x > maxX) maxX = p.x;
+			if (p.y < minY) minY = p.y;
+			if (p.y > maxY) maxY = p.y;
+		}
+		int height = maxY - minY;
+		int width = maxX - minX;
+		float ratio = (float)width / (float)height;
 
-	 double scale = 1.05;
-	 int nlevels = 13;
-	 int gr_threshold = 8;
-	 double hit_threshold = 1.4;
+		std::cout << "CONTOUR: " << width << "x" << height << ", ration: " << ratio << "\n";
 
-	 cv::Size win_stride(win_stride_width, win_stride_height);
+		if (width < this->minRegionWidth) continue;
+		if (width > this->maxRegionWidth) continue;
+		if (minX < this->minRegionX) continue;
+		if (maxX > this->maxRegionX) continue;
+		if (minY < this->minRegionY) continue;
+		if (maxY > this->maxRegionY) continue;
 
-	 gpu_hog->setNumLevels(nlevels);
-	 gpu_hog->setHitThreshold(hit_threshold);
-	 gpu_hog->setWinStride(win_stride);
-	 gpu_hog->setScaleFactor(scale);
-	 gpu_hog->setGroupThreshold(gr_threshold);
+		if (minY != 0 && maxY != imageHeight) {
+			if (height < this->minRegionHeight) continue;
+			if (height > this->maxRegionHeight) continue;
+			if (ratio < this->minRatio) continue;
+			if (ratio > this->maxRatio) continue;
+		} else
+		{
+			if (height < minRegionHeight / 3) continue;
+			if (height > maxRegionHeight) continue;
+		}
 
-	 int width = 640;
-	 int height = 480;
+		dto::Region region;
+		region.contour = contours.at(i);
+		region.minX = minX;
+		region.minY = minY;
+		region.maxX = maxX;
+		region.maxY = maxY;
+		region.ratio = ratio;
 
-	 cv::Mat temp;
-	 d_image.download(temp);
-	 cv::resize(temp, temp, cv::Size(width, height));
-	 d_image.upload(temp);
+		image.regions.push_back(region);
+	}
 
-	 cv::cuda::cvtColor(d_image, d_image, cv::COLOR_BGR2BGRA);
-	 
-	 try {
-		 gpu_hog->detectMultiScale(d_image, found);
-	 } catch (std::exception ex)
-	 {
-		 std::cerr << ex.what();
-	 }
+	//cv::Mat drawingAll = cv::Mat::zeros(image.cv_fgmask.size(), CV_8UC3);
+	//cv::RNG rng(12345);
+	//for (size_t i = 0; i < contours.size(); i++)
+	//{
+	//	cv::Scalar color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
+	//	cv::drawContours(drawingAll, contours, (int)i, color, 2, 8, hierarchy, 0, cv::Point());
+	//}
+	//cv::imshow("Contours", drawingAll);
+	//std::cout << "Found " << contours.size() << " contours.\n";
+	//
+	//if (contours.size() > 0) {
+	//	std::stringstream image_out_path;
+	//	//image_out_path << "c:\\temp\\\extracted_persons\\" << filename << "_contoursAll.jpg";
+	//	//cv::imwrite(image_out_path.str().c_str(), drawingAll);
+	//}
+	//
+	//cv::Mat drawing = cv::Mat::zeros(image.cv_fgmask.size(), CV_8UC3);
+	//for (size_t i = 0; i < contours.size(); i++)
+	//{
+	//	cv::Scalar color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
+	//	try {
+	//		cv::drawContours(drawing, correctContours, (int)i, color, 2, 8, hierarchy, 0, cv::Point());
+	//	}
+	//	catch (std::exception e)
+	//	{
+	//		std::cerr << e.what();
+	//	}
+	//}
+	//cv::imshow("PassedContours", drawing);
+	//std::cout << "Found " << correctContours.size() << " passed contours.\n";
+	//
+	//if (correctContours.size() > 0) {
+	//	std::stringstream image_out_path_passed;
+	//	image_out_path_passed << "c:\\temp\\\extracted_persons\\" << filename << "_contoursPassed.jpg";
+	//	cv::imwrite(image_out_path_passed.str().c_str(), drawing);
+	//}
 
-	 std::cout << "Found: " << found.size() << " Persons...\n";
-	 cv::Mat img_to_show;
-	 d_image.download(img_to_show);
-
-	 // Draw positive classified windows
-	 for (size_t i = 0; i < found.size(); i++)
-	 {
-		 cv::Rect r = found[i];
-		 rectangle(img_to_show, r.tl(), r.br(), cv::Scalar(0, 255, 0), 3);
-	 }
-
-	 putText(img_to_show, "Mode: GPU", cv::Point(5, 25), cv::FONT_HERSHEY_SIMPLEX, 1., cv::Scalar(255, 100, 0), 2);
-
-	 cv::imshow("PersonDetector", img_to_show);
- }
+	return image;
+}

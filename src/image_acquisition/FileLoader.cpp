@@ -6,6 +6,7 @@
 #include <arrayfire.h>
 #include <strsafe.h>
 #include <set>
+#include "dto/Image.h"
 
 namespace fs = std::experimental::filesystem;
 
@@ -83,10 +84,11 @@ void image_acquisition::FileLoader::ProcessFiles()
 		std::string fPathS = p.path().string();
 		LPCSTR fPath = fPathS.c_str();
 		//std::cout << "comparing " << fPath << " with " << this->path_prefix_c << "\n";
-		if (FileLoader::isPrefix(fPath, this->path_prefix_c))
+		if (isPrefix(fPath, this->path_prefix_c))
 		{
 			std::cout << "Processing " << fPath << "\n";
-		} else
+		}
+		else
 		{
 			std::cout << "Skipping " << fPath << "\n";
 			continue;
@@ -139,9 +141,15 @@ void image_acquisition::FileLoader::ProcessFiles()
 		// Extract FileName
 		std::string filename = this->extract_filename(image_1_path_c);
 
+		dto::Image image;
+		image.filename = filename;
+		image.af_image_color = I1_color;
+		image.path = image_1_path;
+		image.filetime = stLocal;
 		//Process image
-		this->segmentation_controller->ProcessImage(&stLocal, I1_color, image_1_path, filename);
-		
+		//this->segmentation_controller->ProcessImage(&stLocal, I1_color, image_1_path, filename);
+		this->segmentation_controller->ProcessImage(image);
+
 		//af::array I1 = colorSpace(I1_color, AF_GRAY, AF_RGB);
 		//af::array I2 = colorSpace(I2_color, AF_GRAY, AF_RGB);
 		//
@@ -163,11 +171,10 @@ void image_acquisition::FileLoader::ProcessFiles()
 		//}
 		//while (!window.close());
 	}
-
 }
 
 image_acquisition::FileLoader::FileLoader(std::string directory, std::string prefix,
-                                          image_segmentation::Controller* segmentation_controller)
+	image_segmentation::Controller* segmentation_controller)
 {
 	this->directory = directory;
 
@@ -178,7 +185,21 @@ image_acquisition::FileLoader::FileLoader(std::string directory, std::string pre
 	this->path_prefix_c = path_prefix.c_str();
 
 	this->segmentation_controller = segmentation_controller;
+}
 
+image_acquisition::FileLoader::FileLoader(dto::Camera camera, image_segmentation::Controller* segmentation_controller)
+{
+	this->camera = camera;
+
+	this->directory = camera.directory;
+
+	this->prefix = camera.prefix;
+	this->prefix_c = this->prefix.c_str();
+
+	this->path_prefix = camera.directory + camera.prefix;
+	this->path_prefix_c = this->path_prefix.c_str();
+
+	this->segmentation_controller = segmentation_controller;
 }
 
 void image_acquisition::FileLoader::SetDirectory(std::string directory)
@@ -194,7 +215,7 @@ void image_acquisition::FileLoader::SetImageSegmentationController(
 
 bool image_acquisition::FileLoader::isPrefix(const char* s1, const char* s2)
 {
-	while (*s1&&*s2)
+	while (*s1 && *s2)
 		if (*s1++ != *s2++)
 			return false;
 	return true;
@@ -207,7 +228,7 @@ image_acquisition::FileLoader::~FileLoader()
 
 std::string image_acquisition::FileLoader::extract_filename(char const* path_c)
 {
-	const std::set<char> delimiters = { '\\' };;
+	const std::set<char> delimiters = {'\\'};
 
 	std::vector<std::string> ret;
 
@@ -232,5 +253,3 @@ std::string image_acquisition::FileLoader::extract_filename(char const* path_c)
 
 	return ret.back();
 }
-
-
