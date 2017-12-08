@@ -6,6 +6,7 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <random>
+#include "../dto/Configuration.h"
 
 
 
@@ -138,6 +139,31 @@ void image_tracking::ObjectTracker::SendFinishedTracksTo(feature_extraction::Con
 	{
 		if (this->currentTracks.at(i).numImagesWithoutRegion >= this->maxNumberOfMissingFramesInTrack)
 		{
+
+			if (dto::Configuration::SAVE_TRACK_IMAGES || dto::Configuration::SHOW_TRACK_IMAGES)
+			{
+
+				cv::Mat drawingAll = cv::Mat::zeros(this->currentTracks.at(i).images.at(0).cv_image.size(), CV_8UC3);
+				cv::RNG rng(12345);
+				
+				for (int j = 0; j < this->currentTracks.at(i).regions.size(); j++)
+				{
+					cv::Scalar color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
+					cv::drawContours(drawingAll, std::vector<std::vector<cv::Point>>(1, this->currentTracks.at(i).regions.at(j).contour), 0, color, 2, 8, 0, 0, cv::Point());
+				}
+
+				if (dto::Configuration::SAVE_TRACK_IMAGES) {
+					std::stringstream image_out_path;
+					image_out_path << dto::Configuration::TRACK_IMAGES_DIRECTORY << "Track-" << this->currentTracks.at(i).trackId << "_contours.jpg";
+					cv::imwrite(image_out_path.str().c_str(), drawingAll);
+				}
+				if (dto::Configuration::SHOW_TRACK_IMAGES)
+				{
+					cv::imshow("Track Contours", drawingAll);
+					cv::waitKey(1);
+				}
+			}
+
 			controller.processTrack(this->currentTracks.at(i), camera);
 			this->currentTracks.erase(this->currentTracks.begin() + i);
 		}

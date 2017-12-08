@@ -7,6 +7,7 @@
 image_segmentation::Controller::Controller(dto::Camera camera)
 {
 	this->camera = camera;
+	this->br = new BackgroundRemover(camera);
 	this->imageWidth = camera.width;
 	this->imageHeight = camera.height;
 	this->numImagePixels = imageHeight * imageWidth;
@@ -28,14 +29,13 @@ image_segmentation::Controller::Controller(dto::Camera camera)
 
 	this->stat_out = std::ofstream("c:\\temp\\\extracted_persons\\_statistics.txt");
 
-	namedWindow("Frame", cv::WINDOW_AUTOSIZE);
 }
 
 void image_segmentation::Controller::ProcessImage(dto::Image& image)
 {
 	//std::cout << "Controller is processing data\n";
 
-	br.removeBackground(image);
+	br->removeBackground(image, camera);
 	pd.extractPersonContours(image);
 
 	//std::vector<std::vector<cv::Point>> contours = pd.extractPersonContours(temp_image, temp_mask, image.filename);

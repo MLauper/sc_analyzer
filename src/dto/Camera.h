@@ -26,8 +26,10 @@ namespace dto
 		side entrance_side;
 		int width;
 		int height;
+		int fps;
 
 		gateMode gateMode;
 		int gateValue;
+		double backgroundThreshold;
 	};
 }

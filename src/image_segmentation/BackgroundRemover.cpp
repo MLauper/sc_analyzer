@@ -1,28 +1,43 @@
 #include "BackgroundRemover.h"
 #include <opencv2/cudalegacy.hpp>
 #include "../dto/Image.h"
+#include "../dto/Configuration.h"
+#include "../dto/Camera.h"
 
-image_segmentation::BackgroundRemover::BackgroundRemover()
+image_segmentation::BackgroundRemover::BackgroundRemover(dto::Camera& camera)
 {
 	//create Background Subtractor objects
-	this->fps = 8;
-	this->gpuMOG2 = cv::cuda::createBackgroundSubtractorMOG2(fps * 20, 16, true);
+	this->fps = camera.fps;
+	this->gpuMOG2 = cv::cuda::createBackgroundSubtractorMOG2(fps * 20, camera.backgroundThreshold, true);
 
-	cv::namedWindow("Frame");
-	cv::namedWindow("FG Mask");
-	cv::namedWindow("FG Image");
-	namedWindow("Contours", cv::WINDOW_AUTOSIZE);
+	//cv::namedWindow("Frame");
+	//cv::namedWindow("FG Mask");
+	//cv::namedWindow("FG Image");
+	//namedWindow("Contours", cv::WINDOW_AUTOSIZE);
 }
 
-void image_segmentation::BackgroundRemover::removeBackground(dto::Image& image)
+void image_segmentation::BackgroundRemover::removeBackground(dto::Image& image, dto::Camera& camera)
 {
 	//read the first file of the sequence
 	image.cv_image = cv::imread(image.path);
 
+	if (dto::Configuration::SAVE_ORIGINAL_IMAGES)
+	{
+		std::stringstream image_out_path;
+		image_out_path << dto::Configuration::ORIGINAL_IMAGES_DIRECTORY << image.filename << "_original.jpg";
+		cv::imwrite(image_out_path.str().c_str(), image.cv_image);
+	}
+
+	if (dto::Configuration::SHOW_ORIGINAL_IMAGES)
+	{
+		cv::imshow("Original", image.cv_image);
+		cv::waitKey(1);
+	}
+
 	image.cv_gpu_image.upload(image.cv_image);
 	this->gpuMOG2->apply(image.cv_gpu_image, image.cv_gpu_fgmask);
 
-	this->keyboard = 0;
+	
 	//update the background model
 	//this->pMOG2->apply(this->frame, this->fgMaskMOG2);
 	//get the frame number and write it on the current frame
@@ -41,11 +56,11 @@ void image_segmentation::BackgroundRemover::removeBackground(dto::Image& image)
 	//show the current frame and the fg masks
 
 	//this->d_fgmask.download(this->fgmask);
-	cv::imshow("Frame", image.cv_image);
+	
 	//imshow("FG Mask MOG 2", this->fgmask);
 
 	// Witkey is required, otherwise all imshow will not work
-	this->keyboard = (char)cv::waitKey(1);
+	
 	//search for the next image in the sequence
 	std::ostringstream oss;
 	//oss << (frameNumber + 1);
@@ -89,6 +104,28 @@ void image_segmentation::BackgroundRemover::removeBackground(dto::Image& image)
 //	image_out_path << "c:\\temp\\\extracted_persons\\" << filename << "_diff.jpg";
 //	imwrite(image_out_path.str().c_str(), fgimg);
 
-	cv::imshow("FG Image", image.cv_fgimg);
-	cv::imshow("FG Mask", image.cv_fgmask);
+	if (dto::Configuration::SAVE_FG_IMAGES)
+	{
+		std::stringstream image_out_path;
+		image_out_path << dto::Configuration::FG_IMAGES_DIRECTORY << image.filename << "_FG.jpg";
+		cv::imwrite(image_out_path.str().c_str(), image.cv_fgimg);
+	}
+	if (dto::Configuration::SAVE_FG_MASK)
+	{
+		std::stringstream image_out_path;
+		image_out_path << dto::Configuration::FG_MASKS_DIRECTORY << image.filename << "_FG_MASK.jpg";
+		cv::imwrite(image_out_path.str().c_str(), image.cv_fgmask);
+	}
+
+	if (dto::Configuration::SHOW_FG_IMAGES)
+	{
+		cv::imshow("FG Images", image.cv_fgimg);
+		cv::waitKey(1);
+	}
+	if (dto::Configuration::SHOW_FG_MASKS)
+	{
+		cv::imshow("FG Mask", image.cv_fgmask);
+		cv::waitKey(1);
+	}
+	
 }

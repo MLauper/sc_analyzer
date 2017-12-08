@@ -13,7 +13,7 @@ namespace image_segmentation
 	class Controller
 	{
 	public:
-		Controller(dto::Camera);
+		Controller(dto::Camera camera);
 		void ProcessImage(SYSTEMTIME* time, af::array& image, std::string path, std::string filename);
 		void ProcessImage(dto::Image& image);
 	private:
@@ -35,7 +35,7 @@ namespace image_segmentation
 		dto::Camera camera;
 		static af::array binThreshold(const af::array& in, float thresholdValue);
 		static void drawRectangle(af::array& out, unsigned x, unsigned y, unsigned dim0, unsigned dim1);
-		BackgroundRemover br;
+		BackgroundRemover* br;
 		PersonDetector pd;
 		image_tracking::Controller image_tracking_controller;
 		//PersonDetector pd;

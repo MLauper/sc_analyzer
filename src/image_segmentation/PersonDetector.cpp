@@ -5,6 +5,7 @@
 #include <opencv2/highgui.hpp>
 #include "../dto/Image.h"
 #include "../dto/Region.h"
+#include "../dto/Configuration.h"
 
 image_segmentation::PersonDetector::PersonDetector()
 {
@@ -88,14 +89,55 @@ void image_segmentation::PersonDetector::extractPersonContours(
 		image.regions.push_back(region);
 	}
 
-	//cv::Mat drawingAll = cv::Mat::zeros(image.cv_fgmask.size(), CV_8UC3);
-	//cv::RNG rng(12345);
-	//for (size_t i = 0; i < contours.size(); i++)
-	//{
-	//	cv::Scalar color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
-	//	cv::drawContours(drawingAll, contours, (int)i, color, 2, 8, hierarchy, 0, cv::Point());
-	//}
-	//cv::imshow("Contours", drawingAll);
+	if (dto::Configuration::SHOW_ALL_CONTOURS || dto::Configuration::SAVE_ALL_CONTOURS)
+	{
+		cv::Mat drawingAll = cv::Mat::zeros(image.cv_fgmask.size(), CV_8UC3);
+		cv::RNG rng(12345);
+		for (size_t i = 0; i < contours.size(); i++)
+		{
+		  cv::Scalar color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
+		  cv::drawContours(drawingAll, contours, (int)i, color, 2, 8, hierarchy, 0, cv::Point());
+		}
+
+		if (dto::Configuration::SHOW_ALL_CONTOURS)
+		{
+			cv::imshow("All Contours", drawingAll);
+			cv::waitKey(1);
+		}
+
+		if (dto::Configuration::SAVE_ALL_CONTOURS)
+		{
+			std::stringstream image_out_path;
+			image_out_path << dto::Configuration::ALL_CONTOURS_DIRECTORY << image.filename << "_all_contours.jpg";
+			cv::imwrite(image_out_path.str().c_str(), drawingAll);
+		}
+	}
+
+	if (dto::Configuration::SHOW_CONTOUR_IMAGES || dto::Configuration::SAVE_CONTOUR_IMAGES)
+	{
+		cv::Mat drawingAll = cv::Mat::zeros(image.cv_fgmask.size(), CV_8UC3);
+		cv::RNG rng(12345);
+		for (size_t i = 0; i < image.regions.size(); i++)
+		{
+			cv::Scalar color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
+			
+			cv::drawContours(drawingAll, std::vector<std::vector<cv::Point>>(1, image.regions.at(i).contour), 0, color, 2, 8, 0, 0, cv::Point());
+		}
+
+		if (dto::Configuration::SHOW_ALL_CONTOURS)
+		{
+			cv::imshow("Accepted Contours", drawingAll);
+			cv::waitKey(1);
+		}
+
+		if (dto::Configuration::SAVE_ALL_CONTOURS)
+		{
+			std::stringstream image_out_path;
+			image_out_path << dto::Configuration::CONTOUR_IMAGES_DIRECTORY << image.filename << "_accepted_contours.jpg";
+			cv::imwrite(image_out_path.str().c_str(), drawingAll);
+		}
+	}
+
 	//std::cout << "Found " << contours.size() << " contours.\n";
 	//
 	//if (contours.size() > 0) {

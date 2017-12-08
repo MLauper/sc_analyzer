@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Configuration.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="Region.h" />
     <ClInclude Include="Track.h" />
