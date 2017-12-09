@@ -2,6 +2,7 @@
 #include <opencv2/core/base.hpp>
 #include <opencv2/core/mat.hpp>
 #include "../dto/Image.h"
+#include <yolo/yolo_v2_class.hpp>
 
 namespace image_segmentation
 {
@@ -10,6 +11,7 @@ namespace image_segmentation
 	public:
 		PersonDetector();
 		void extractPersonContours(dto::Image& Image);
+		void detectPersonsYolo(dto::Image& Image);
 	private:
 		int minRegionWidth;
 		int minRegionHeight;
@@ -23,5 +25,6 @@ namespace image_segmentation
 		int maxRegionX;
 		int minRegionY;
 		int maxRegionY;
+		Detector* yoloDetector;
 	};
 }

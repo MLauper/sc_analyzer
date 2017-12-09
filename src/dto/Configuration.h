@@ -26,5 +26,9 @@ namespace dto {
 		const bool SHOW_TRACK_IMAGES = true;
 		const bool SAVE_TRACK_IMAGES = true;
 		const std::string TRACK_IMAGES_DIRECTORY = "C:\\Temp\\output\\";
+
+		const std::string yoloConfig = "C:\\code\\sc_analyzer\\x64\\Debug\\yolo-voc.cfg.txt";
+		const std::string yoloWeights = "C:\\code\\sc_analyzer\\x64\\Debug\\yolo-voc.weights";
+
 	}
 }

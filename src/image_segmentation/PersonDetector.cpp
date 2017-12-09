@@ -1,4 +1,5 @@
 #include "PersonDetector.h"
+#include "yolo/yolo_v2_class.hpp"
 #include <iostream>
 #include "opencv2/objdetect.hpp"
 #include <opencv2/videostab/ring_buffer.hpp>
@@ -6,6 +7,7 @@
 #include "../dto/Image.h"
 #include "../dto/Region.h"
 #include "../dto/Configuration.h"
+
 
 image_segmentation::PersonDetector::PersonDetector()
 {
@@ -27,6 +29,7 @@ image_segmentation::PersonDetector::PersonDetector()
 	this->minRatio = 0.3f;
 	this->maxRatio = 0.625f;
 
+	this->yoloDetector = new Detector(dto::Configuration::yoloConfig, dto::Configuration::yoloWeights, 0);
 
 }
 
@@ -167,4 +170,9 @@ void image_segmentation::PersonDetector::extractPersonContours(
 	//	cv::imwrite(image_out_path_passed.str().c_str(), drawing);
 	//}
 
+}
+
+void image_segmentation::PersonDetector::detectPersonsYolo(dto::Image& Image)
+{
+	this->yoloDetector->detect(Image.cv_image);
 }
