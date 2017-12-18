@@ -16,6 +16,7 @@ namespace dto
 		};
 		int trackId;
 		std::vector<dto::Region> regions;
+		std::vector<bbox_t> persons;
 		std::vector<dto::Image> images;
 
 		WalkingDirection walkingDirection;

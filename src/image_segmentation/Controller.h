@@ -13,7 +13,7 @@ namespace image_segmentation
 	class Controller
 	{
 	public:
-		Controller(dto::Camera camera);
+		Controller(dto::Camera& camera);
 		void ProcessImage(SYSTEMTIME* time, af::array& image, std::string path, std::string filename);
 		void ProcessImage(dto::Image& image);
 	private:

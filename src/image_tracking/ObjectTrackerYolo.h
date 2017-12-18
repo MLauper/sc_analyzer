@@ -1,20 +1,17 @@
 #pragma once
-#include <opencv2/core/base.hpp>
-#include <vector>
-#include "../dto/Image.h"
 #include "../dto/Track.h"
-#include <random>
+#include "../dto/Image.h"
 #include "../feature_extraction/Controller.h"
+#include <random>
 
 namespace image_tracking
 {
-	class ObjectTracker
+	class ObjectTrackerYolo
 	{
 	public:
-		ObjectTracker();
+		ObjectTrackerYolo();
 		void apply(dto::Image& image);
 		bool hasFinishedTracks();
-		dto::Track getFinishedTrack();
 		void SendFinishedTracksTo(feature_extraction::Controller& controller, dto::Camera& camera);
 	private:
 		std::vector<dto::Track> currentTracks;
@@ -23,5 +20,7 @@ namespace image_tracking
 		std::random_device rd;
 		std::mt19937 rng;
 		int latestTrackId = 0;
+		cv::Mat drawingAll;
 	};
+
 }

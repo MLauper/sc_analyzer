@@ -21,9 +21,13 @@
   <ItemGroup>
     <ClInclude Include="FileLoader.h" />
     <ClInclude Include="image_acquisition.h" />
+    <ClInclude Include="RTSPImageCapture.h" />
+    <ClInclude Include="URLImageLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FileLoader.cpp" />
+    <ClCompile Include="RTSPImageCapture.cpp" />
+    <ClCompile Include="URLImageLoader.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5B28F85E-8DA1-4B9E-9BB4-9CD83F7BE53A}</ProjectGuid>
@@ -105,7 +109,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Include;C:\Program Files\opencv\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)external;$(SolutionDir)Include;C:\Program Files\opencv\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -124,10 +128,10 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
     </ProjectReference>
     <Lib>
-      <AdditionalDependencies>image_segmentation.lib; dto.lib</AdditionalDependencies>
+      <AdditionalDependencies>LIBCURL.LIB;opencv_video331d.lib;opencv_videoio331d.lib;image_segmentation.lib;dto.lib</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>$(OutputPath);</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\libcurl;C:\Program Files\opencv\x64\vc14\lib;$(OutputPath)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

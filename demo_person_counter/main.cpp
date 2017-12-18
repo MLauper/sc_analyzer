@@ -1,7 +1,9 @@
-﻿#define NOMINMAX
+#define NOMINMAX
 
 #include "image_acquisition/image_acquisition.h"
 #include "image_segmentation/image_segmentation.h"
+#include "image_acquisition/RTSPImageCapture.h"
+#include "image_acquisition/URLImageLoader.h"
 
 int main()
 {
@@ -69,16 +71,16 @@ int main()
 	//camera.gateMode = dto::Camera::gateMode::minBottom;
 	//camera.gateValue = 150;
 
-	image_segmentation::Controller* controller = new image_segmentation::Controller(camera);
+	//image_segmentation::Controller* controller = new image_segmentation::Controller(camera);
 
-	image_acquisition::FileLoader file_loader(camera, controller);
-	//image_acquisition::FileLoader file_loader("D:\\data\\room_walk_with_differnt_lighting_8fps\\image\\", "out_CAMERA_room_", controller);
-	//image_acquisition::FileLoader file_loader("D:\\data\\room_walk_with_different_lighting\\image\\", "out_CAMERA_room_", controller);
-	//image_acquisition::FileLoader file_loader("D:\\data\\room_walk_with_different_lighting\\image\\",
-	//                                          "out_CAMERA_room_", controller);
+	camera.rtspConnectionString = "rtsp://root:dL0JZB695pWl@7.141.129.217/axis-media/media.amp?videocodec=h264&camera=1&resolution=1920x1080&audio=0&clock=0";
+	camera.urlConnectionString = "http://7.141.129.217/axis-cgi/jpg/image.cgi";
+	camera.urlUsername = "root";
+	camera.urlPassword = "dL0JZB695pWl";
 
-	file_loader.ProcessFiles();
-	file_loader.WatchDirectory();
+	image_acquisition::URLImageLoader url_loader(camera, nullptr);
+
+	url_loader.startCapturing();
 
 	return 0;
 }

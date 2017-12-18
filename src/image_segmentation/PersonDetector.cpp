@@ -174,5 +174,49 @@ void image_segmentation::PersonDetector::extractPersonContours(
 
 void image_segmentation::PersonDetector::detectPersonsYolo(dto::Image& Image)
 {
-	this->yoloDetector->detect(Image.cv_image);
+	std::vector<bbox_t> yoloObjects = this->yoloDetector->detect(Image.cv_image_original, 0.3f, dto::Configuration::YOLO_GPU_ID);
+
+	if (dto::Configuration::PRINT_YOLO_PERSONS) {
+		std::cout << "Yolo Detected Objects: \n";
+		for (auto& obj : yoloObjects)
+		{
+			if (obj.obj_id == dto::Configuration::yoloPersonObjectId)
+			{
+				std::cout << "  Person at: " << obj.x << " " << obj.y << ", dimensions: " << obj.w << " " << obj.h << "Propability: " << obj.prob << std::endl;
+			}
+		}
+		std::cout << std::endl;
+	}
+
+	for (auto& obj : yoloObjects)
+	{
+		if (obj.obj_id == dto::Configuration::yoloPersonObjectId)
+		{
+			Image.yoloPersons.push_back(obj);
+		}
+	}
+
+	if (dto::Configuration::SHOW_YOLO_PERSONS_IMAGES || dto::Configuration::SAVE_YOLO_PERSONS_IMAGES)
+	{
+		cv::Mat drawingAll = Image.cv_image_original;
+		cv::RNG rng(12345);
+		for (auto& person : Image.yoloPersons)
+		{
+			cv::Scalar color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
+
+			cv::rectangle(drawingAll, cv::Point(person.x, person.y), cv::Point(person.x + person.w, person.y + person.h), color);
+		}
+
+		if (dto::Configuration::SHOW_YOLO_PERSONS_IMAGES) {
+			cv::imshow("Yolo Persons", drawingAll);
+			cv::waitKey(1);
+		}
+
+		if (dto::Configuration::SAVE_YOLO_PERSONS_IMAGES)
+		{
+			std::stringstream image_out_path;
+			image_out_path << dto::Configuration::YOLO_PERSONS_IMAGES_DIRECTORY << Image.filename << "_yolo_persons.jpg";
+			cv::imwrite(image_out_path.str().c_str(), drawingAll);
+		}
+	}
 }

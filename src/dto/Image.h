@@ -7,6 +7,7 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <arrayfire.h>
 #include "Region.h"
+#include <yolo/yolo_v2_class.hpp>
 
 namespace dto
 {
@@ -18,7 +19,8 @@ namespace dto
 		af::array af_image_color;
 		SYSTEMTIME filetime;
 
-		cv::Mat cv_image;
+		cv::Mat cv_image_original;
+		cv::Mat cv_image_distorted;
 		cv::cuda::GpuMat cv_gpu_image;
 		cv::Mat cv_fgmask;
 		cv::cuda::GpuMat cv_gpu_fgmask;
@@ -28,6 +30,8 @@ namespace dto
 		cv::cuda::GpuMat cv_gpu_bgimg;
 
 		std::vector<dto::Region> regions;
+
+		std::vector<bbox_t> yoloPersons;
 
 	};
 }

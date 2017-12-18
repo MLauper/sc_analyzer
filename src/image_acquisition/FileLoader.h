@@ -13,7 +13,7 @@ namespace image_acquisition
 		void WatchDirectory();
 		void ProcessFiles();
 		FileLoader(std::string directory, std::string prefix, image_segmentation::Controller* segmentation_controller);
-		FileLoader(dto::Camera camera, image_segmentation::Controller* segmentation_controller);
+		FileLoader(dto::Camera& camera, image_segmentation::Controller* segmentation_controller);
 		void SetDirectory(std::string directory);
 		void SetImageSegmentationController(image_segmentation::Controller* segmentation_controller);
 		static bool isPrefix(const char* s1, const char* s2);
@@ -27,5 +27,7 @@ namespace image_acquisition
 		std::string path_prefix;
 		std::string::const_pointer prefix_c;
 		std::string::const_pointer path_prefix_c;
+		cv::Mat dist_map1;
+		cv::Mat dist_map2;
 	};
 }

@@ -4,7 +4,7 @@
 #undef min
 #undef max
 
-image_segmentation::Controller::Controller(dto::Camera camera)
+image_segmentation::Controller::Controller(dto::Camera& camera)
 {
 	this->camera = camera;
 	this->br = new BackgroundRemover(camera);

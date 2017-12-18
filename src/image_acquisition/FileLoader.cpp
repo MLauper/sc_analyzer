@@ -7,6 +7,7 @@
 #include <strsafe.h>
 #include <set>
 #include "dto/Image.h"
+#include "dto/Configuration.h"
 
 namespace fs = std::experimental::filesystem;
 
@@ -131,21 +132,41 @@ void image_acquisition::FileLoader::ProcessFiles()
 		//printf("%s\n", szBuf);
 
 		CloseHandle(hFile);
-
-		// Load Image for further processing
-		auto image_1 = *it;
-		std::string image_1_path = image_1.path().string();
-		LPCSTR image_1_path_c = image_1_path.c_str();
-		af::array I1_color = af::loadImage(image_1_path_c, true);
+		
+		dto::Image image;
 
 		// Extract FileName
-		std::string filename = this->extract_filename(image_1_path_c);
+		image.path = (*it).path().string();
+		image.filename = this->extract_filename(image.path.c_str());
 
-		dto::Image image;
-		image.filename = filename;
-		image.af_image_color = I1_color;
-		image.path = image_1_path;
 		image.filetime = stLocal;
+
+		if (dto::Configuration::LOAD_AF_IMAGE)
+		{
+			image.af_image_color = af::loadImage(image.path.c_str(), true);
+		}
+
+		image.cv_image_original = cv::imread(image.path);
+
+		if (dto::Configuration::CREATE_DISTORTED_IMAGE)
+		{
+			cv::remap(image.cv_image_original, image.cv_image_distorted, this->dist_map1, this->dist_map2, cv::INTER_LINEAR);
+			if (dto::Configuration::SHOW_DISTORTED_IMAGE)
+			{
+				cv::imshow("DistortedImage", image.cv_image_distorted);
+				cv::waitKey(1);
+			}
+
+			if (dto::Configuration::SAVE_DISTORTED_IMAGE)
+			{
+				std::stringstream image_out_path;
+				image_out_path << dto::Configuration::ORIGINAL_IMAGES_DIRECTORY << image.filename << "_distorted.jpg";
+				cv::imwrite(image_out_path.str().c_str(), image.cv_image_distorted);
+			}
+		}
+
+
+
 		//Process image
 		//this->segmentation_controller->ProcessImage(&stLocal, I1_color, image_1_path, filename);
 		this->segmentation_controller->ProcessImage(image);
@@ -187,7 +208,7 @@ image_acquisition::FileLoader::FileLoader(std::string directory, std::string pre
 	this->segmentation_controller = segmentation_controller;
 }
 
-image_acquisition::FileLoader::FileLoader(dto::Camera camera, image_segmentation::Controller* segmentation_controller)
+image_acquisition::FileLoader::FileLoader(dto::Camera& camera, image_segmentation::Controller* segmentation_controller)
 {
 	this->camera = camera;
 
@@ -200,6 +221,14 @@ image_acquisition::FileLoader::FileLoader(dto::Camera camera, image_segmentation
 	this->path_prefix_c = this->path_prefix.c_str();
 
 	this->segmentation_controller = segmentation_controller;
+
+	if (dto::Configuration::CREATE_DISTORTED_IMAGE)
+	{
+		initUndistortRectifyMap(
+			camera.cameraMatrix, camera.distCoeffs, cv::Mat(),
+			cv::getOptimalNewCameraMatrix(camera.cameraMatrix, camera.distCoeffs, cv::Size(camera.width, camera.height), 1, cv::Size(camera.width, camera.height), 0), cv::Size(camera.width, camera.height),
+			CV_16SC2, this->dist_map1, this->dist_map2);
+	}
 }
 
 void image_acquisition::FileLoader::SetDirectory(std::string directory)

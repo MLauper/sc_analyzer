@@ -13,9 +13,8 @@
 image_tracking::ObjectTracker::ObjectTracker()
 {
 
-	this->maxNumberOfMissingFramesInTrack = 8;
+	this->maxNumberOfMissingFramesInTrack = dto::Configuration::MAX_NUMBER_OF_MISSING_FRAMES_IN_TRACK;
 	
-	this->drawingAll = cv::Mat::zeros(cv::Size(1920, 1080), CV_8UC3);
 }
 
 void image_tracking::ObjectTracker::apply(dto::Image& image)
@@ -143,7 +142,7 @@ void image_tracking::ObjectTracker::SendFinishedTracksTo(feature_extraction::Con
 			if (dto::Configuration::SAVE_TRACK_IMAGES || dto::Configuration::SHOW_TRACK_IMAGES)
 			{
 
-				cv::Mat drawingAll = cv::Mat::zeros(this->currentTracks.at(i).images.at(0).cv_image.size(), CV_8UC3);
+				cv::Mat drawingAll = cv::Mat::zeros(this->currentTracks.at(i).images.at(0).cv_image_original.size(), CV_8UC3);
 				cv::RNG rng(12345);
 				
 				for (int j = 0; j < this->currentTracks.at(i).regions.size(); j++)

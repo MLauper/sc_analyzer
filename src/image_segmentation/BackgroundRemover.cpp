@@ -19,22 +19,22 @@ image_segmentation::BackgroundRemover::BackgroundRemover(dto::Camera& camera)
 void image_segmentation::BackgroundRemover::removeBackground(dto::Image& image, dto::Camera& camera)
 {
 	//read the first file of the sequence
-	image.cv_image = cv::imread(image.path);
+	image.cv_image_original = cv::imread(image.path);
 
 	if (dto::Configuration::SAVE_ORIGINAL_IMAGES)
 	{
 		std::stringstream image_out_path;
 		image_out_path << dto::Configuration::ORIGINAL_IMAGES_DIRECTORY << image.filename << "_original.jpg";
-		cv::imwrite(image_out_path.str().c_str(), image.cv_image);
+		cv::imwrite(image_out_path.str().c_str(), image.cv_image_original);
 	}
 
 	if (dto::Configuration::SHOW_ORIGINAL_IMAGES)
 	{
-		cv::imshow("Original", image.cv_image);
+		cv::imshow("Original", image.cv_image_original);
 		cv::waitKey(1);
 	}
 
-	image.cv_gpu_image.upload(image.cv_image);
+	image.cv_gpu_image.upload(image.cv_image_original);
 	this->gpuMOG2->apply(image.cv_gpu_image, image.cv_gpu_fgmask);
 
 	
