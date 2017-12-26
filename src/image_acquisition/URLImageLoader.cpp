@@ -1,4 +1,4 @@
-#include "FileLoader.h"
+#include "JPGFileLoader.h"
 #include <string>
 #include <bemapiset.h>
 #include <tchar.h>

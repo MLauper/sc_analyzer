@@ -14,12 +14,15 @@ int main()
 	//camera.prefix = "out_CAMERA_room_";
 	camera.fps = 4;
 	camera.backgroundThreshold = 16;
-	camera.entrance_side = dto::Camera::side::bottom;
+	camera.entry_side = dto::Camera::entrySide::entry_bottom;
+	camera.personCountMode = dto::Camera::personCountUpWhen::in_to_entry;
 	camera.width = 1920;
 	camera.height = 1080;
 	camera.gateMode = dto::Camera::gateMode::minBottom;
-	camera.gateValue = 150;
-
+	camera.gateValue = 100;
+	camera.secondGateMode = dto::Camera::gateMode::minLeft;
+	camera.secondGateValue = 630;
+	camera.optimalPersonLocation = cv::Point(770, 950);
 
 	// Door Camera distortion
 	const double cam_fx = 1.5429064838570325e+03;
@@ -37,8 +40,9 @@ int main()
 
 	// New Setup Room walk
 	//camera.directory = "C:\\data\\test-scenes-cut\\new-setup-walks_door\\";
-	camera.directory = "C:\\data\\test-scenes-cut\\new-setup-walks_center\\";
-	camera.prefix = "out_CAMERA_center_";
+	//camera.directory = "C:\\data\\test-scenes-cut\\MultiplePeopleDoor\\";
+	camera.directory = "C:\\data\\test-scenes-cut\\room_walk_Room\\";
+	camera.prefix = "out_CAMERA_room_";
 	// Single Person
 	//camera.directory = "C:\\data\\test-scenes-cut\\SinglePersonRoom\\";
 
@@ -52,7 +56,7 @@ int main()
 	//camera.prefix = "out_CAMERA_door_";
 	//camera.fps = 4;
 	//camera.backgroundThreshold = 8;
-	//camera.entrance_side = dto::Camera::side::bottom;
+	//camera.entry_side = dto::Camera::entrySide::entry_bottom;
 	//camera.width = 1920;
 	//camera.height = 1080;
 	//camera.gateMode = dto::Camera::gateMode::minBottom;
@@ -63,7 +67,7 @@ int main()
 	//camera.prefix = "out_CAMERA_room_";
 	//camera.fps = 4;
 	//camera.backgroundThreshold = 16;
-	//camera.entrance_side = dto::Camera::side::bottom;
+	//camera.entry_side = dto::Camera::entrySide::entry_bottom;
 	//camera.width = 1920;
 	//camera.height = 1080;
 	//camera.gateMode = dto::Camera::gateMode::minBottom;

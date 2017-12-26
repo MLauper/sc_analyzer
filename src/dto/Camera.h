@@ -6,12 +6,12 @@ namespace dto
 {
 	struct Camera
 	{
-		enum side
+		enum entrySide
 		{
-			left,
-			right,
-			top,
-			bottom,
+			entry_left,
+			entry_right,
+			entry_top,
+			entry_bottom,
 			none
 		};
 		enum gateMode
@@ -21,16 +21,25 @@ namespace dto
 			minTop,
 			minBottom
 		};
+		enum personCountUpWhen
+		{
+			in_to_entry,
+			entry_to_in
+		};
 	public:
 		std::string directory;
 		std::string prefix;
-		side entrance_side;
+		entrySide entry_side;
+		personCountUpWhen personCountMode;
 		int width;
 		int height;
 		int fps;
 
 		gateMode gateMode;
+		enum gateMode secondGateMode;
 		int gateValue;
+		int secondGateValue;
+		cv::Point optimalPersonLocation;
 		double backgroundThreshold;
 
 		cv::Mat cameraMatrix;

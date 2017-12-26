@@ -174,7 +174,29 @@ void image_segmentation::PersonDetector::extractPersonContours(
 
 void image_segmentation::PersonDetector::detectPersonsYolo(dto::Image& Image)
 {
-	std::vector<bbox_t> yoloObjects = this->yoloDetector->detect(Image.cv_image_original, 0.3f, dto::Configuration::YOLO_GPU_ID);
+	std::vector<bbox_t> yoloObjects;
+
+	if (dto::Configuration::USE_HIGH_CONTRAST_IMAGE_FOR_YOLO)
+	{
+		cv::Mat lab_image;
+		cv::cvtColor(Image.cv_image_original, lab_image, CV_BGR2Lab);
+		std::vector<cv::Mat> lab_planes(3);
+		cv::split(lab_image, lab_planes); 
+		cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE();
+		clahe->setClipLimit(4);
+		cv::Mat dst;
+		clahe->apply(lab_planes[0], dst);
+		dst.copyTo(lab_planes[0]);
+		cv::merge(lab_planes, lab_image);
+		cv::cvtColor(lab_image, Image.cv_image_high_contrast, CV_Lab2BGR);
+				
+		yoloObjects = this->yoloDetector->detect(Image.cv_image_original, 0.3f, false);
+	} else if (dto::Configuration::USE_FG_IMAGE_FOR_YOLO){
+		yoloObjects = this->yoloDetector->detect(Image.cv_fgimg, 0.3f, false);
+	}
+	else {
+		yoloObjects = this->yoloDetector->detect(Image.cv_image_original, 0.3f, false);
+	}
 
 	if (dto::Configuration::PRINT_YOLO_PERSONS) {
 		std::cout << "Yolo Detected Objects: \n";
@@ -198,7 +220,7 @@ void image_segmentation::PersonDetector::detectPersonsYolo(dto::Image& Image)
 
 	if (dto::Configuration::SHOW_YOLO_PERSONS_IMAGES || dto::Configuration::SAVE_YOLO_PERSONS_IMAGES)
 	{
-		cv::Mat drawingAll = Image.cv_image_original;
+		cv::Mat drawingAll = Image.cv_image_original.clone();
 		cv::RNG rng(12345);
 		for (auto& person : Image.yoloPersons)
 		{

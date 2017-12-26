@@ -44,6 +44,9 @@ int main(int argc, char** argv)
 
 	remap(input, output, map1, map2, INTER_LINEAR);
 	imshow("Image View", output);
+
+	imwrite("c:\\temp\\out_calib_test.jpg", output);
+
 	waitKey();
 
 	return 0;

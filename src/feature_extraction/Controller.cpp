@@ -8,15 +8,45 @@ feature_extraction::Controller::Controller()
 
 void feature_extraction::Controller::processTrack(dto::Track& track, dto::Camera& camera)
 {
-	//de.extractDirection(track, camera);
-	//rs.SelectRegion(track, camera);
-
-	if (dto::Configuration::SAVE_YOLO_TRACK_BB)
+	if (dto::Configuration::SAVE_TRACK_STATISTICS)
 	{
-		for (auto& i : track.images)
+		std::ofstream fileStream;
+		std::stringstream filePath;
+		filePath << dto::Configuration::STATISTICS_DIRECTORY << "Track-" << track.trackId << "_statistics.txt";
+		fileStream.open(filePath.str().c_str(), std::fstream::app);
+		
+		fileStream << "Yolo Bounding Boxes" << std::endl;
+		fileStream << "x: ";
+		for (auto& bb : track.persons)
 		{
-			 
+			fileStream << bb.x << "; ";
 		}
+		fileStream << std::endl << "y: ";
+		for (auto& bb : track.persons)
+		{
+			fileStream << bb.y << "; ";
+		}
+		fileStream << std::endl << "w: ";
+		for (auto& bb : track.persons)
+		{
+			fileStream << bb.w << "; ";
+		}
+		fileStream << std::endl << "h: ";
+		for (auto& bb : track.persons)
+		{
+			fileStream << bb.h << "; ";
+		}
+		fileStream << std::endl;
+
+		fileStream.close();
+	}
+
+	direction_extractor_.extractDirection(track, camera);
+	frame_selector_.SelectFrame(track, camera);
+	if (track.optimalPersonId != -1) {
+		frame_selector_.SaveRegion(track, camera);
+		body_part_extractor_.extractBodyParts(track, camera);
+		color_extractor_.extractPrimaryColors(track, camera);
 	}
 
 	//if (track.walkingDirection == dto::Track::out_in)

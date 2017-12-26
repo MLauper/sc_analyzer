@@ -19,14 +19,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BodyPartExtractor.cpp" />
+    <ClCompile Include="ColorExtractor.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="DirectionExtractor.cpp" />
-    <ClCompile Include="RegionSelector.cpp" />
+    <ClCompile Include="FrameSelector.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BodyPartExtractor.h" />
+    <ClInclude Include="ColorExtractor.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="DirectionExtractor.h" />
-    <ClInclude Include="RegionSelector.h" />
+    <ClInclude Include="FrameSelector.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F207B469-3362-4F94-9232-04A56D78D847}</ProjectGuid>

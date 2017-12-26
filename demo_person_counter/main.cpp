@@ -16,7 +16,7 @@ int main()
 	//camera.prefix = "out_CAMERA_room_";
 	camera.fps = 4;
 	camera.backgroundThreshold = 16;
-	camera.entrance_side = dto::Camera::side::bottom;
+	camera.entry_side = dto::Camera::entrySide::entry_bottom;
 	camera.width = 1920;
 	camera.height = 1080;
 	camera.gateMode = dto::Camera::gateMode::minBottom;
@@ -54,7 +54,7 @@ int main()
 	//camera.prefix = "out_CAMERA_door_";
 	//camera.fps = 4;
 	//camera.backgroundThreshold = 8;
-	//camera.entrance_side = dto::Camera::side::bottom;
+	//camera.entry_side = dto::Camera::entrySide::entry_bottom;
 	//camera.width = 1920;
 	//camera.height = 1080;
 	//camera.gateMode = dto::Camera::gateMode::minBottom;
@@ -65,7 +65,7 @@ int main()
 	//camera.prefix = "out_CAMERA_room_";
 	//camera.fps = 4;
 	//camera.backgroundThreshold = 16;
-	//camera.entrance_side = dto::Camera::side::bottom;
+	//camera.entry_side = dto::Camera::entrySide::entry_bottom;
 	//camera.width = 1920;
 	//camera.height = 1080;
 	//camera.gateMode = dto::Camera::gateMode::minBottom;

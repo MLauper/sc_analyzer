@@ -14,6 +14,19 @@ namespace dto
 			out_out, // Person walsk in the room and leaves it again
 			in_in    // Person moves inside the room
 		};
+
+		struct Cv_optimalPersonBodyParts
+		{
+			cv::Mat head;
+			cv::Mat upperBody;
+			cv::Mat lowerBody;
+		};
+		struct primaryColorIds
+		{
+			int upperBody;
+			int lowerBody;
+		};
+
 		int trackId;
 		std::vector<dto::Region> regions;
 		std::vector<bbox_t> persons;
@@ -23,6 +36,11 @@ namespace dto
 
 		int numImagesWithoutRegion;
 
-		int optimalRegionId;
+		int optimalPersonId;
+		
+		cv::Mat cv_optimalPersonCut;
+		Cv_optimalPersonBodyParts cv_optimalPersonBodyParts;
+
+		primaryColorIds primary_color_ids;
 	};
 }

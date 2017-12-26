@@ -21,6 +21,7 @@ namespace dto
 
 		cv::Mat cv_image_original;
 		cv::Mat cv_image_distorted;
+		cv::Mat cv_image_high_contrast;
 		cv::cuda::GpuMat cv_gpu_image;
 		cv::Mat cv_fgmask;
 		cv::cuda::GpuMat cv_gpu_fgmask;
