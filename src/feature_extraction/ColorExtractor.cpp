@@ -12,10 +12,13 @@ feature_extraction::ColorExtractor::~ColorExtractor()
 }
 
 
-void feature_extraction::ColorExtractor::extractMaxHue(cv::Mat& hsv_image, int& maxBucketId)
+void feature_extraction::ColorExtractor::extractMaxHue(dto::Track& track, cv::Mat& hsv_image, int& maxBucketId, bool isUpperBody)
 {
-	cv::Mat generatedImage = hsv_image.clone();
+	cv::Mat generatedImage;
 
+	if (dto::Configuration::SAVE_HUE_IMAGE) {
+		generatedImage = hsv_image.clone();
+	}
 	const int numOfBuckets = 16;
 	std::vector<int> hueBuckets(numOfBuckets);
 
@@ -24,36 +27,52 @@ void feature_extraction::ColorExtractor::extractMaxHue(cv::Mat& hsv_image, int& 
 		for (int j = 0; j < hsv_image.cols; j++) {
 			if (hsv_image.at<cv::Vec3b>(i, j)[2] > 1) {
 				hueBuckets.at(static_cast<int>(hsv_image.at<cv::Vec3b>(i, j)[0] / numOfBuckets)) += 1;
-				generatedImage.at<cv::Vec3b>(i, j)[0] = static_cast<int>(hsv_image.at<cv::Vec3b>(i, j)[0] / numOfBuckets) * 16;
-				generatedImage.at<cv::Vec3b>(i, j)[1] = 180;
-				generatedImage.at<cv::Vec3b>(i, j)[2] = 255;
+				if (dto::Configuration::SAVE_HUE_IMAGE) {
+					generatedImage.at<cv::Vec3b>(i, j)[0] = static_cast<int>(hsv_image.at<cv::Vec3b>(i, j)[0] / numOfBuckets) * 16;
+					generatedImage.at<cv::Vec3b>(i, j)[1] = 180;
+					generatedImage.at<cv::Vec3b>(i, j)[2] = 255;
+				}
 			} else
 			{
-				generatedImage.at<cv::Vec3b>(i, j)[0] = 0;
-				generatedImage.at<cv::Vec3b>(i, j)[1] = 0;
-				generatedImage.at<cv::Vec3b>(i, j)[2] = 0;
+				if (dto::Configuration::SAVE_HUE_IMAGE) {
+					generatedImage.at<cv::Vec3b>(i, j)[0] = 0;
+					generatedImage.at<cv::Vec3b>(i, j)[1] = 0;
+					generatedImage.at<cv::Vec3b>(i, j)[2] = 0;
+				}
 			}
 		}
 	}
 	
-	cv::Mat generatedRGB; 
-	cvtColor(generatedImage, generatedRGB, CV_HSV2BGR);
-	cv::imshow("Generated Image", generatedRGB);
+	if (dto::Configuration::SAVE_HUE_IMAGE) {
+		cv::Mat generatedRGB;
+		cvtColor(generatedImage, generatedRGB, CV_HSV2BGR);
 
-	std::cout << "HUE: " << std::endl;
-	for (int i = 0; i < hsv_image.rows; i++) {
-		for (int j = 0; j < hsv_image.cols; j++) {
-			std::cout << static_cast<int>(hsv_image.at<cv::Vec3b>(i, j)[0]) << "; ";
+		std::stringstream image_out_path;
+		if (isUpperBody) {
+			image_out_path << dto::Configuration::OPTIMAL_TRACK_DIRECTORY << "Track-" << track.trackId << "_hue_upperBody.jpg";
+		} else
+		{
+			image_out_path << dto::Configuration::OPTIMAL_TRACK_DIRECTORY << "Track-" << track.trackId << "_hue_lowerBody.jpg";
 		}
+		cv::imwrite(image_out_path.str().c_str(), generatedRGB);
 	}
-	std::cout << std::endl;
-	std::cout << "VALUE: " << std::endl;
-	for (int i = 0; i < hsv_image.rows; i++) {
-		for (int j = 0; j < hsv_image.cols; j++) {
-			std::cout << static_cast<int>(hsv_image.at<cv::Vec3b>(i, j)[2]) << "; ";
+
+	if (dto::Configuration::PRINT_HSV_VALUES) {
+		std::cout << "HUE: " << std::endl;
+		for (int i = 0; i < hsv_image.rows; i++) {
+			for (int j = 0; j < hsv_image.cols; j++) {
+				std::cout << static_cast<int>(hsv_image.at<cv::Vec3b>(i, j)[0]) << "; ";
+			}
 		}
+		std::cout << std::endl;
+		std::cout << "VALUE: " << std::endl;
+		for (int i = 0; i < hsv_image.rows; i++) {
+			for (int j = 0; j < hsv_image.cols; j++) {
+				std::cout << static_cast<int>(hsv_image.at<cv::Vec3b>(i, j)[2]) << "; ";
+			}
+		}
+		std::cout << std::endl;
 	}
-	std::cout << std::endl;
 
 	maxBucketId = 0;
 	int maxBucketValue = 0;
@@ -76,8 +95,8 @@ void feature_extraction::ColorExtractor::extractPrimaryColors(dto::Track& track,
 	cvtColor(track.cv_optimalPersonBodyParts.lowerBody, hsv_lowerBody, CV_BGR2HSV);
 
 	
-	extractMaxHue(hsv_upperBody, track.primary_color_ids.upperBody);
-	extractMaxHue(hsv_lowerBody, track.primary_color_ids.lowerBody);
+	extractMaxHue(track, hsv_upperBody, track.primary_color_ids.upperBody, true);
+	extractMaxHue(track, hsv_lowerBody, track.primary_color_ids.lowerBody, false);
 
 
 	if (dto::Configuration::SAVE_TRACK_STATISTICS)

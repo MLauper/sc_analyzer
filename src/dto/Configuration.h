@@ -70,9 +70,14 @@ namespace dto {
 		const bool USE_POINT_FOR_OPTIMAL_TRACK = true;
 		const long MAX_OPTIMAL_DISTANCE = 100;
 		const bool PRINT_FRAME_SELECTION_STEPS = true;
-		const bool SAVE_OPTIMAL_TRACK_IMAGE = false;
+		const bool SAVE_OPTIMAL_TRACK_IMAGE = true;
 		const bool SAVE_OPTIMAL_TRACK_IMAGE_CUT = true;
 		const std::string OPTIMAL_TRACK_DIRECTORY = "C:\\Temp\\output\\";
-		const bool SAVE_BODY_PARTS_IMAGES = true;
+		const bool SAVE_BODY_PARTS_IMAGES = false;
+		const bool SAVE_HUE_IMAGE = false;
+		const bool PRINT_HSV_VALUES = false;
+
+		const bool SAVE_FEATURE_POINT_IMAGES = true;
+		const bool USE_FG_IMAGE_FOR_FEATURE_POINTS = true;
 	}
 }

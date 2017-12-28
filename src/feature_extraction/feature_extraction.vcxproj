@@ -23,14 +23,18 @@
     <ClCompile Include="ColorExtractor.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="DirectionExtractor.cpp" />
+    <ClCompile Include="FeaturePointExtractor.cpp" />
     <ClCompile Include="FrameSelector.cpp" />
+    <ClCompile Include="SizeExtractor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BodyPartExtractor.h" />
     <ClInclude Include="ColorExtractor.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="DirectionExtractor.h" />
+    <ClInclude Include="FeaturePointExtractor.h" />
     <ClInclude Include="FrameSelector.h" />
+    <ClInclude Include="SizeExtractor.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F207B469-3362-4F94-9232-04A56D78D847}</ProjectGuid>
@@ -123,8 +127,8 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
       <TargetMachinePlatform>64</TargetMachinePlatform>
     </CudaCompile>
     <Lib>
-      <AdditionalDependencies>
-      </AdditionalDependencies>
+      <AdditionalDependencies>opencv_core331d.lib;opencv_xobjdetect331d.lib;opencv_xfeatures2d331d.lib;opencv_features2d331d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Program Files\opencv\x64\vc14\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

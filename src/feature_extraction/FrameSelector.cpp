@@ -106,11 +106,16 @@ void feature_extraction::FrameSelector::SaveRegion(dto::Track& track, const dto:
 	roi.height = optimalPerson.h;
 
 	track.cv_optimalPersonCut = track.images.at(track.optimalPersonId).cv_fgimg(roi);
-	
+	track.cv_optimalPersonCut_Full = track.images.at(track.optimalPersonId).cv_image_original(roi);
+
 	if (dto::Configuration::SAVE_OPTIMAL_TRACK_IMAGE_CUT)
 	{
 		std::stringstream image_out_path;
 		image_out_path << dto::Configuration::OPTIMAL_TRACK_DIRECTORY << "Track-" << track.trackId << "_optimalImage-cut.jpg";
 		cv::imwrite(image_out_path.str().c_str(), track.cv_optimalPersonCut);
+
+		std::stringstream image_out_path_full;
+		image_out_path_full << dto::Configuration::OPTIMAL_TRACK_DIRECTORY << "Track-" << track.trackId << "_optimalImage-cut_Full.jpg";
+		cv::imwrite(image_out_path_full.str().c_str(), track.cv_optimalPersonCut_Full);
 	}
 }

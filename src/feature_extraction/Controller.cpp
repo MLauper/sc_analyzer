@@ -47,6 +47,8 @@ void feature_extraction::Controller::processTrack(dto::Track& track, dto::Camera
 		frame_selector_.SaveRegion(track, camera);
 		body_part_extractor_.extractBodyParts(track, camera);
 		color_extractor_.extractPrimaryColors(track, camera);
+		size_extractor_.extractBodySizes(track, camera);
+		feature_point_extractor_.extractFeaturePoints(track, camera);
 	}
 
 	//if (track.walkingDirection == dto::Track::out_in)
