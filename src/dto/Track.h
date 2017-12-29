@@ -42,7 +42,7 @@ namespace dto
 		// List of images, corresponding with list of bounding boxes
 		std::vector<dto::Image> images;
 
-		// Walking directo of the person
+		// Walking direction of the person
 		WalkingDirection walkingDirection;
 
 		// Number of input images which do not allow the track to continue
@@ -61,7 +61,7 @@ namespace dto
 		// Primary color on the body part images
 		primaryColorIds primary_color_ids;
 		// Estimated person size
-		personSize extimatedPersonSize;
+		personSize estimatedPersonSize;
 
 		// Surf keypoints on the optimal image
 		std::vector<cv::KeyPoint> surf_keyPoints;

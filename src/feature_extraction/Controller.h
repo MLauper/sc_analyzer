@@ -6,6 +6,7 @@
 #include "BodyPartExtractor.h"
 #include "SizeExtractor.h"
 #include "FeaturePointExtractor.h"
+#include "TrackPersistor.h"
 
 namespace feature_extraction
 {
@@ -21,6 +22,7 @@ namespace feature_extraction
 		feature_extraction::BodyPartExtractor body_part_extractor_;
 		feature_extraction::SizeExtractor size_extractor_;
 		feature_extraction::FeaturePointExtractor feature_point_extractor_;
+		feature_extraction::TrackPersistor track_persistor_;
 		int personsInTheRoom;
 	};
 

@@ -15,8 +15,8 @@ void feature_extraction::SizeExtractor::extractBodySizes(dto::Track& track, dto:
 {
 
 	// Calculate values based on calibration value
-	track.extimatedPersonSize.height = track.persons.at(track.optimalPersonId).h * camera.pixelToCentimeterRation;
-	track.extimatedPersonSize.width = track.persons.at(track.optimalPersonId).w * camera.pixelToCentimeterRation;
+	track.estimatedPersonSize.height = track.persons.at(track.optimalPersonId).h * camera.pixelToCentimeterRatio;
+	track.estimatedPersonSize.width = track.persons.at(track.optimalPersonId).w * camera.pixelToCentimeterRatio;
 		
 	if (dto::Configuration::SAVE_TRACK_STATISTICS)
 	{
@@ -26,8 +26,8 @@ void feature_extraction::SizeExtractor::extractBodySizes(dto::Track& track, dto:
 		fileStream.open(filePath.str().c_str(), std::fstream::app);
 
 		fileStream << "Estimated Body Sizes:" << std::endl;
-		fileStream << " Height: " << track.extimatedPersonSize.height << " cm" << std::endl;
-		fileStream << " Width: " << track.extimatedPersonSize.width << " cm" << std::endl;
+		fileStream << " Height: " << track.estimatedPersonSize.height << " cm" << std::endl;
+		fileStream << " Width: " << track.estimatedPersonSize.width << " cm" << std::endl;
 
 		fileStream.close();
 	}

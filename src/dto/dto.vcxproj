@@ -23,12 +23,14 @@
     <ClInclude Include="Configuration.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="Region.h" />
+    <ClInclude Include="SQLHelper.h" />
     <ClInclude Include="Track.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Region.cpp" />
+    <ClCompile Include="SQLHelper.cpp" />
     <ClCompile Include="Track.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -46,7 +48,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">

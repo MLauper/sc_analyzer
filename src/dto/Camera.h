@@ -45,7 +45,7 @@ namespace dto
 		cv::Mat cameraMatrix;
 		cv::Mat distCoeffs;
 
-		double pixelToCentimeterRation;
+		double pixelToCentimeterRatio;
 
 		std::string rtspConnectionString;
 		std::string urlConnectionString;

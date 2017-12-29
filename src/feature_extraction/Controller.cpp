@@ -49,6 +49,10 @@ void feature_extraction::Controller::processTrack(dto::Track& track, dto::Camera
 		color_extractor_.extractPrimaryColors(track, camera);
 		size_extractor_.extractBodySizes(track, camera);
 		feature_point_extractor_.extractFeaturePoints(track, camera);
+
+		if (dto::Configuration::STORE_TRACK_RESULTS_IN_DB){
+			track_persistor_.persistTrack(track, camera);
+		}
 	}
 
 	//if (track.walkingDirection == dto::Track::out_in)

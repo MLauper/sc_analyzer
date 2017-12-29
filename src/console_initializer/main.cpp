@@ -24,7 +24,7 @@ int main()
 	camera.secondGateValue = 630;
 	camera.optimalPersonLocation = cv::Point(770, 950);
 
-	camera.pixelToCentimeterRation = (180.0f / 540.0f);
+	camera.pixelToCentimeterRatio = (180.0f / 540.0f);
 
 	// Door Camera distortion
 	const double cam_fx = 1.5429064838570325e+03;

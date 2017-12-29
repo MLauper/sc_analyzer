@@ -79,5 +79,11 @@ namespace dto {
 
 		const bool SAVE_FEATURE_POINT_IMAGES = true;
 		const bool USE_FG_IMAGE_FOR_FEATURE_POINTS = true;
+		const bool STORE_TRACK_RESULTS_IN_DB = true;
+		
+		
+		const nanodbc::string DATABASE_ODBC_NAME = "sc_analyzer";
+		const nanodbc::string DATABASE_USER = "db_user";
+		const nanodbc::string DATABASE_PASSWORD = "Rtchir3ORJe2";
 	}
 }

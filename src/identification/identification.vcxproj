@@ -19,29 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BodyPartExtractor.cpp" />
-    <ClCompile Include="ColorExtractor.cpp" />
-    <ClCompile Include="Controller.cpp" />
-    <ClCompile Include="DirectionExtractor.cpp" />
-    <ClCompile Include="FeaturePointExtractor.cpp" />
-    <ClCompile Include="FrameSelector.cpp" />
-    <ClCompile Include="SizeExtractor.cpp" />
-    <ClCompile Include="TrackPersistor.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BodyPartExtractor.h" />
-    <ClInclude Include="ColorExtractor.h" />
-    <ClInclude Include="Controller.h" />
-    <ClInclude Include="DirectionExtractor.h" />
-    <ClInclude Include="FeaturePointExtractor.h" />
-    <ClInclude Include="FrameSelector.h" />
-    <ClInclude Include="SizeExtractor.h" />
-    <ClInclude Include="TrackPersistor.h" />
+    <None Include="create_db.sql" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{F207B469-3362-4F94-9232-04A56D78D847}</ProjectGuid>
-    <RootNamespace>feature_extraction</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectGuid>{C0ECEB71-DEA8-49DE-A1C6-5C552E26B14A}</ProjectGuid>
+    <RootNamespace>identification</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -51,7 +36,7 @@
     <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v140</PlatformToolset>
@@ -113,13 +98,14 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Include;C:\Program Files\opencv\include;%(AdditionalIncludeDirectories);$(CudaToolkitIncludeDir);$(AF_PATH)\include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_CONSOLE;CPPCONN_PUBLIC_FUNC=;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)src;$(AF_PATH)/include;$(SolutionDir)Include;C:\Program Files\opencv\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opencv_core331d.lib;nanodbc.lib;dto.lib;cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Program Files\opencv\x64\vc14\lib;$(TargetDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>echo copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"
@@ -128,10 +114,6 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile>
       <TargetMachinePlatform>64</TargetMachinePlatform>
     </CudaCompile>
-    <Lib>
-      <AdditionalDependencies>opencv_core331d.lib;opencv_xobjdetect331d.lib;opencv_xfeatures2d331d.lib;opencv_features2d331d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Program Files\opencv\x64\vc14\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
