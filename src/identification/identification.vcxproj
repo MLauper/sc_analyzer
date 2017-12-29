@@ -22,7 +22,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="create_db.sql" />
+    <None Include="create_db_scheme.sql" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C0ECEB71-DEA8-49DE-A1C6-5C552E26B14A}</ProjectGuid>

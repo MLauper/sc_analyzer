@@ -19,7 +19,7 @@ image_segmentation::BackgroundRemover::BackgroundRemover(dto::Camera& camera)
 void image_segmentation::BackgroundRemover::removeBackground(dto::Image& image, dto::Camera& camera)
 {
 	//read the first file of the sequence
-	image.cv_image_original = cv::imread(image.path);
+	//image.cv_image_original = cv::imread(image.path);
 
 	if (dto::Configuration::SAVE_ORIGINAL_IMAGES)
 	{

@@ -2,6 +2,7 @@
 
 #include "image_acquisition/image_acquisition.h"
 #include "image_segmentation/image_segmentation.h"
+#include "image_acquisition/MKVFileLoader.h"
 
 int main()
 {
@@ -12,8 +13,8 @@ int main()
 	// Room Walk with Different Lighting
 	//camera.directory = "D:\\data\\room_walk_with_different_lighting\\image\\";
 	//camera.prefix = "out_CAMERA_room_";
-	camera.fps = 25;
-	camera.backgroundThreshold = 8;
+	camera.fps = 4;
+	camera.backgroundThreshold = 16;
 	camera.entry_side = dto::Camera::entrySide::entry_bottom;
 	camera.personCountMode = dto::Camera::personCountUpWhen::in_to_entry;
 	camera.width = 1920;
@@ -26,7 +27,7 @@ int main()
 
 	camera.pixelToCentimeterRatio = (180.0f / 540.0f);
 
-	// Door Camera distortion
+	// Camera distortion
 	const double cam_fx = 1.5429064838570325e+03;
 	const double cam_cx = 9.5369579797955782e+02;
 	const double cam_fy = 1.5429064838570325e+03;
@@ -42,9 +43,9 @@ int main()
 
 	// New Setup Room walk
 	//camera.directory = "C:\\data\\test-scenes-cut\\new-setup-walks_door\\";
-	//camera.directory = "C:\\data\\test-scenes-cut\\MultiplePeopleDoor\\";
-	camera.directory = "C:\\data\\test-scenes-cut\\room_walk_Room\\";
-	camera.prefix = "out_CAMERA_room_";
+	camera.directory = "C:\\data\\test-scenes-cut\\MultiplePeopleDoor\\";
+	//camera.directory = "C:\\data\\test-scenes-cut\\room_walk_Room\\";
+	camera.prefix = "out_CAMERA_door_";
 	// Single Person
 	//camera.directory = "C:\\data\\test-scenes-cut\\SinglePersonRoom\\";
 
@@ -75,16 +76,21 @@ int main()
 	//camera.gateMode = dto::Camera::gateMode::minBottom;
 	//camera.gateValue = 150;
 
+	camera.videoFilePath = "C:\\data\\test-scenes-cut\\out_CAMERA_door_0000000216.0.mkv";
+
 	image_segmentation::Controller* controller = new image_segmentation::Controller(camera);
 
 	image_acquisition::FileLoader file_loader(camera, controller);
+	image_acquisition::MKVFileLoader mkv_file_loader(camera, controller);
 	//image_acquisition::FileLoader file_loader("D:\\data\\room_walk_with_differnt_lighting_8fps\\image\\", "out_CAMERA_room_", controller);
 	//image_acquisition::FileLoader file_loader("D:\\data\\room_walk_with_different_lighting\\image\\", "out_CAMERA_room_", controller);
 	//image_acquisition::FileLoader file_loader("D:\\data\\room_walk_with_different_lighting\\image\\",
 	//                                          "out_CAMERA_room_", controller);
+	
+	//file_loader.ProcessFiles();
+	//file_loader.WatchDirectory();
 
-	file_loader.ProcessFiles();
-	file_loader.WatchDirectory();
+	mkv_file_loader.process_file();
 
 	return 0;
 }

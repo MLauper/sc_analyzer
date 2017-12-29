@@ -3,12 +3,12 @@
 #include "../../external/nanodbc/nanodbc.h"
 #include <iostream>
 #include "../dto/Configuration.h"
+#include "../dto/Track.h"
 
 dto::SQLHelper::SQLHelper()
 {
 	this->conn = new nanodbc::connection(dto::Configuration::DATABASE_ODBC_NAME, dto::Configuration::DATABASE_USER,
 	                                     dto::Configuration::DATABASE_PASSWORD, 5);
-
 }
 
 
@@ -118,7 +118,8 @@ void dto::SQLHelper::retrieve_camera(dto::Camera& camera, const char* directory,
 		if (result.rowset_size() != 1)
 		{
 			std::cerr << "Camera could not be retrieved. Query: " << select_query << std::endl;
-		} else
+		}
+		else
 		{
 			result.next();
 			camera.directory = result.get<std::string>("directory");
@@ -164,7 +165,8 @@ void dto::SQLHelper::persist_track(const dto::Track& track, const dto::Camera& c
 		if (result.next())
 		{
 			camera_id = result.get<int>("id");
-		} else
+		}
+		else
 		{
 			std::cerr << "Camera could not retrieved from DB. Query: " << select_camera_query << std::endl;
 		}
@@ -179,23 +181,29 @@ void dto::SQLHelper::persist_track(const dto::Track& track, const dto::Camera& c
 	// Insert Track
 	try
 	{
+		std::ostringstream instert_query_stream;
 
-			std::ostringstream instert_query_stream;
-			instert_query_stream << "INSERT INTO tracks"
-				<< "(camera_id, trackId, walkingDirection, primaryColor_UpperBody, primaryColor_LowerBody, personSize_height, personSize_width) "
-				<< "VALUES ('" << camera_id << "'"
-				<< ",'" << track.trackId << "'"
-				<< ",'" << track.walkingDirection << "'"
-				<< ",'" << track.primary_color_ids.upperBody << "'"
-				<< ",'" << track.primary_color_ids.lowerBody << "'"
-				<< ",'" << track.estimatedPersonSize.height << "'"
-				<< ",'" << track.estimatedPersonSize.width << "'"
-				<< ")";
+		std::string walkingDirection;
+		if (track.walkingDirection == dto::Track::WalkingDirection::in_in) walkingDirection = "in_in";
+		else if (track.walkingDirection == dto::Track::WalkingDirection::in_out) walkingDirection = "in_out";
+		else if (track.walkingDirection == dto::Track::WalkingDirection::out_in) walkingDirection = "out_in";
+		else if (track.walkingDirection == dto::Track::WalkingDirection::out_out) walkingDirection = "out_out";
+		else walkingDirection = "";
 
-			insert_track_query = instert_query_stream.str();
+		instert_query_stream << "INSERT INTO tracks"
+			<< "(camera_id, trackId, walkingDirection, primaryColor_UpperBody, primaryColor_LowerBody, personSize_height, personSize_width) "
+			<< "VALUES ('" << camera_id << "'"
+			<< ",'" << track.trackId << "'"
+			<< ",'" << walkingDirection << "'"
+			<< ",'" << track.primary_color_ids.upperBody << "'"
+			<< ",'" << track.primary_color_ids.lowerBody << "'"
+			<< ",'" << track.estimatedPersonSize.height << "'"
+			<< ",'" << track.estimatedPersonSize.width << "'"
+			<< ")";
 
-			execute(*conn, insert_track_query);
+		insert_track_query = instert_query_stream.str();
 
+		execute(*conn, insert_track_query);
 	}
 	catch (std::runtime_error const& e)
 	{
@@ -233,7 +241,8 @@ void dto::SQLHelper::persist_track(const dto::Track& track, const dto::Camera& c
 	}
 
 	// Insert SIFT points
-	for (auto& fp : track.sift_keyPoints) {
+	for (auto& fp : track.sift_keyPoints)
+	{
 		try
 		{
 			std::ostringstream instert_query_stream;
@@ -252,7 +261,6 @@ void dto::SQLHelper::persist_track(const dto::Track& track, const dto::Camera& c
 			insert_track_query = instert_query_stream.str();
 
 			execute(*conn, insert_track_query);
-
 		}
 		catch (std::runtime_error const& e)
 		{
@@ -262,7 +270,8 @@ void dto::SQLHelper::persist_track(const dto::Track& track, const dto::Camera& c
 	}
 
 	// Insert SURF points
-	for (auto& fp : track.surf_keyPoints) {
+	for (auto& fp : track.surf_keyPoints)
+	{
 		try
 		{
 			std::ostringstream instert_query_stream;
@@ -281,7 +290,6 @@ void dto::SQLHelper::persist_track(const dto::Track& track, const dto::Camera& c
 			insert_track_query = instert_query_stream.str();
 
 			execute(*conn, insert_track_query);
-
 		}
 		catch (std::runtime_error const& e)
 		{
@@ -289,4 +297,173 @@ void dto::SQLHelper::persist_track(const dto::Track& track, const dto::Camera& c
 			std::cerr << e.what() << std::endl;
 		}
 	}
+}
+
+void dto::SQLHelper::retrieve_camera(dto::Camera& camera, int camera_id)
+{
+	std::string select_query;
+	nanodbc::result result;
+
+	try
+	{
+		// Retrieve camera
+		std::ostringstream select_query_stream;
+		select_query_stream << "SELECT * FROM cameras"
+			<< " WHERE id='" << camera_id << "'";
+
+		select_query = select_query_stream.str();
+
+		result = execute(*conn, select_query);
+
+		if (result.rowset_size() != 1)
+		{
+			std::cerr << "Camera could not be retrieved. Query: " << select_query << std::endl;
+		}
+		else
+		{
+			result.next();
+			camera.directory = result.get<std::string>("directory");
+			camera.prefix = result.get<std::string>("prefix");
+			camera.width = result.get<int>("width");
+			camera.height = result.get<int>("height");
+			camera.fps = result.get<int>("fps");
+			camera.pixelToCentimeterRatio = result.get<float>("pixelToCentimeterRatio");
+		}
+	}
+	catch (std::runtime_error const& e)
+	{
+		std::cerr << "Error in SQL Query: " << select_query << std::endl;
+		std::cerr << e.what() << std::endl;
+		return;
+	}
+}
+
+std::vector<dto::Track> dto::SQLHelper::retrieve_all_tracks()
+{
+	std::string select_query;
+	nanodbc::result result;
+
+	std::vector<dto::Track> tracks;
+
+	try
+	{
+		// Retrieve tracks
+		std::ostringstream select_query_stream;
+		select_query_stream << "SELECT "
+			<< "tracks.*, "
+			<< "cameras.id AS camera_id, "
+			<< "cameras.directory AS camera_directory, "
+			<< "cameras.prefix AS camera_prefix, "
+			<< "cameras.fps AS camera_fps, "
+			<< "cameras.height AS camera_height, "
+			<< "cameras.width AS camera_width, "
+			<< "cameras.pixelToCentimeterRatio AS camera_pixelToCentimeterRatio "
+			<< "FROM tracks "
+			<< "LEFT JOIN cameras ON tracks.camera_id = cameras.id ";
+
+		select_query = select_query_stream.str();
+
+		result = execute(*conn, select_query);
+
+		while (result.next())
+		{
+			dto::Track t;
+			dto::Camera c;
+
+			t.track_db_id = result.get<int>("id");
+			t.trackId = result.get<int>("trackId");
+			t.primary_color_ids.upperBody = result.get<int>("primaryColor_UpperBody");
+			t.primary_color_ids.lowerBody = result.get<int>("primaryColor_LowerBody");
+			t.estimatedPersonSize.height = result.get<float>("personSize_height");
+			t.estimatedPersonSize.width = result.get<float>("personSize_width");
+
+			std::string walkingDirection = result.get<std::string>("walkingDirection");
+			if (walkingDirection == "in_in") t.walkingDirection = dto::Track::WalkingDirection::in_in;
+			else if (walkingDirection == "in_out") t.walkingDirection = dto::Track::WalkingDirection::in_out;
+			else if (walkingDirection == "out_in") t.walkingDirection = dto::Track::WalkingDirection::out_in;
+			else if (walkingDirection == "out_out") t.walkingDirection = dto::Track::WalkingDirection::out_out;
+
+			c.directory = result.get<std::string>("camera_directory");
+			c.prefix = result.get<std::string>("camera_prefix");
+			c.fps = result.get<int>("camera_fps");
+			c.height = result.get<int>("camera_height");
+			c.width = result.get<int>("camera_width");
+			c.pixelToCentimeterRatio = result.get<float>("camera_pixelToCentimeterRatio");
+
+			t.camera = c;
+
+			tracks.push_back(t);
+		}
+	}
+	catch (std::runtime_error const& e)
+	{
+		std::cerr << "Error in SQL Query: " << select_query << std::endl;
+		std::cerr << e.what() << std::endl;
+		std::vector<Track> t;
+		return t;
+	}
+
+	try
+	{
+		for (auto& t : tracks)
+		{
+			// Retrieve sift points
+			std::ostringstream select_query_stream;
+			select_query_stream << "SELECT * FROM siftKeypoints"
+				<< " WHERE track_id='" << t.track_db_id << "'";
+
+			select_query = select_query_stream.str();
+
+			result = execute(*conn, select_query);
+
+			while (result.next())
+			{
+				cv::KeyPoint p = cv::KeyPoint(result.get<float>("x"), result.get<float>("y"), result.get<float>("size"),
+				                              result.get<float>("angle"), result.get<float>("response"), result.get<int>("octave"),
+				                              result.get<int>("class_id"));
+
+				t.sift_keyPoints.push_back(p);
+			}
+		}
+	}
+	catch (std::runtime_error const& e)
+	{
+		std::cerr << "Error in SQL Query: " << select_query << std::endl;
+		std::cerr << e.what() << std::endl;
+		std::vector<Track> t;
+		return t;
+	}
+
+	try
+	{
+		for (auto& t : tracks)
+		{
+			// Retrieve surf points
+			std::ostringstream select_query_stream;
+			select_query_stream << "SELECT * FROM surfKeypoints"
+				<< " WHERE track_id='" << t.track_db_id << "'";
+
+			select_query = select_query_stream.str();
+
+			result = execute(*conn, select_query);
+
+			while (result.next())
+			{
+				cv::KeyPoint p = cv::KeyPoint(result.get<int>("x"), result.get<int>("y"), result.get<float>("size"),
+				                              result.get<float>("angle"), result.get<float>("response"), result.get<int>("octave"),
+				                              result.get<int>("class_id"));
+
+				t.surf_keyPoints.push_back(p);
+			}
+		}
+	}
+	catch (std::runtime_error const& e)
+	{
+		std::cerr << "Error in SQL Query: " << select_query << std::endl;
+		std::cerr << e.what() << std::endl;
+		std::vector<Track> t;
+		return t;
+	}
+
+	return tracks;
 }

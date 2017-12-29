@@ -2,6 +2,7 @@
 #include <vector>
 #include "Region.h"
 #include "Image.h"
+#include "Camera.h"
 
 namespace dto
 {
@@ -67,5 +68,11 @@ namespace dto
 		std::vector<cv::KeyPoint> surf_keyPoints;
 		// Sift keypoints on the optimal image
 		std::vector<cv::KeyPoint> sift_keyPoints;
+
+		// DB id of track
+		int track_db_id;
+
+		// Originating camera of this track
+		dto::Camera camera;
 	};
 }

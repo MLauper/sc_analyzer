@@ -21,11 +21,13 @@
   <ItemGroup>
     <ClInclude Include="JPGFileLoader.h" />
     <ClInclude Include="image_acquisition.h" />
+    <ClInclude Include="MKVFileLoader.h" />
     <ClInclude Include="RTSPImageCapture.h" />
     <ClInclude Include="URLImageLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JPGFileLoader.cpp" />
+    <ClCompile Include="MKVFileLoader.cpp" />
     <ClCompile Include="RTSPImageCapture.cpp" />
     <ClCompile Include="URLImageLoader.cpp" />
   </ItemGroup>

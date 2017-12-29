@@ -11,20 +11,22 @@ int main()
 
 	dto::SQLHelper sql_helper;
 
-	dto::Camera camera;
-	camera.directory = "fefe";
-	camera.prefix = "prefixfee";
-	camera.width = 109;
-	camera.height = 2;
-	camera.fps = 8;
-	camera.pixelToCentimeterRatio = 1.13;
+	//dto::Camera camera;
+	//camera.directory = "fefe";
+	//camera.prefix = "prefixfee";
+	//camera.width = 109;
+	//camera.height = 2;
+	//camera.fps = 8;
+	//camera.pixelToCentimeterRatio = 1.13;
+	//
+	//sql_helper.persist_camera(camera);
+	//
+	//dto::Camera db_camera;
+	//sql_helper.retrieve_camera(db_camera, "fefe", "prefixfee");
+	//
+	//std::cout << "Camera: " << db_camera.directory  << ", " << db_camera.pixel << std::endl;
 
-	sql_helper.persist_camera(camera);
-
-	dto::Camera db_camera;
-	sql_helper.retrieve_camera(db_camera, "fefe", "prefixfee");
-
-	std::cout << "Camera: " << db_camera.directory  << ", " << db_camera.pixelToCentimeterRatio << std::endl;
+	auto tracks = sql_helper.retrieve_all_tracks();
 
 	std::cout << "Finished Identification" << std::endl;
 }

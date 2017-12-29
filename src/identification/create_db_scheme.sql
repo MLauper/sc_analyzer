@@ -78,8 +78,8 @@ GO
 
 CREATE TABLE [dbo].[siftKeypoints](
 	[id] [int] IDENTITY(1,1) NOT NULL,
-	[x] [int] NOT NULL,
-	[y] [int] NOT NULL,
+	[x] [float] NOT NULL,
+	[y] [float] NOT NULL,
 	[size] [float] NOT NULL,
 	[angle] [float] NOT NULL,
 	[response] [float] NOT NULL,

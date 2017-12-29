@@ -51,5 +51,7 @@ namespace dto
 		std::string urlConnectionString;
 		std::string urlUsername;
 		std::string urlPassword;
+
+		std::string videoFilePath;
 	};
 }
