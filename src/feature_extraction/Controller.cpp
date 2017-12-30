@@ -12,7 +12,7 @@ void feature_extraction::Controller::processTrack(dto::Track& track, dto::Camera
 	{
 		std::ofstream fileStream;
 		std::stringstream filePath;
-		filePath << dto::Configuration::STATISTICS_DIRECTORY << "Track-" << track.trackId << "_statistics.txt";
+		filePath << dto::Configuration::STATISTICS_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << "Track-" << track.trackId << "_statistics.txt";
 		fileStream.open(filePath.str().c_str(), std::fstream::app);
 		
 		fileStream << "Yolo Bounding Boxes" << std::endl;

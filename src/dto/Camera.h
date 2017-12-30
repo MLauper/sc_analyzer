@@ -29,6 +29,9 @@ namespace dto
 	public:
 		std::string directory;
 		std::string prefix;
+
+		int scene;
+
 		entrySide entry_side;
 		personCountUpWhen personCountMode;
 		int width;
@@ -53,5 +56,6 @@ namespace dto
 		std::string urlPassword;
 
 		std::string videoFilePath;
+		
 	};
 }

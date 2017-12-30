@@ -22,7 +22,7 @@ void feature_extraction::SizeExtractor::extractBodySizes(dto::Track& track, dto:
 	{
 		std::ofstream fileStream;
 		std::stringstream filePath;
-		filePath << dto::Configuration::STATISTICS_DIRECTORY << "Track-" << track.trackId << "_statistics.txt";
+		filePath << dto::Configuration::STATISTICS_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << "Track-" << track.trackId << "_statistics.txt";
 		fileStream.open(filePath.str().c_str(), std::fstream::app);
 
 		fileStream << "Estimated Body Sizes:" << std::endl;

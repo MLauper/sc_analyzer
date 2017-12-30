@@ -20,17 +20,17 @@ void feature_extraction::FeaturePointExtractor::extractFeaturePoints(dto::Track&
 
 	if (dto::Configuration::USE_FG_IMAGE_FOR_FEATURE_POINTS) {
 		// Detect SURF Keypoints
-		this->surf_detector_->detect(track.cv_optimalPersonCut, track.surf_keyPoints);
+		this->surf_detector_->detectAndCompute(track.cv_optimalPersonCut, cv::Mat(), track.surf_keyPoints, track.surf_descriptors);
 
 		// Detect SIFT Keypoints
-		this->sift_detector_->detect(track.cv_optimalPersonCut, track.sift_keyPoints);
+		this->sift_detector_->detectAndCompute(track.cv_optimalPersonCut, cv::Mat(), track.sift_keyPoints, track.sift_descriptors);
 	} else
 	{
 		// Detect SURF Keypoints
-		this->surf_detector_->detect(track.cv_optimalPersonCut_Full, track.surf_keyPoints);
+		this->surf_detector_->detectAndCompute(track.cv_optimalPersonCut_Full, cv::Mat(), track.surf_keyPoints, track.surf_descriptors);
 
 		// Detect SIFT Keypoints
-		this->sift_detector_->detect(track.cv_optimalPersonCut_Full, track.sift_keyPoints);
+		this->sift_detector_->detectAndCompute(track.cv_optimalPersonCut, cv::Mat(), track.sift_keyPoints, track.sift_descriptors);
 	}
 
 	if (dto::Configuration::SAVE_FEATURE_POINT_IMAGES)

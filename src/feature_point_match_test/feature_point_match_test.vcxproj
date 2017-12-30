@@ -19,24 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ColorMatcher.cpp" />
-    <ClCompile Include="FeaturePointMatcher.cpp" />
-    <ClCompile Include="LikelihoodCalculator.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="SizeMatcher.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="create_db_scheme.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="ColorMatcher.h" />
-    <ClInclude Include="FeaturePointMatcher.h" />
-    <ClInclude Include="LikelihoodCalculator.h" />
-    <ClInclude Include="SizeMatcher.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{C0ECEB71-DEA8-49DE-A1C6-5C552E26B14A}</ProjectGuid>
-    <RootNamespace>identification</RootNamespace>
+    <ProjectGuid>{8AEF5D2F-DE62-4A65-B3A2-A47D43F020CC}</ProjectGuid>
+    <RootNamespace>feature_point_match_test</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -108,7 +95,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_CONSOLE;CPPCONN_PUBLIC_FUNC=;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)src;$(AF_PATH)/include;$(SolutionDir)Include;C:\Program Files\opencv\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>

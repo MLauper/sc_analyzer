@@ -32,6 +32,11 @@ namespace dto
 			float height;
 			float width;
 		};
+		struct suggestion
+		{
+			dto::Track* track;
+			float likelihood;
+		};
 
 		// This id should be unique per camera (increase with every track)
 		int trackId;
@@ -64,15 +69,26 @@ namespace dto
 		// Estimated person size
 		personSize estimatedPersonSize;
 
-		// Surf keypoints on the optimal image
+		// Surf keypoints and descriptors on the optimal image
 		std::vector<cv::KeyPoint> surf_keyPoints;
-		// Sift keypoints on the optimal image
+		cv::Mat surf_descriptors;
+		// Sift keypoints and descriptors on the optimal image
 		std::vector<cv::KeyPoint> sift_keyPoints;
+		cv::Mat sift_descriptors;
 
 		// DB id of track
 		int track_db_id;
 
 		// Originating camera of this track
 		dto::Camera camera;
+
+		// Identification - Likelihood for the same person
+		std::vector<suggestion> surf_keypoint_suggestion;
+		std::vector<suggestion> sift_keypoint_suggestion;
+		std::vector<suggestion> size_width_suggestion;
+		std::vector<suggestion> size_height_suggestion;
+		std::vector<suggestion> upper_body_color_suggestion;
+		std::vector<suggestion> lower_body_color_suggestion;
+		std::vector<suggestion> overall_suggestion;
 	};
 }

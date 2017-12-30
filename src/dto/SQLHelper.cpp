@@ -57,7 +57,8 @@ void dto::SQLHelper::persist_camera(const Camera& camera)
 		std::ostringstream select_query_stream;
 		select_query_stream << "SELECT id FROM cameras"
 			<< " WHERE directory='" << camera.directory << "'"
-			<< " AND prefix='" << camera.prefix << "'";
+			<< " AND prefix='" << camera.prefix << "'"
+			<< " AND scene='" << camera.scene << "'";
 
 		select_query = select_query_stream.str();
 
@@ -77,8 +78,9 @@ void dto::SQLHelper::persist_camera(const Camera& camera)
 		{
 			std::ostringstream instert_query_stream;
 			instert_query_stream << "INSERT INTO cameras"
-				<< "(directory, prefix, width, height, fps, pixelToCentimeterRatio) "
-				<< "VALUES ('" << camera.directory << "'"
+				<< "(scene, directory, prefix, width, height, fps, pixelToCentimeterRatio) "
+				<< "VALUES ('" << camera.scene << "'"
+				<< ",'" << camera.directory << "'"
 				<< ",'" << camera.prefix << "'"
 				<< ",'" << camera.width << "'"
 				<< ",'" << camera.height << "'"
@@ -98,7 +100,7 @@ void dto::SQLHelper::persist_camera(const Camera& camera)
 	}
 }
 
-void dto::SQLHelper::retrieve_camera(dto::Camera& camera, const char* directory, const char* prefix)
+void dto::SQLHelper::retrieve_camera(dto::Camera& camera, const char* directory, const char* prefix, const char* scene)
 {
 	std::string select_query;
 	nanodbc::result result;
@@ -109,7 +111,8 @@ void dto::SQLHelper::retrieve_camera(dto::Camera& camera, const char* directory,
 		std::ostringstream select_query_stream;
 		select_query_stream << "SELECT * FROM cameras"
 			<< " WHERE directory='" << directory << "'"
-			<< " AND prefix='" << prefix << "'";
+			<< " AND prefix='" << prefix << "'"
+			<< " AND scene='" << scene << "'";
 
 		select_query = select_query_stream.str();
 
@@ -122,6 +125,7 @@ void dto::SQLHelper::retrieve_camera(dto::Camera& camera, const char* directory,
 		else
 		{
 			result.next();
+			camera.scene = result.get<int>("scene");
 			camera.directory = result.get<std::string>("directory");
 			camera.prefix = result.get<std::string>("prefix");
 			camera.width = result.get<int>("width");
@@ -156,7 +160,8 @@ void dto::SQLHelper::persist_track(const dto::Track& track, const dto::Camera& c
 		std::ostringstream select_query_stream;
 		select_query_stream << "SELECT id FROM cameras"
 			<< " WHERE directory='" << camera.directory << "'"
-			<< " AND prefix='" << camera.prefix << "'";
+			<< " AND prefix='" << camera.prefix << "'"
+			<< " AND scene='" << camera.scene << "'";
 
 		select_camera_query = select_query_stream.str();
 
@@ -214,7 +219,6 @@ void dto::SQLHelper::persist_track(const dto::Track& track, const dto::Camera& c
 	// Retrieve track id
 	try
 	{
-		// Retrieve camera id
 		std::ostringstream select_query_stream;
 		select_query_stream << "SELECT id FROM tracks"
 			<< " WHERE trackId='" << track.trackId << "'"
@@ -227,6 +231,7 @@ void dto::SQLHelper::persist_track(const dto::Track& track, const dto::Camera& c
 		if (result.next())
 		{
 			track_id = result.get<int>("id");
+			while (result.next());
 		}
 		else
 		{
@@ -322,6 +327,7 @@ void dto::SQLHelper::retrieve_camera(dto::Camera& camera, int camera_id)
 		else
 		{
 			result.next();
+			camera.scene = result.get<int>("scene");
 			camera.directory = result.get<std::string>("directory");
 			camera.prefix = result.get<std::string>("prefix");
 			camera.width = result.get<int>("width");
@@ -352,6 +358,7 @@ std::vector<dto::Track> dto::SQLHelper::retrieve_all_tracks()
 		select_query_stream << "SELECT "
 			<< "tracks.*, "
 			<< "cameras.id AS camera_id, "
+			<< "cameras.scene AS camera_scene, "
 			<< "cameras.directory AS camera_directory, "
 			<< "cameras.prefix AS camera_prefix, "
 			<< "cameras.fps AS camera_fps, "
@@ -383,6 +390,7 @@ std::vector<dto::Track> dto::SQLHelper::retrieve_all_tracks()
 			else if (walkingDirection == "out_in") t.walkingDirection = dto::Track::WalkingDirection::out_in;
 			else if (walkingDirection == "out_out") t.walkingDirection = dto::Track::WalkingDirection::out_out;
 
+			c.scene = result.get<int>("camera_scene");
 			c.directory = result.get<std::string>("camera_directory");
 			c.prefix = result.get<std::string>("camera_prefix");
 			c.fps = result.get<int>("camera_fps");
@@ -466,4 +474,27 @@ std::vector<dto::Track> dto::SQLHelper::retrieve_all_tracks()
 	}
 
 	return tracks;
+}
+
+void dto::SQLHelper::backup_database(char* destination)
+{
+	std::string backup_query;
+	try
+	{
+		std::ostringstream backup_query_stream;
+		backup_query_stream << "BACKUP DATABASE sc_analyzer "
+			<< "TO DISK='" << destination << "' "
+			<< "WITH FORMAT ";
+
+		backup_query = backup_query_stream.str();
+
+		std::cout << "Execute SQL Query: " << backup_query << std::endl;
+		execute(*conn, backup_query);
+	}
+	catch (std::runtime_error const& e)
+	{
+		std::cerr << "Error in SQL Query: " << backup_query << std::endl;
+		std::cerr << e.what() << std::endl;
+		return;
+	}
 }

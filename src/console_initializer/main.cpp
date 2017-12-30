@@ -4,93 +4,101 @@
 #include "image_segmentation/image_segmentation.h"
 #include "image_acquisition/MKVFileLoader.h"
 
-int main()
+int main(int argc, char* argv[])
 {
-	//WatchDirectory("D:\\data\\image");
+	if (argc != 5)
+	{
+		std::cerr << "Commandline arguments not provided. Please provide: scene, prefix, fps, videoFilePath" << std::endl;
+		std::cerr << "Found the following arguments: " << std::endl;
+		for (int i = 1; i < argc; i++)
+		{
+			std::cerr << " " << i << ": " << argv[i] << std::endl;
+		}
+		return -1;
+	}
 
 	dto::Camera camera;
 
-	// Room Walk with Different Lighting
+	// Configure camera based on arguments
+	camera.scene = atoi(argv[1]); // For Example: 1;
+	camera.prefix = argv[2];// For Example: "out_CAMERA_door_";
+	camera.fps = atoi(argv[3]);// For Example: 4;
+	camera.videoFilePath = argv[4];// For Example: "C:\\data\\test-scenes-cut\\out_CAMERA_door_0000000216.0.mkv";
+
+	// Only used when using FileLoader
 	//camera.directory = "D:\\data\\room_walk_with_different_lighting\\image\\";
-	//camera.prefix = "out_CAMERA_room_";
-	camera.fps = 4;
+
+	// Static values
 	camera.backgroundThreshold = 16;
-	camera.entry_side = dto::Camera::entrySide::entry_bottom;
-	camera.personCountMode = dto::Camera::personCountUpWhen::in_to_entry;
-	camera.width = 1920;
-	camera.height = 1080;
-	camera.gateMode = dto::Camera::gateMode::minBottom;
-	camera.gateValue = 100;
-	camera.secondGateMode = dto::Camera::gateMode::minLeft;
-	camera.secondGateValue = 630;
-	camera.optimalPersonLocation = cv::Point(770, 950);
 
-	camera.pixelToCentimeterRatio = (180.0f / 540.0f);
+	// Static values based on camera
+	if (camera.prefix == "out_CAMERA_room_") {
+		camera.entry_side = dto::Camera::entrySide::entry_bottom;
+		camera.personCountMode = dto::Camera::personCountUpWhen::in_to_entry;
+		camera.width = 1920;
+		camera.height = 1080;
+		camera.gateMode = dto::Camera::gateMode::minBottom;
+		camera.gateValue = 100;
+		camera.secondGateMode = dto::Camera::gateMode::minLeft;
+		camera.secondGateValue = 770;
+		camera.optimalPersonLocation = cv::Point(770, 950);
+		camera.pixelToCentimeterRatio = (180.0f / 515.0f);
 
-	// Camera distortion
-	const double cam_fx = 1.5429064838570325e+03;
-	const double cam_cx = 9.5369579797955782e+02;
-	const double cam_fy = 1.5429064838570325e+03;
-	const double cam_cy = 5.7690440309632538e+02;
-	camera.cameraMatrix = (cv::Mat1d(3, 3) << cam_fx, 0, cam_cx, 0, cam_fy, cam_cy, 0, 0, 1);
+		// Camera distortion
+		const double cam_fx = 1.5429064838570325e+03;
+		const double cam_cx = 9.5369579797955782e+02;
+		const double cam_fy = 1.5429064838570325e+03;
+		const double cam_cy = 5.7690440309632538e+02;
+		camera.cameraMatrix = (cv::Mat1d(3, 3) << cam_fx, 0, cam_cx, 0, cam_fy, cam_cy, 0, 0, 1);
 
-	const double k1 = -6.2252844915595262e-01;
-	const double k2 = 2.9966919648514401e-01;
-	const double p1 = -8.8257543325885261e-03;
-	const double p2 = -4.3121497449825881e-03;
-	const double k3 = 3.7852955947755049e-02;
-	camera.distCoeffs = (cv::Mat1d(1, 5) << k1, k2, p1, p2, k3);
+		const double k1 = -6.2252844915595262e-01;
+		const double k2 = 2.9966919648514401e-01;
+		const double p1 = -8.8257543325885261e-03;
+		const double p2 = -4.3121497449825881e-03;
+		const double k3 = 3.7852955947755049e-02;
+		camera.distCoeffs = (cv::Mat1d(1, 5) << k1, k2, p1, p2, k3);
+	} else if (camera.prefix == "out_CAMERA_door_")
+	{
+		camera.entry_side = dto::Camera::entrySide::entry_bottom;
+		camera.personCountMode = dto::Camera::personCountUpWhen::entry_to_in;
+		camera.width = 1920;
+		camera.height = 1080;
+		camera.gateMode = dto::Camera::gateMode::minBottom;
+		camera.gateValue = 100;
+		camera.secondGateMode = dto::Camera::gateMode::minLeft;
+		camera.secondGateValue = 922;
+		camera.optimalPersonLocation = cv::Point(922, 950);
+		camera.pixelToCentimeterRatio = (180.0f / 540.0f);
 
-	// New Setup Room walk
-	//camera.directory = "C:\\data\\test-scenes-cut\\new-setup-walks_door\\";
-	camera.directory = "C:\\data\\test-scenes-cut\\MultiplePeopleDoor\\";
-	//camera.directory = "C:\\data\\test-scenes-cut\\room_walk_Room\\";
-	camera.prefix = "out_CAMERA_door_";
-	// Single Person
-	//camera.directory = "C:\\data\\test-scenes-cut\\SinglePersonRoom\\";
+		// Camera distortion
+		const double cam_fx = 1.5429064838570325e+03;
+		const double cam_cx = 9.5369579797955782e+02;
+		const double cam_fy = 1.5429064838570325e+03;
+		const double cam_cy = 5.7690440309632538e+02;
+		camera.cameraMatrix = (cv::Mat1d(3, 3) << cam_fx, 0, cam_cx, 0, cam_fy, cam_cy, 0, 0, 1);
 
-	// Two Persons Leave
-	//camera.directory = "C:\\data\\test-scenes-cut\\TwoPersonsLeave\\";
-
-	// Single Person Door
-	//camera.directory = "D:\\data\\room_walk_with_different_lighting-Copy\\image\\";
-	//// Multiple People Door
-	//camera.directory = "C:\\data\\test-scenes-cut\\MultiplePeopleDoor\\";
-	//camera.prefix = "out_CAMERA_door_";
-	//camera.fps = 4;
-	//camera.backgroundThreshold = 8;
-	//camera.entry_side = dto::Camera::entrySide::entry_bottom;
-	//camera.width = 1920;
-	//camera.height = 1080;
-	//camera.gateMode = dto::Camera::gateMode::minBottom;
-	//camera.gateValue = 150;
-
-	//// Multiple People Door
-	//camera.directory = "C:\\data\\test-scenes-cut\\MultiplePeopleRoom_2\\";
-	//camera.prefix = "out_CAMERA_room_";
-	//camera.fps = 4;
-	//camera.backgroundThreshold = 16;
-	//camera.entry_side = dto::Camera::entrySide::entry_bottom;
-	//camera.width = 1920;
-	//camera.height = 1080;
-	//camera.gateMode = dto::Camera::gateMode::minBottom;
-	//camera.gateValue = 150;
-
-	camera.videoFilePath = "C:\\data\\test-scenes-cut\\out_CAMERA_door_0000000216.0.mkv";
-
-	image_segmentation::Controller* controller = new image_segmentation::Controller(camera);
-
-	image_acquisition::FileLoader file_loader(camera, controller);
-	image_acquisition::MKVFileLoader mkv_file_loader(camera, controller);
-	//image_acquisition::FileLoader file_loader("D:\\data\\room_walk_with_differnt_lighting_8fps\\image\\", "out_CAMERA_room_", controller);
-	//image_acquisition::FileLoader file_loader("D:\\data\\room_walk_with_different_lighting\\image\\", "out_CAMERA_room_", controller);
-	//image_acquisition::FileLoader file_loader("D:\\data\\room_walk_with_different_lighting\\image\\",
-	//                                          "out_CAMERA_room_", controller);
+		const double k1 = -6.2252844915595262e-01;
+		const double k2 = 2.9966919648514401e-01;
+		const double p1 = -8.8257543325885261e-03;
+		const double p2 = -4.3121497449825881e-03;
+		const double k3 = 3.7852955947755049e-02;
+		camera.distCoeffs = (cv::Mat1d(1, 5) << k1, k2, p1, p2, k3);
+	} else
+	{
+		std::cerr << "Unknown camera. Required information not available..." << std::endl;
+		return -1;
+	}
 	
+	image_segmentation::Controller* controller = new image_segmentation::Controller(camera);
+	
+	// To use the FileLoader instead of mkv loader, use the following lines
+	//image_acquisition::FileLoader file_loader(camera, controller);
 	//file_loader.ProcessFiles();
 	//file_loader.WatchDirectory();
 
+	image_acquisition::MKVFileLoader mkv_file_loader(camera, controller);
 	mkv_file_loader.process_file();
 
+	std::cout << "Finished processing input file: " << camera.videoFilePath << std::endl;
 	return 0;
 }

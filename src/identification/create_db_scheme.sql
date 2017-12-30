@@ -26,6 +26,7 @@ GO
 
 CREATE TABLE [dbo].[cameras](
 	[id] [int] IDENTITY(1,1) NOT NULL,
+	[scene] [int] NOT NULL,
 	[directory] [varchar](1000) NOT NULL,
 	[prefix] [varchar](200) NOT NULL,
 	[width] [int] NOT NULL,

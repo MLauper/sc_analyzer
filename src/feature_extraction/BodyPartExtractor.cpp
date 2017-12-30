@@ -54,7 +54,7 @@ void feature_extraction::BodyPartExtractor::extractBodyParts(dto::Track& track, 
 	{
 		std::ofstream fileStream;
 		std::stringstream filePath;
-		filePath << dto::Configuration::STATISTICS_DIRECTORY << "Track-" << track.trackId << "_statistics.txt";
+		filePath << dto::Configuration::STATISTICS_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << "Track-" << track.trackId << "_statistics.txt";
 		fileStream.open(filePath.str().c_str(), std::fstream::app);
 
 		fileStream << "Body Parts:" << std::endl;

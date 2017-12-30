@@ -58,7 +58,7 @@ namespace dto {
 
 		const bool USE_YOLO_FOR_TRACKING = true;
 		const bool USE_YOLO_FOR_FRAMESELECTION = true;
-		const bool USE_FG_IMAGE_FOR_YOLO = true;
+		const bool USE_FG_IMAGE_FOR_YOLO = false;
 
 		const std::string PERSON_COUNTER_0_PUBLISH_URL = "https://sc-analyzer-reporter.firebaseio.com/person_counter_0.json";
 
@@ -69,7 +69,7 @@ namespace dto {
 
 		const bool USE_POINT_FOR_OPTIMAL_TRACK = true;
 		const long MAX_OPTIMAL_DISTANCE = 100;
-		const bool PRINT_FRAME_SELECTION_STEPS = true;
+		const bool PRINT_FRAME_SELECTION_STEPS = false;
 		const bool SAVE_OPTIMAL_TRACK_IMAGE = true;
 		const bool SAVE_OPTIMAL_TRACK_IMAGE_CUT = true;
 		const std::string OPTIMAL_TRACK_DIRECTORY = "C:\\Temp\\output\\";
@@ -77,13 +77,19 @@ namespace dto {
 		const bool SAVE_HUE_IMAGE = false;
 		const bool PRINT_HSV_VALUES = false;
 
-		const bool SAVE_FEATURE_POINT_IMAGES = true;
+		const bool SAVE_FEATURE_POINT_IMAGES = false;
 		const bool USE_FG_IMAGE_FOR_FEATURE_POINTS = true;
 		const bool STORE_TRACK_RESULTS_IN_DB = true;
-		
-		
+				
 		const nanodbc::string DATABASE_ODBC_NAME = "sc_analyzer";
 		const nanodbc::string DATABASE_USER = "db_user";
 		const nanodbc::string DATABASE_PASSWORD = "Rtchir3ORJe2";
+
+		const float surf_keypoint_suggestion_weight = 0.25;
+		const float sift_keypoint_suggestion_weight = 0.25;
+		const float size_width_suggestion_weight = 0.1;
+		const float size_height_suggestion_weight = 0.1;
+		const float upper_body_color_suggestion_weight = 0.15;
+		const float lower_body_color_suggestion_weight = 0.15;
 	}
 }

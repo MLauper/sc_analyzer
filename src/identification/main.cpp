@@ -3,6 +3,10 @@
 #include <iostream>
 
 #include "../dto/SQLHelper.h"
+#include "FeaturePointMatcher.h"
+#include "SizeMatcher.h"
+#include "ColorMatcher.h"
+#include "LikelihoodCalculator.h"
 
 int main()
 {
@@ -27,6 +31,18 @@ int main()
 	//std::cout << "Camera: " << db_camera.directory  << ", " << db_camera.pixel << std::endl;
 
 	auto tracks = sql_helper.retrieve_all_tracks();
+
+	identification::FeaturePointMatcher feature_point_matcher;
+	feature_point_matcher.matchAllFeaturePoints(tracks);
+
+	identification::SizeMatcher size_matcher;
+	size_matcher.matchAllSizes(tracks);
+
+	identification::ColorMatcher color_matcher;
+	color_matcher.matchAllColors(tracks);
+
+	identification::LikelihoodCalculator likelihood_calculator;
+	likelihood_calculator.calculateAllLikelihoods(tracks);
 
 	std::cout << "Finished Identification" << std::endl;
 }

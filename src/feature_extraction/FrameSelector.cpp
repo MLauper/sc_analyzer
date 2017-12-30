@@ -67,7 +67,7 @@ void feature_extraction::FrameSelector::SelectFrame(dto::Track& track, const dto
 		std::ofstream fileStream;
 
 		std::stringstream filePath;
-		filePath << dto::Configuration::STATISTICS_DIRECTORY << "Track-" << track.trackId << "_statistics.txt";
+		filePath << dto::Configuration::STATISTICS_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << "Track-" << track.trackId << "_statistics.txt";
 		fileStream.open(filePath.str().c_str(), std::fstream::app);
 		
 		fileStream << "Selected Track Picture: " << track.optimalPersonId << std::endl;
@@ -79,7 +79,7 @@ void feature_extraction::FrameSelector::SelectFrame(dto::Track& track, const dto
 		fileStream.close();
 	}
 
-	if (dto::Configuration::SAVE_OPTIMAL_TRACK_IMAGE)
+	if (dto::Configuration::SAVE_OPTIMAL_TRACK_IMAGE && track.optimalPersonId != -1)
 	{
 		cv::Mat drawingAll;
 		if (track.optimalPersonId != -1) {
@@ -91,7 +91,7 @@ void feature_extraction::FrameSelector::SelectFrame(dto::Track& track, const dto
 		}
 
 		std::stringstream image_out_path;
-		image_out_path << dto::Configuration::OPTIMAL_TRACK_DIRECTORY << "Track-" << track.trackId << "_optimalImage-original.jpg";
+		image_out_path << dto::Configuration::OPTIMAL_TRACK_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << "Track-" << track.trackId << "_optimalImage-original.jpg";
 		cv::imwrite(image_out_path.str().c_str(), drawingAll);
 	}
 }
@@ -111,11 +111,11 @@ void feature_extraction::FrameSelector::SaveRegion(dto::Track& track, const dto:
 	if (dto::Configuration::SAVE_OPTIMAL_TRACK_IMAGE_CUT)
 	{
 		std::stringstream image_out_path;
-		image_out_path << dto::Configuration::OPTIMAL_TRACK_DIRECTORY << "Track-" << track.trackId << "_optimalImage-cut.jpg";
+		image_out_path << dto::Configuration::OPTIMAL_TRACK_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << "Track-" << track.trackId << "_optimalImage-cut.jpg";
 		cv::imwrite(image_out_path.str().c_str(), track.cv_optimalPersonCut);
 
 		std::stringstream image_out_path_full;
-		image_out_path_full << dto::Configuration::OPTIMAL_TRACK_DIRECTORY << "Track-" << track.trackId << "_optimalImage-cut_Full.jpg";
+		image_out_path_full << dto::Configuration::OPTIMAL_TRACK_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << "Track-" << track.trackId << "_optimalImage-cut_Full.jpg";
 		cv::imwrite(image_out_path_full.str().c_str(), track.cv_optimalPersonCut_Full);
 	}
 }

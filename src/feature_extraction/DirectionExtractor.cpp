@@ -134,11 +134,11 @@ void feature_extraction::DirectionExtractor::extractDirection(dto::Track& track,
 	}
 
 
-	if (dto::Configuration::SAVE_TRACK_STATISTICS == true)
+	if (dto::Configuration::SAVE_TRACK_STATISTICS)
 	{
 		std::ofstream fileStream;
 		std::stringstream filePath;
-		filePath << dto::Configuration::STATISTICS_DIRECTORY << "Track-" << track.trackId << "_statistics.txt";
+		filePath << dto::Configuration::STATISTICS_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << "Track-" << track.trackId << "_statistics.txt";
 		fileStream.open(filePath.str().c_str(), std::fstream::app);
 		switch (track.walkingDirection)
 		{
