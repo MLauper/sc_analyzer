@@ -69,11 +69,13 @@ void identification::LikelihoodCalculator::calculateAllLikelihoods(std::vector<d
 				fileStream << "  " << s.likelihood << ": Track " << s.track->trackId << ", Scene " << s.track->camera.scene << ", Prefix " << s.track->camera.prefix << std::endl;
 			}
 
+			/*
 			fileStream << " sift_keypoint_suggestion:" << std::endl;
 			for (auto& s : t.sift_keypoint_suggestion)
 			{
 				fileStream << "  " << s.likelihood << ": Track " << s.track->trackId << ", Scene " << s.track->camera.scene << ", Prefix " << s.track->camera.prefix << std::endl;
 			}
+			*/
 
 			fileStream << " upper_body_color_suggestion:" << std::endl;
 			for (auto& s : t.upper_body_color_suggestion)

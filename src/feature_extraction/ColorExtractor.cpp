@@ -12,7 +12,7 @@ feature_extraction::ColorExtractor::~ColorExtractor()
 }
 
 
-void feature_extraction::ColorExtractor::extractMaxHue(dto::Track& track, cv::Mat& hsv_image, int& maxBucketId, bool isUpperBody)
+void feature_extraction::ColorExtractor::extractMaxHue(dto::Track& track, dto::Camera& camera, cv::Mat& hsv_image, int& maxBucketId, bool isUpperBody)
 {
 	cv::Mat generatedImage;
 
@@ -49,10 +49,10 @@ void feature_extraction::ColorExtractor::extractMaxHue(dto::Track& track, cv::Ma
 
 		std::stringstream image_out_path;
 		if (isUpperBody) {
-			image_out_path << dto::Configuration::OPTIMAL_TRACK_DIRECTORY << "Track-" << track.trackId << "_hue_upperBody.jpg";
+			image_out_path << dto::Configuration::OPTIMAL_TRACK_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << "Track-" << track.trackId << "_hue_upperBody.jpg";
 		} else
 		{
-			image_out_path << dto::Configuration::OPTIMAL_TRACK_DIRECTORY << "Track-" << track.trackId << "_hue_lowerBody.jpg";
+			image_out_path << dto::Configuration::OPTIMAL_TRACK_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << "Track-" << track.trackId << "_hue_lowerBody.jpg";
 		}
 		cv::imwrite(image_out_path.str().c_str(), generatedRGB);
 	}
@@ -95,8 +95,8 @@ void feature_extraction::ColorExtractor::extractPrimaryColors(dto::Track& track,
 	cvtColor(track.cv_optimalPersonBodyParts.lowerBody, hsv_lowerBody, CV_BGR2HSV);
 
 	
-	extractMaxHue(track, hsv_upperBody, track.primary_color_ids.upperBody, true);
-	extractMaxHue(track, hsv_lowerBody, track.primary_color_ids.lowerBody, false);
+	extractMaxHue(track, camera, hsv_upperBody, track.primary_color_ids.upperBody, true);
+	extractMaxHue(track, camera, hsv_lowerBody, track.primary_color_ids.lowerBody, false);
 
 
 	if (dto::Configuration::SAVE_TRACK_STATISTICS)

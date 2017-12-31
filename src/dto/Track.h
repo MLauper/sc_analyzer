@@ -90,5 +90,7 @@ namespace dto
 		std::vector<suggestion> upper_body_color_suggestion;
 		std::vector<suggestion> lower_body_color_suggestion;
 		std::vector<suggestion> overall_suggestion;
+
+		int assignedPersonId;
 	};
 }

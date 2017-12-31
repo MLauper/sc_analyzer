@@ -23,6 +23,7 @@
     <ClCompile Include="FeaturePointMatcher.cpp" />
     <ClCompile Include="LikelihoodCalculator.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PersonAssigner.cpp" />
     <ClCompile Include="SizeMatcher.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -32,6 +33,7 @@
     <ClInclude Include="ColorMatcher.h" />
     <ClInclude Include="FeaturePointMatcher.h" />
     <ClInclude Include="LikelihoodCalculator.h" />
+    <ClInclude Include="PersonAssigner.h" />
     <ClInclude Include="SizeMatcher.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

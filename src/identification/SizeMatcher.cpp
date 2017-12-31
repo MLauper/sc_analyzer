@@ -23,7 +23,7 @@ void identification::SizeMatcher::matchAllSizes(std::vector<dto::Track>& tracks)
 			float probHeight = 1 - (diffHeight / 50);
 			if (probHeight < 0.0f) probHeight = 0.0f;
 
-			float probWidth = 1 - (diffHeight / 20);
+			float probWidth = 1 - (diffWidth / 20);
 			if (probWidth < 0.0f) probWidth = 0.0f;
 
 			dto::Track::suggestion suggestionHeight;

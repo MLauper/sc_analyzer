@@ -65,16 +65,16 @@ namespace dto {
 		const float IMAGE_BORDER_PERCENTATGE = 0.03f;
 		const bool SAVE_TRACK_STATISTICS = true;
 		const std::string STATISTICS_DIRECTORY = "C:\\Temp\\output\\";
-		const double MAX_TRACKING_DISTANCE = 100;
+		const double MAX_TRACKING_DISTANCE = 50;
 
 		const bool USE_POINT_FOR_OPTIMAL_TRACK = true;
-		const long MAX_OPTIMAL_DISTANCE = 100;
+		const long MAX_OPTIMAL_DISTANCE = 50;
 		const bool PRINT_FRAME_SELECTION_STEPS = false;
 		const bool SAVE_OPTIMAL_TRACK_IMAGE = true;
 		const bool SAVE_OPTIMAL_TRACK_IMAGE_CUT = true;
 		const std::string OPTIMAL_TRACK_DIRECTORY = "C:\\Temp\\output\\";
 		const bool SAVE_BODY_PARTS_IMAGES = false;
-		const bool SAVE_HUE_IMAGE = false;
+		const bool SAVE_HUE_IMAGE = true;
 		const bool PRINT_HSV_VALUES = false;
 
 		const bool SAVE_FEATURE_POINT_IMAGES = false;
@@ -85,11 +85,13 @@ namespace dto {
 		const nanodbc::string DATABASE_USER = "db_user";
 		const nanodbc::string DATABASE_PASSWORD = "Rtchir3ORJe2";
 
-		const float surf_keypoint_suggestion_weight = 0.25;
-		const float sift_keypoint_suggestion_weight = 0.25;
-		const float size_width_suggestion_weight = 0.1;
-		const float size_height_suggestion_weight = 0.1;
-		const float upper_body_color_suggestion_weight = 0.15;
-		const float lower_body_color_suggestion_weight = 0.15;
+		const float surf_keypoint_suggestion_weight = 0.4f;
+		const float sift_keypoint_suggestion_weight = 0.0f;
+		const float size_width_suggestion_weight = 0.15f;
+		const float size_height_suggestion_weight = 0.15f;
+		const float upper_body_color_suggestion_weight = 0.15f;
+		const float lower_body_color_suggestion_weight = 0.15f;
+		
+		const bool SAVE_PERSON_IDENTIFICATION = true;
 	}
 }

@@ -4,6 +4,7 @@
 #include <iostream>
 #include "../dto/Configuration.h"
 #include "../dto/Track.h"
+#include "../dto/Person.h"
 
 dto::SQLHelper::SQLHelper()
 {
@@ -231,7 +232,6 @@ void dto::SQLHelper::persist_track(const dto::Track& track, const dto::Camera& c
 		if (result.next())
 		{
 			track_id = result.get<int>("id");
-			while (result.next());
 		}
 		else
 		{
@@ -302,6 +302,92 @@ void dto::SQLHelper::persist_track(const dto::Track& track, const dto::Camera& c
 			std::cerr << e.what() << std::endl;
 		}
 	}
+
+}
+
+void dto::SQLHelper::persist_persons(std::vector<dto::Person>& persons)
+{
+	for (auto& p : persons)
+	{
+		std::string insert_person_query;
+		std::string select_person_query;
+		
+		int person_db_id;
+
+		nanodbc::result result;
+
+		// Insert Person
+		try
+		{
+			std::ostringstream insert_query_stream;
+
+			insert_query_stream << "INSERT INTO persons"
+				<< "(person_id) "
+				<< "VALUES ('" << p.person_id << "'"
+				<< ")";
+
+			insert_person_query = insert_query_stream.str();
+
+			execute(*conn, insert_person_query);
+		}
+		catch (std::runtime_error const& e)
+		{
+			std::cerr << "Error in SQL Query: " << insert_person_query << std::endl;
+			std::cerr << e.what() << std::endl;
+		}
+
+		// Retrieve person id
+		try
+		{
+			std::ostringstream select_query_stream;
+			select_query_stream << "SELECT id FROM tracks"
+				<< " WHERE person_id='" << p.person_id << "'";
+
+			select_person_query = select_query_stream.str();
+
+			result = execute(*conn, select_person_query);
+
+			if (result.next())
+			{
+				person_db_id = result.get<int>("id");
+			}
+			else
+			{
+				std::cerr << "Person ID could not retrieved from DB. Query: " << select_person_query << std::endl;
+			}
+		}
+		catch (std::runtime_error const& e)
+		{
+			std::cerr << "Error in SQL Query: " << select_person_query << std::endl;
+			std::cerr << e.what() << std::endl;
+			return;
+		}
+
+		// Update Track
+		for (auto& t : p.tracks)
+		{
+
+			std::string update_track_query;
+
+			try
+			{
+				std::ostringstream update_query_stream;
+				update_query_stream << "UPDATE tracks "
+					<< "SET person_id = '" << person_db_id << "' "
+					<< "WHERE id = '" << t.track_db_id << "'";
+
+				update_track_query = update_query_stream.str();
+
+				execute(*conn, update_track_query);
+			}
+			catch (std::runtime_error const& e)
+			{
+				std::cerr << "Error in SQL Query: " << update_track_query << std::endl;
+				std::cerr << e.what() << std::endl;
+			}
+		}
+	}
+
 }
 
 void dto::SQLHelper::retrieve_camera(dto::Camera& camera, int camera_id)
@@ -411,6 +497,7 @@ std::vector<dto::Track> dto::SQLHelper::retrieve_all_tracks()
 		return t;
 	}
 
+	/*
 	try
 	{
 		for (auto& t : tracks)
@@ -472,6 +559,7 @@ std::vector<dto::Track> dto::SQLHelper::retrieve_all_tracks()
 		std::vector<Track> t;
 		return t;
 	}
+	*/
 
 	return tracks;
 }
