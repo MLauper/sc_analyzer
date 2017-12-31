@@ -16,6 +16,9 @@ GO
 IF OBJECT_ID('dbo.cameras', 'U') IS NOT NULL DROP TABLE [dbo].[cameras]
 GO
 
+IF OBJECT_ID('dbo.persons', 'U') IS NOT NULL DROP TABLE [dbo].[persons]
+GO
+
 /* CREATE TABLES */
 
 SET ANSI_NULLS ON
@@ -46,6 +49,23 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
+CREATE TABLE [dbo].[persons](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[person_id] [int] NOT NULL,
+ CONSTRAINT [PK_persons] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
 CREATE TABLE [dbo].[tracks](
 	[id] [int] IDENTITY(1,1) NOT NULL,
 	[camera_id] [int] NOT NULL,
@@ -55,6 +75,7 @@ CREATE TABLE [dbo].[tracks](
 	[primaryColor_LowerBody] [int] NOT NULL,
 	[personSize_height] [float] NOT NULL,
 	[personSize_width] [float] NOT NULL,
+	[person_id] [int] NULL,
  CONSTRAINT [PK_tracks] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
@@ -69,6 +90,13 @@ ON DELETE CASCADE
 GO
 
 ALTER TABLE [dbo].[tracks] CHECK CONSTRAINT [FK_tracks_cameras]
+GO
+
+ALTER TABLE [dbo].[tracks]  WITH CHECK ADD  CONSTRAINT [FK_tracks_persons] FOREIGN KEY([person_id])
+REFERENCES [dbo].[persons] ([id])
+GO
+
+ALTER TABLE [dbo].[tracks] CHECK CONSTRAINT [FK_tracks_persons]
 GO
 
 SET ANSI_NULLS ON

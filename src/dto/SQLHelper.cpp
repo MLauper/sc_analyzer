@@ -340,8 +340,8 @@ void dto::SQLHelper::persist_persons(std::vector<dto::Person>& persons)
 		try
 		{
 			std::ostringstream select_query_stream;
-			select_query_stream << "SELECT id FROM tracks"
-				<< " WHERE person_id='" << p.person_id << "'";
+			select_query_stream << "SELECT id FROM persons"
+				<< " WHERE person_id=" << p.person_id << "";
 
 			select_person_query = select_query_stream.str();
 
