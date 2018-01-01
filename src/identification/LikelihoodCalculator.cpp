@@ -54,45 +54,45 @@ void identification::LikelihoodCalculator::calculateAllLikelihoods(std::vector<d
 			fileStream << " size_width_suggestions:" << std::endl;
 			for (auto& s : t.size_width_suggestion)
 			{
-				fileStream << "  " << s.likelihood << ": Track " << s.track->trackId << ", Scene " << s.track->camera.scene << ", Prefix " << s.track->camera.prefix << std::endl;
+				fileStream << "  " << s.likelihood << ":  Scene " << s.track->camera.scene << ", Track " << s.track->trackId << ", Prefix " << s.track->camera.prefix << std::endl;
 			}
 
 			fileStream << " size_height_suggestion:" << std::endl;
 			for (auto& s : t.size_height_suggestion)
 			{
-				fileStream << "  " << s.likelihood << ": Track " << s.track->trackId << ", Scene " << s.track->camera.scene << ", Prefix " << s.track->camera.prefix << std::endl;
+				fileStream << "  " << s.likelihood << ":  Scene " << s.track->camera.scene << ", Track " << s.track->trackId << ", Prefix " << s.track->camera.prefix << std::endl;
 			}
 
 			fileStream << " surf_keypoint_suggestion:" << std::endl;
 			for (auto& s : t.surf_keypoint_suggestion)
 			{
-				fileStream << "  " << s.likelihood << ": Track " << s.track->trackId << ", Scene " << s.track->camera.scene << ", Prefix " << s.track->camera.prefix << std::endl;
+				fileStream << "  " << s.likelihood << ":  Scene " << s.track->camera.scene << ", Track " << s.track->trackId << ", Prefix " << s.track->camera.prefix << std::endl;
 			}
 
 			/*
 			fileStream << " sift_keypoint_suggestion:" << std::endl;
 			for (auto& s : t.sift_keypoint_suggestion)
 			{
-				fileStream << "  " << s.likelihood << ": Track " << s.track->trackId << ", Scene " << s.track->camera.scene << ", Prefix " << s.track->camera.prefix << std::endl;
+				fileStream << "  " << s.likelihood << ":  Scene " << s.track->camera.scene << ", Track " << s.track->trackId << ", Prefix " << s.track->camera.prefix << std::endl;
 			}
 			*/
 
 			fileStream << " upper_body_color_suggestion:" << std::endl;
 			for (auto& s : t.upper_body_color_suggestion)
 			{
-				fileStream << "  " << s.likelihood << ": Track " << s.track->trackId << ", Scene " << s.track->camera.scene << ", Prefix " << s.track->camera.prefix << std::endl;
+				fileStream << "  " << s.likelihood << ":  Scene " << s.track->camera.scene << ", Track " << s.track->trackId << ", Prefix " << s.track->camera.prefix << std::endl;
 			}
 
 			fileStream << " lower_body_color_suggestion:" << std::endl;
 			for (auto& s : t.lower_body_color_suggestion)
 			{
-				fileStream << "  " << s.likelihood << ": Track " << s.track->trackId << ", Scene " << s.track->camera.scene << ", Prefix " << s.track->camera.prefix << std::endl;
+				fileStream << "  " << s.likelihood << ":  Scene " << s.track->camera.scene << ", Track " << s.track->trackId << ", Prefix " << s.track->camera.prefix << std::endl;
 			}
 
 			fileStream << " overall_suggestion:" << std::endl;
 			for (auto& s : t.overall_suggestion)
 			{
-				fileStream << "  " << s.likelihood << ": Track " << s.track->trackId << ", Scene " << s.track->camera.scene << ", Prefix " << s.track->camera.prefix << std::endl;
+				fileStream << "  " << s.likelihood << ":  Scene " << s.track->camera.scene << ", Track " << s.track->trackId << ", Prefix " << s.track->camera.prefix << std::endl;
 			}
 			
 			fileStream.close();

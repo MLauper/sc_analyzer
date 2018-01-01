@@ -51,7 +51,7 @@ namespace dto {
 
 		const bool PRINT_YOLO_PERSONS = false;
 		const bool SHOW_YOLO_PERSONS_IMAGES = true;
-		const bool SAVE_YOLO_PERSONS_IMAGES = false;
+		const bool SAVE_YOLO_PERSONS_IMAGES = true;
 		const bool USE_HIGH_CONTRAST_IMAGE_FOR_YOLO = false;
 		const std::string YOLO_PERSONS_IMAGES_DIRECTORY = "C:\\Temp\\output\\";
 		const int YOLO_GPU_ID = 0;
@@ -93,5 +93,7 @@ namespace dto {
 		const float lower_body_color_suggestion_weight = 0.15f;
 		
 		const bool SAVE_PERSON_IDENTIFICATION = true;
+		const float ALWAYS_MATCH_LIKELIHOOD = 0.5f;
+		const bool PRINT_PERSON_SELECTOR_STEPS = true;
 	}
 }

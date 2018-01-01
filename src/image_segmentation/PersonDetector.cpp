@@ -226,7 +226,7 @@ void image_segmentation::PersonDetector::detectPersonsYolo(dto::Image& Image)
 		{
 			cv::Scalar color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
 
-			cv::rectangle(drawingAll, cv::Point(person.x, person.y), cv::Point(person.x + person.w, person.y + person.h), color);
+			cv::rectangle(drawingAll, cv::Point(person.x, person.y), cv::Point(person.x + person.w, person.y + person.h), color, 3);
 		}
 
 		if (dto::Configuration::SHOW_YOLO_PERSONS_IMAGES) {
