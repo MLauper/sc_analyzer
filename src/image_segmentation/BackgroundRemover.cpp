@@ -24,7 +24,7 @@ void image_segmentation::BackgroundRemover::removeBackground(dto::Image& image, 
 	if (dto::Configuration::SAVE_ORIGINAL_IMAGES)
 	{
 		std::stringstream image_out_path;
-		image_out_path << dto::Configuration::ORIGINAL_IMAGES_DIRECTORY << image.filename << "_original.jpg";
+		image_out_path << dto::Configuration::ORIGINAL_IMAGES_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << image.filename << "_original.jpg";
 		cv::imwrite(image_out_path.str().c_str(), image.cv_image_original);
 	}
 
@@ -107,7 +107,7 @@ void image_segmentation::BackgroundRemover::removeBackground(dto::Image& image, 
 	if (dto::Configuration::SAVE_FG_IMAGES)
 	{
 		std::stringstream image_out_path;
-		image_out_path << dto::Configuration::FG_IMAGES_DIRECTORY << image.filename << "_FG.jpg";
+		image_out_path << dto::Configuration::FG_IMAGES_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << image.filename << "_FG.jpg";
 		cv::imwrite(image_out_path.str().c_str(), image.cv_fgimg);
 	}
 	if (dto::Configuration::SAVE_FG_MASK)

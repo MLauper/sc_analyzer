@@ -35,7 +35,7 @@ void image_acquisition::RTSPImageCapture::startCapturing()
 
 			cv::imshow("Original", image.cv_image_original);
 			
-			personDetector.detectPersonsYolo(image);
+			personDetector.detectPersonsYolo(image, this->camera);
 
 			cv::waitKey(1);
 		}

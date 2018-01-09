@@ -13,11 +13,11 @@ namespace dto {
 		const std::string DISTORTED_IMAGES_DIRECTORY = "C:\\Temp\\output\\";
 
 		const bool SHOW_ORIGINAL_IMAGES = false;
-		const bool SAVE_ORIGINAL_IMAGES = false;
+		const bool SAVE_ORIGINAL_IMAGES = true;
 		const std::string ORIGINAL_IMAGES_DIRECTORY = "C:\\Temp\\output\\";
 
 		const bool SHOW_FG_IMAGES = true;
-		const bool SAVE_FG_IMAGES = false;
+		const bool SAVE_FG_IMAGES = true;
 		const std::string FG_IMAGES_DIRECTORY = "C:\\Temp\\output\\";
 
 		const bool SHOW_FG_MASKS = false;
@@ -25,15 +25,15 @@ namespace dto {
 		const std::string FG_MASKS_DIRECTORY = "C:\\Temp\\output\\";
 
 		const bool SHOW_ALL_CONTOURS = false;
-		const bool SAVE_ALL_CONTOURS = false;
+		const bool SAVE_ALL_CONTOURS = true;
 		const std::string ALL_CONTOURS_DIRECTORY = "C:\\Temp\\output\\";
 
 		const bool SHOW_CONTOUR_IMAGES = false;
-		const bool SAVE_CONTOUR_IMAGES = false;
+		const bool SAVE_CONTOUR_IMAGES = true;
 		const std::string CONTOUR_IMAGES_DIRECTORY = "C:\\Temp\\output\\";
 
 		const bool SHOW_TRACK_IMAGES = false;
-		const bool SAVE_TRACK_IMAGES = false;
+		const bool SAVE_TRACK_IMAGES = true;
 		const std::string TRACK_IMAGES_DIRECTORY = "C:\\Temp\\output\\";
 
 		const int MAX_NUMBER_OF_MISSING_FRAMES_IN_TRACK = 8;
@@ -77,7 +77,7 @@ namespace dto {
 		const bool SAVE_HUE_IMAGE = true;
 		const bool PRINT_HSV_VALUES = false;
 
-		const bool SAVE_FEATURE_POINT_IMAGES = false;
+		const bool SAVE_FEATURE_POINT_IMAGES = true;
 		const bool USE_FG_IMAGE_FOR_FEATURE_POINTS = true;
 		const bool STORE_TRACK_RESULTS_IN_DB = true;
 				
@@ -94,6 +94,6 @@ namespace dto {
 		
 		const bool SAVE_PERSON_IDENTIFICATION = true;
 		const float ALWAYS_MATCH_LIKELIHOOD = 0.5f;
-		const bool PRINT_PERSON_SELECTOR_STEPS = true;
+		const bool PRINT_PERSON_SELECTOR_STEPS = false;
 	}
 }

@@ -34,7 +34,7 @@ image_segmentation::PersonDetector::PersonDetector()
 }
 
 void image_segmentation::PersonDetector::extractPersonContours(
-	dto::Image& image)
+	dto::Image& image, dto::Camera& camera)
 {
 	std::vector<std::vector<cv::Point>> contours;
 	std::vector<cv::Vec4i> hierarchy;
@@ -111,7 +111,7 @@ void image_segmentation::PersonDetector::extractPersonContours(
 		if (dto::Configuration::SAVE_ALL_CONTOURS)
 		{
 			std::stringstream image_out_path;
-			image_out_path << dto::Configuration::ALL_CONTOURS_DIRECTORY << image.filename << "_all_contours.jpg";
+			image_out_path << dto::Configuration::ALL_CONTOURS_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << image.filename << "_all_contours.jpg";
 			cv::imwrite(image_out_path.str().c_str(), drawingAll);
 		}
 	}
@@ -133,10 +133,10 @@ void image_segmentation::PersonDetector::extractPersonContours(
 			cv::waitKey(1);
 		}
 
-		if (dto::Configuration::SAVE_ALL_CONTOURS)
+		if (dto::Configuration::SAVE_CONTOUR_IMAGES)
 		{
 			std::stringstream image_out_path;
-			image_out_path << dto::Configuration::CONTOUR_IMAGES_DIRECTORY << image.filename << "_accepted_contours.jpg";
+			image_out_path << dto::Configuration::CONTOUR_IMAGES_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << image.filename << "_accepted_contours.jpg";
 			cv::imwrite(image_out_path.str().c_str(), drawingAll);
 		}
 	}
@@ -172,7 +172,7 @@ void image_segmentation::PersonDetector::extractPersonContours(
 
 }
 
-void image_segmentation::PersonDetector::detectPersonsYolo(dto::Image& Image)
+void image_segmentation::PersonDetector::detectPersonsYolo(dto::Image& Image, dto::Camera& camera)
 {
 	std::vector<bbox_t> yoloObjects;
 
@@ -237,7 +237,7 @@ void image_segmentation::PersonDetector::detectPersonsYolo(dto::Image& Image)
 		if (dto::Configuration::SAVE_YOLO_PERSONS_IMAGES)
 		{
 			std::stringstream image_out_path;
-			image_out_path << dto::Configuration::YOLO_PERSONS_IMAGES_DIRECTORY << Image.filename << "_yolo_persons.jpg";
+			image_out_path << dto::Configuration::YOLO_PERSONS_IMAGES_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << Image.filename << "_yolo_persons.jpg";
 			cv::imwrite(image_out_path.str().c_str(), drawingAll);
 		}
 	}

@@ -115,7 +115,7 @@ void image_acquisition::URLImageLoader::startCapturing()
 
 		cv::imshow("Original", image.cv_image_original);
 
-		personDetector.detectPersonsYolo(image);
+		personDetector.detectPersonsYolo(image, camera);
 
 		std::cout << "Seeing " << image.yoloPersons.size() << " Persons in the current image." << std::endl;
 

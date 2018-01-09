@@ -47,11 +47,11 @@ void feature_extraction::FeaturePointExtractor::extractFeaturePoints(dto::Track&
 		}
 
 		std::stringstream sift_image_path;
-		sift_image_path << dto::Configuration::OPTIMAL_TRACK_DIRECTORY << "Track-" << track.trackId << "_sift_keypoints.jpg";
+		sift_image_path << dto::Configuration::OPTIMAL_TRACK_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << "Track-" << track.trackId << "_sift_keypoints.jpg";
 		cv::imwrite(sift_image_path.str().c_str(), drawing_sift);
 
 		std::stringstream surf_image_path;
-		surf_image_path << dto::Configuration::OPTIMAL_TRACK_DIRECTORY << "Track-" << track.trackId << "_surf_keypoints.jpg";
+		surf_image_path << dto::Configuration::OPTIMAL_TRACK_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << "Track-" << track.trackId << "_surf_keypoints.jpg";
 		cv::imwrite(surf_image_path.str().c_str(), drawing_surf);
 	}
 }

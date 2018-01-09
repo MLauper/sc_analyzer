@@ -36,8 +36,8 @@ void image_segmentation::Controller::ProcessImage(dto::Image& image)
 	//std::cout << "Controller is processing data\n";
 
 	br->removeBackground(image, camera);
-	pd.extractPersonContours(image);
-	pd.detectPersonsYolo(image);
+	pd.extractPersonContours(image, camera);
+	pd.detectPersonsYolo(image, camera);
 
 	//std::vector<std::vector<cv::Point>> contours = pd.extractPersonContours(temp_image, temp_mask, image.filename);
 	this->image_tracking_controller.ProcessImage(image, camera);

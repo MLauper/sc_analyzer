@@ -128,7 +128,7 @@ void image_tracking::ObjectTrackerYolo::SendFinishedTracksTo(feature_extraction:
 						for (int j = 0; j < this->currentTracks.at(i).persons.size(); j++)
 						{
 							std::stringstream image_out_path;
-							image_out_path << dto::Configuration::TRACK_IMAGES_DIRECTORY << "Track-" << this->currentTracks.at(i).trackId << "-" << j << "_original.jpg";
+							image_out_path << dto::Configuration::TRACK_IMAGES_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << "Track-" << this->currentTracks.at(i).trackId << "-" << j << "_original.jpg";
 							//cv::imwrite(image_out_path.str().c_str(), this->currentTracks.at(i).images.at(j).cv_image_original);
 						}
 						for (int j = 0; j < this->currentTracks.at(i).persons.size(); j++) {
@@ -138,7 +138,7 @@ void image_tracking::ObjectTrackerYolo::SendFinishedTracksTo(feature_extraction:
 							cv::rectangle(drawing, cv::Point(p.x, p.y), cv::Point(p.x + p.w, p.y + p.h), color, 3);
 
 							std::stringstream image_out_path;
-							image_out_path << dto::Configuration::TRACK_IMAGES_DIRECTORY << "Track-" << this->currentTracks.at(i).trackId << "-" << j << "_yoloBB.jpg";
+							image_out_path << dto::Configuration::TRACK_IMAGES_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << "Track-" << this->currentTracks.at(i).trackId << "-" << j << "_yoloBB.jpg";
 							cv::imwrite(image_out_path.str().c_str(), drawing);
 						}
 					}
