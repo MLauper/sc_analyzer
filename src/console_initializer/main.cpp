@@ -6,6 +6,7 @@
 
 int main(int argc, char* argv[])
 {
+	// Read commandline arguments
 	if (argc != 5)
 	{
 		std::cerr << "Commandline arguments not provided. Please provide: scene, prefix, fps, videoFilePath" << std::endl;

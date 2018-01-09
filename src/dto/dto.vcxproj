@@ -20,11 +20,7 @@
     <ClInclude Include="Track.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Image.cpp" />
-    <ClCompile Include="Region.cpp" />
     <ClCompile Include="SQLHelper.cpp" />
-    <ClCompile Include="Track.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{EB6FEDD9-9527-4A18-BCB2-FE1F6D432C48}</ProjectGuid>
