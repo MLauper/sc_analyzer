@@ -9,6 +9,6 @@ namespace identification
 	public:
 		ColorMatcher();
 		~ColorMatcher();
-		void matchAllColors(std::vector<dto::Track>& tracks);
+		void matchAllColors(std::vector<dto::Track>& tracks) const;
 	};
 }

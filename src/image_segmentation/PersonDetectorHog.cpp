@@ -9,34 +9,34 @@ image_segmentation::PersonDetectorHog::PersonDetectorHog()
 	cv::namedWindow("PersonDetector");
 }
 
-void image_segmentation::PersonDetectorHog::detectPerson(cv::cuda::GpuMat d_image)
+void image_segmentation::PersonDetectorHog::detectPerson(cv::cuda::GpuMat d_image) const
 {
-	int win_width = 48;
-	int win_stride_width = 8;
-	int win_stride_height = 8;
-	int block_width = 16;
-	int block_stride_width = 8;
-	int block_stride_height = 8;
-	int cell_width = 8;
-	int nbins = 9;
+	const int win_width = 48;
+	const int win_stride_width = 8;
+	const int win_stride_height = 8;
+	const int block_width = 16;
+	const int block_stride_width = 8;
+	const int block_stride_height = 8;
+	const int cell_width = 8;
+	const int nbins = 9;
 
-	cv::Size win_size(win_width, win_width * 2);
-	cv::Size block_size(block_width, block_width);
-	cv::Size block_stride(block_stride_width, block_stride_height);
-	cv::Size cell_size(cell_width, cell_width);
+	const cv::Size win_size(win_width, win_width * 2);
+	const cv::Size block_size(block_width, block_width);
+	const cv::Size block_stride(block_stride_width, block_stride_height);
+	const cv::Size cell_size(cell_width, cell_width);
 
 	cv::Ptr<cv::cuda::HOG> gpu_hog = cv::cuda::HOG::create(win_size, block_size, block_stride, cell_size, nbins);
-	cv::Mat detector = gpu_hog->getDefaultPeopleDetector();
+	const cv::Mat detector = gpu_hog->getDefaultPeopleDetector();
 	gpu_hog->setSVMDetector(detector);
 
 	std::vector<cv::Rect> found;
 
-	double scale = 1.05;
-	int nlevels = 13;
-	int gr_threshold = 8;
-	double hit_threshold = 1.4;
+	const double scale = 1.05;
+	const int nlevels = 13;
+	const int gr_threshold = 8;
+	const double hit_threshold = 1.4;
 
-	cv::Size win_stride(win_stride_width, win_stride_height);
+	const cv::Size win_stride(win_stride_width, win_stride_height);
 
 	gpu_hog->setNumLevels(nlevels);
 	gpu_hog->setHitThreshold(hit_threshold);
@@ -44,8 +44,8 @@ void image_segmentation::PersonDetectorHog::detectPerson(cv::cuda::GpuMat d_imag
 	gpu_hog->setScaleFactor(scale);
 	gpu_hog->setGroupThreshold(gr_threshold);
 
-	int width = 640;
-	int height = 480;
+	const int width = 640;
+	const int height = 480;
 
 	cv::Mat temp;
 	d_image.download(temp);

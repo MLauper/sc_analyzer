@@ -10,8 +10,8 @@ namespace image_acquisition
 	public:
 		MKVFileLoader(dto::Camera& camera, image_segmentation::Controller* segmentation_controller);
 		~MKVFileLoader();
-		void process_file();
-		std::string extract_filename(char const* path_c);
+		void process_file() const;
+		static std::string extract_filename(char const* path_c);
 	private:
 		dto::Camera camera;
 		image_segmentation::Controller* segmentation_controller;

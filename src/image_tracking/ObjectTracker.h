@@ -1,5 +1,4 @@
 #pragma once
-#include <opencv2/core/base.hpp>
 #include <vector>
 #include "../dto/Image.h"
 #include "../dto/Track.h"

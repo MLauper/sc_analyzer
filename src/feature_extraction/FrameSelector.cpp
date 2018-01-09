@@ -7,7 +7,7 @@ feature_extraction::FrameSelector::FrameSelector()
 {
 }
 
-void feature_extraction::FrameSelector::SelectFrame(dto::Track& track, const dto::Camera& camera)
+void feature_extraction::FrameSelector::SelectFrame(dto::Track& track, const dto::Camera& camera) const
 {
 	if (dto::Configuration::USE_POINT_FOR_OPTIMAL_TRACK)
 	{
@@ -23,31 +23,16 @@ void feature_extraction::FrameSelector::SelectFrame(dto::Track& track, const dto
 		for (int i = 0; i < track.persons.size(); i++)
 		{
 			int candidateDistance = abs(
-				(
-					static_cast<int>(track.persons.at(i).y) + static_cast<int>(track.persons.at(i).h)
-				) - camera.optimalPersonLocation.y);
+				static_cast<int>(track.persons.at(i).y) + static_cast<int>(track.persons.at(i).h) - camera.optimalPersonLocation.y);
 			if (candidateDistance < dto::Configuration::MAX_OPTIMAL_DISTANCE)
 			{
 				personCandidate c;
 				c.personID = i;
 				c.distance_y = candidateDistance;
 				c.distance_x = abs(
-					(static_cast<int>(track.persons.at(i).x) + static_cast<int>(track.persons.at(i).w)) - camera.optimalPersonLocation.
-					                                                                                             x);
+					static_cast<int>(track.persons.at(i).x) + static_cast<int>(track.persons.at(i).w) - camera.optimalPersonLocation.
+					                                                                                           x);
 				optimalPersonCandidates.push_back(c);
-
-				if (dto::Configuration::PRINT_FRAME_SELECTION_STEPS)
-				{
-					std::cout << "Found candidate with ID: " << i << std::endl;
-					std::cout << " y-Position: " << static_cast<int>(track.persons.at(i).y) << " + " << static_cast<int>(track.persons.
-					                                                                                                           at(i).h)
-						<< " = " << static_cast<int>(track.persons.at(i).y) + static_cast<int>(track.persons.at(i).h) << std::endl;
-					std::cout << " y-Distance to " << camera.optimalPersonLocation.y << ": " << candidateDistance << std::endl;
-					std::cout << " x-Position: " << static_cast<int>(track.persons.at(i).x) << " + " << static_cast<int>(track.persons.
-					                                                                                                           at(i).w)
-						<< " = " << static_cast<int>(track.persons.at(i).x) + static_cast<int>(track.persons.at(i).w) << std::endl;
-					std::cout << " x-Distance to " << camera.optimalPersonLocation.x << ": " << c.distance_x << std::endl;
-				}
 			}
 		}
 
@@ -58,10 +43,6 @@ void feature_extraction::FrameSelector::SelectFrame(dto::Track& track, const dto
 		{
 			if (optimalPersonCandidates.at(i).distance_x < optimalRegionDistance)
 			{
-				if (dto::Configuration::PRINT_FRAME_SELECTION_STEPS)
-				{
-					std::cout << "Select better candidate ID: " << optimalPersonCandidates.at(i).personID << std::endl;
-				}
 				track.optimalPersonId = optimalPersonCandidates.at(i).personID;
 				optimalRegionDistance = optimalPersonCandidates.at(i).distance_x;
 			}
@@ -82,19 +63,19 @@ void feature_extraction::FrameSelector::SelectFrame(dto::Track& track, const dto
 		if (track.optimalPersonId != -1)
 		{
 			auto& selectedPerson = track.persons.at(track.optimalPersonId);
-			fileStream << "Selected Track Location Point: " << (selectedPerson.x + (selectedPerson.w / 2)) << "x" << (
-				selectedPerson.y + (selectedPerson.h / 2)) << std::endl;
+			fileStream << "Selected Track Location Point: " << selectedPerson.x + selectedPerson.w / 2 << "x" << selectedPerson.y
+				+ selectedPerson.h / 2 << std::endl;
 		}
 		fileStream.close();
 	}
 
-	if (dto::Configuration::SAVE_OPTIMAL_TRACK_IMAGE && track.optimalPersonId != -1)
+	if (track.optimalPersonId != -1)
 	{
 		cv::Mat drawingAll;
 		if (track.optimalPersonId != -1)
 		{
 			drawingAll = track.images.at(track.optimalPersonId).cv_image_original.clone();
-			cv::Scalar color = cv::Scalar(0, 255, 0);
+			const cv::Scalar color = cv::Scalar(0, 255, 0);
 
 			auto& person = track.persons.at(track.optimalPersonId);
 			rectangle(drawingAll, cv::Point(person.x, person.y), cv::Point(person.x + person.w, person.y + person.h), color, 3);
@@ -107,7 +88,7 @@ void feature_extraction::FrameSelector::SelectFrame(dto::Track& track, const dto
 	}
 }
 
-void feature_extraction::FrameSelector::SaveRegion(dto::Track& track, const dto::Camera& camera)
+void feature_extraction::FrameSelector::SaveRegion(dto::Track& track, const dto::Camera& camera) const
 {
 	auto& optimalPerson = track.persons.at(track.optimalPersonId);
 	cv::Rect roi;

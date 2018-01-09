@@ -13,7 +13,7 @@ feature_extraction::ColorExtractor::~ColorExtractor()
 
 
 void feature_extraction::ColorExtractor::extractMaxHue(dto::Track& track, dto::Camera& camera, cv::Mat& hsv_image,
-                                                       int& maxBucketId, bool isUpperBody)
+                                                       int& maxBucketId, const bool isUpperBody) const
 {
 	cv::Mat generatedImage;
 
@@ -70,28 +70,6 @@ void feature_extraction::ColorExtractor::extractMaxHue(dto::Track& track, dto::C
 		imwrite(image_out_path.str().c_str(), generatedRGB);
 	}
 
-	if (dto::Configuration::PRINT_HSV_VALUES)
-	{
-		std::cout << "HUE: " << std::endl;
-		for (int i = 0; i < hsv_image.rows; i++)
-		{
-			for (int j = 0; j < hsv_image.cols; j++)
-			{
-				std::cout << static_cast<int>(hsv_image.at<cv::Vec3b>(i, j)[0]) << "; ";
-			}
-		}
-		std::cout << std::endl;
-		std::cout << "VALUE: " << std::endl;
-		for (int i = 0; i < hsv_image.rows; i++)
-		{
-			for (int j = 0; j < hsv_image.cols; j++)
-			{
-				std::cout << static_cast<int>(hsv_image.at<cv::Vec3b>(i, j)[2]) << "; ";
-			}
-		}
-		std::cout << std::endl;
-	}
-
 	maxBucketId = 0;
 	int maxBucketValue = 0;
 	for (int i = 0; i < hueBuckets.size(); i++)
@@ -104,7 +82,7 @@ void feature_extraction::ColorExtractor::extractMaxHue(dto::Track& track, dto::C
 	}
 }
 
-void feature_extraction::ColorExtractor::extractPrimaryColors(dto::Track& track, dto::Camera& camera)
+void feature_extraction::ColorExtractor::extractPrimaryColors(dto::Track& track, dto::Camera& camera) const
 {
 	// Convert image to HSV
 	cv::Mat hsv_upperBody;

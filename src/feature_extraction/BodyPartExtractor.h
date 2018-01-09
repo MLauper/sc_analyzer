@@ -10,6 +10,6 @@ namespace feature_extraction
 	public:
 		BodyPartExtractor();
 		~BodyPartExtractor();
-		void extractBodyParts(dto::Track& track, dto::Camera& camera);
+		void extractBodyParts(dto::Track& track, dto::Camera& camera) const;
 	};
 }

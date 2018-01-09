@@ -1,10 +1,10 @@
 #pragma once
 #include <string>
 #include <opencv2/opencv.hpp>
-#include <opencv2/core.hpp>
+//#include <opencv2/core.hpp>
 #include <opencv2/core/mat.hpp>
-#include <opencv2/video.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
+//#include <opencv2/video.hpp>
+//#include <opencv2/imgproc/imgproc.hpp>
 #include <arrayfire.h>
 #include "Region.h"
 #include <yolo/yolo_v2_class.hpp>

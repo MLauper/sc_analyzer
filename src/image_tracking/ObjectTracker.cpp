@@ -1,11 +1,7 @@
 #include "ObjectTracker.h"
-#include <iostream>
 #include <opencv2/core.hpp>
 #include "opencv2/opencv.hpp"
-#include "opencv2/core/utility.hpp"
-#include <opencv2/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
-#include <random>
 #include "../dto/Configuration.h"
 
 
@@ -24,7 +20,7 @@ void image_tracking::ObjectTracker::apply(dto::Image& image)
 		// Try to find a previous region that fits
 		for (int i = 0; i < this->currentTracks.size(); i++)
 		{
-			dto::Region prevRegion = this->currentTracks.at(i).regions.back();
+			const dto::Region prevRegion = this->currentTracks.at(i).regions.back();
 			if (region.minX >= prevRegion.minX && region.minX <= prevRegion.maxX)
 			{
 				this->currentTracks.at(i).regions.push_back(region);
@@ -160,14 +156,14 @@ void image_tracking::ObjectTracker::SendFinishedTracksTo(feature_extraction::Con
 	{
 		if (this->currentTracks.at(i).numImagesWithoutRegion >= this->maxNumberOfMissingFramesInTrack)
 		{
-			if (dto::Configuration::SAVE_TRACK_IMAGES || dto::Configuration::SHOW_TRACK_IMAGES)
+			if (dto::Configuration::SAVE_TRACK_IMAGES)
 			{
 				cv::Mat drawingAll = cv::Mat::zeros(this->currentTracks.at(i).images.at(0).cv_image_original.size(), CV_8UC3);
 				cv::RNG rng(12345);
 
 				for (int j = 0; j < this->currentTracks.at(i).regions.size(); j++)
 				{
-					cv::Scalar color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
+					const cv::Scalar color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
 					drawContours(drawingAll, std::vector<std::vector<cv::Point>>(1, this->currentTracks.at(i).regions.at(j).contour),
 					             0, color, 2, 8, 0, 0, cv::Point());
 				}
@@ -178,11 +174,6 @@ void image_tracking::ObjectTracker::SendFinishedTracksTo(feature_extraction::Con
 					image_out_path << dto::Configuration::TRACK_IMAGES_DIRECTORY << "Track-" << this->currentTracks.at(i).trackId <<
 						"_contours.jpg";
 					imwrite(image_out_path.str().c_str(), drawingAll);
-				}
-				if (dto::Configuration::SHOW_TRACK_IMAGES)
-				{
-					imshow("Track Contours", drawingAll);
-					cv::waitKey(1);
 				}
 			}
 

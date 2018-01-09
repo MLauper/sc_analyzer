@@ -11,7 +11,7 @@ namespace feature_extraction
 		TrackPersistor();
 		~TrackPersistor();
 
-		void persistTrack(dto::Track& track, dto::Camera& camera);
+		void persistTrack(dto::Track& track, dto::Camera& camera) const;
 
 	private:
 		dto::SQLHelper sql_helper;

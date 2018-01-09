@@ -1,11 +1,11 @@
 #include "JPGFileLoader.h"
 #include <string>
-#include <bemapiset.h>
+//#include <bemapiset.h>
 #include <tchar.h>
 #include <filesystem>
 #include <arrayfire.h>
 #include <strsafe.h>
-#include <set>
+//#include <set>
 #include "dto/Image.h"
 #include "dto/Configuration.h"
 #include "URLImageLoader.h"
@@ -13,16 +13,16 @@
 
 namespace fs = std::experimental::filesystem;
 
-size_t write_data(char* ptr, size_t size, size_t nmemb, void* userdata)
+size_t write_data(char* ptr, const size_t size, const size_t nmemb, void* userdata)
 {
-	std::vector<uchar>* stream = (std::vector<uchar>*)userdata;
-	size_t count = size * nmemb;
+	std::vector<uchar>* stream = static_cast<std::vector<uchar>*>(userdata);
+	const size_t count = size * nmemb;
 	stream->insert(stream->end(), ptr, ptr + count);
 	return count;
 }
 
 //function to retrieve the image as cv::Mat data type
-cv::Mat curlImg(const char* img_url, const char* username, const char* password, int timeout = 100)
+cv::Mat curlImg(const char* img_url, const char* username, const char* password, const int timeout = 100)
 {
 	std::vector<uchar> stream;
 	CURL* curl = curl_easy_init();
@@ -34,13 +34,13 @@ cv::Mat curlImg(const char* img_url, const char* username, const char* password,
 	curl_easy_setopt(curl, CURLOPT_USERNAME, username);
 	curl_easy_setopt(curl, CURLOPT_PASSWORD, password);
 
-	CURLcode res = curl_easy_perform(curl); // start curl
+	curl_easy_perform(curl); // start curl
 
 	curl_easy_cleanup(curl); // cleanup
 	return cv::imdecode(stream, -1); // 'keep-as-is'
 }
 
-
+/*
 static size_t read_callback(void* ptr, size_t size, size_t nmemb, void* stream)
 {
 	size_t retcode;
@@ -49,18 +49,18 @@ static size_t read_callback(void* ptr, size_t size, size_t nmemb, void* stream)
 	memcpy(ptr, stream, sizeof(int));
 	retcode = sizeof(int);
 
-	nread = (curl_off_t)retcode;
+	nread = static_cast<curl_off_t>(retcode);
 
-	std::cout << "Source as int is: " << *(int*)stream << std::endl;
-	std::cout << "Destination as int is: " << *(int*)ptr << std::endl;
+	std::cout << "Source as int is: " << *static_cast<int*>(stream) << std::endl;
+	std::cout << "Destination as int is: " << *static_cast<int*>(ptr) << std::endl;
 
 	fprintf(stderr, "*** We read %" CURL_FORMAT_CURL_OFF_T
 	        " bytes from data\n", nread);
 
 	return retcode;
-}
+} */
 
-void image_acquisition::URLImageLoader::publishResults(int data)
+void image_acquisition::URLImageLoader::publishResults(const int data)
 {
 	std::stringstream publish_command;
 	publish_command << "powershell.exe -NoProfile -NoLogo -Command \"Invoke-WebRequest -Method Put -Uri '" << dto::
@@ -126,28 +126,6 @@ void image_acquisition::URLImageLoader::startCapturing()
 
 		cv::waitKey(1);
 	}
-
-	image.cv_image_original = cv::imread(image.path);
-
-	if (dto::Configuration::CREATE_DISTORTED_IMAGE)
-	{
-		remap(image.cv_image_original, image.cv_image_distorted, this->dist_map1, this->dist_map2, cv::INTER_LINEAR);
-		if (dto::Configuration::SHOW_DISTORTED_IMAGE)
-		{
-			imshow("DistortedImage", image.cv_image_distorted);
-			cv::waitKey(1);
-		}
-
-		if (dto::Configuration::SAVE_DISTORTED_IMAGE)
-		{
-			std::stringstream image_out_path;
-			image_out_path << dto::Configuration::ORIGINAL_IMAGES_DIRECTORY << image.filename << "_distorted.jpg";
-			imwrite(image_out_path.str().c_str(), image.cv_image_distorted);
-		}
-	}
-
-	//Process image
-	this->segmentation_controller->ProcessImage(image);
 }
 
 image_acquisition::URLImageLoader::URLImageLoader(dto::Camera& camera,
@@ -157,15 +135,6 @@ image_acquisition::URLImageLoader::URLImageLoader(dto::Camera& camera,
 	this->frameNumber = 0;
 
 	this->segmentation_controller = segmentation_controller;
-
-	if (dto::Configuration::CREATE_DISTORTED_IMAGE)
-	{
-		initUndistortRectifyMap(
-			camera.cameraMatrix, camera.distCoeffs, cv::Mat(),
-			getOptimalNewCameraMatrix(camera.cameraMatrix, camera.distCoeffs, cv::Size(camera.width, camera.height), 1,
-			                          cv::Size(camera.width, camera.height), nullptr), cv::Size(camera.width, camera.height),
-			CV_16SC2, this->dist_map1, this->dist_map2);
-	}
 }
 
 image_acquisition::URLImageLoader::~URLImageLoader()

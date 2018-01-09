@@ -1,6 +1,4 @@
 #include "Controller.h"
-#include <opencv2/core/cuda.hpp>
-#include "opencv2/highgui.hpp"
 #include "../dto/Image.h"
 #include "../dto/Configuration.h"
 
@@ -15,10 +13,5 @@ void image_tracking::Controller::ProcessImage(dto::Image& image, dto::Camera& ca
 	{
 		ot_yolo.apply(image);
 		ot_yolo.SendFinishedTracksTo(this->feature_extraction_controller, camera);
-	}
-	else
-	{
-		ot.apply(image);
-		ot.SendFinishedTracksTo(this->feature_extraction_controller, camera);
 	}
 }

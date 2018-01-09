@@ -11,9 +11,12 @@ identification::LikelihoodCalculator::~LikelihoodCalculator()
 {
 }
 
-bool compare_suggestions(dto::Track::suggestion i, dto::Track::suggestion j) { return (i.likelihood > j.likelihood); }
+bool compare_suggestions(const dto::Track::suggestion i, const dto::Track::suggestion j)
+{
+	return i.likelihood > j.likelihood;
+}
 
-void identification::LikelihoodCalculator::calculateAllLikelihoods(std::vector<dto::Track>& tracks)
+void identification::LikelihoodCalculator::calculateAllLikelihoods(std::vector<dto::Track>& tracks) const
 {
 	for (auto& t : tracks)
 	{

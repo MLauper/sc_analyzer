@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <image_segmentation/Controller.h>
-#include <set>
+//#include <set>
 #include "dto/Camera.h"
 
 namespace image_acquisition
@@ -9,9 +9,8 @@ namespace image_acquisition
 	class FileLoader
 	{
 	public:
-		void SetPrefix(std::string prefix);
-		void WatchDirectory();
-		void ProcessFiles();
+		void WatchDirectory() const;
+		void ProcessFiles() const;
 		FileLoader(std::string directory, std::string prefix, image_segmentation::Controller* segmentation_controller);
 		FileLoader(dto::Camera& camera, image_segmentation::Controller* segmentation_controller);
 		void SetDirectory(std::string directory);

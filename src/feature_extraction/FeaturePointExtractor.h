@@ -11,7 +11,7 @@ namespace feature_extraction
 	public:
 		FeaturePointExtractor();
 		~FeaturePointExtractor();
-		void extractFeaturePoints(dto::Track& track, dto::Camera& camera);
+		void extractFeaturePoints(dto::Track& track, dto::Camera& camera) const;
 	private:
 		cv::FeatureDetector orb_detector;
 		cv::Ptr<cv::xfeatures2d::SURF> surf_detector_;

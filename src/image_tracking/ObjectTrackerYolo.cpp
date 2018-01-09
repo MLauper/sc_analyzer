@@ -14,7 +14,7 @@ void image_tracking::ObjectTrackerYolo::apply(dto::Image& image)
 	{
 		auto& p = image.yoloPersons.at(x);
 
-		cv::Rect curBB(p.x, p.y, p.w, p.h);
+		const cv::Rect curBB(p.x, p.y, p.w, p.h);
 
 		// Try to find a previous region that fits
 		std::vector<dto::Track*> candidateTracks;
@@ -23,9 +23,9 @@ void image_tracking::ObjectTrackerYolo::apply(dto::Image& image)
 		{
 			auto& prevPerson = this->currentTracks.at(i).persons.back();
 
-			cv::Rect prevBB(prevPerson.x, prevPerson.y, prevPerson.w, prevPerson.h);
+			const cv::Rect prevBB(prevPerson.x, prevPerson.y, prevPerson.w, prevPerson.h);
 
-			bool intersectingBB = ((curBB & prevBB).area() > 0);
+			const bool intersectingBB = (curBB & prevBB).area() > 0;
 
 			if (intersectingBB) { candidateTracks.push_back(&this->currentTracks.at(i)); }
 		}
@@ -54,13 +54,13 @@ void image_tracking::ObjectTrackerYolo::apply(dto::Image& image)
 			// if multiple candidates exist, choose closest
 		else if (candidateTracks.size() > 1)
 		{
-			const cv::Point center_current(p.x + (p.w / 2), p.y + (p.h / 2));
+			const cv::Point center_current(p.x + p.w / 2, p.y + p.h / 2);
 			dto::Track* selectedTrack = candidateTracks.at(0);
 			double selectedTrackDistance = DBL_MAX;
 			for (dto::Track* ct : candidateTracks)
 			{
 				const auto& prevPerson = ct->persons.back();
-				const cv::Point center_previous(prevPerson.x + (prevPerson.w / 2), prevPerson.y + (prevPerson.h / 2));
+				const cv::Point center_previous(prevPerson.x + prevPerson.w / 2, prevPerson.y + prevPerson.h / 2);
 
 				const double candidateDistance = norm(center_previous - center_current);
 
@@ -122,7 +122,7 @@ void image_tracking::ObjectTrackerYolo::SendFinishedTracksTo(feature_extraction:
 		{
 			if (this->currentTracks.at(i).images.size() >= dto::Configuration::MIN_NUMBERS_OF_FRAMES_IN_TRACK)
 			{
-				if (dto::Configuration::SAVE_TRACK_IMAGES || dto::Configuration::SHOW_TRACK_IMAGES)
+				if (dto::Configuration::SAVE_TRACK_IMAGES)
 				{
 					// Save all Track Images
 					if (dto::Configuration::SAVE_TRACK_IMAGES)
@@ -138,7 +138,7 @@ void image_tracking::ObjectTrackerYolo::SendFinishedTracksTo(feature_extraction:
 						{
 							auto& p = this->currentTracks.at(i).persons.at(j);
 							cv::Mat drawing = this->currentTracks.at(i).images.at(j).cv_image_original.clone();
-							cv::Scalar color = cv::Scalar(0, 255, 0);
+							const cv::Scalar color = cv::Scalar(0, 255, 0);
 							rectangle(drawing, cv::Point(p.x, p.y), cv::Point(p.x + p.w, p.y + p.h), color, 3);
 
 							std::stringstream image_out_path;
@@ -154,7 +154,7 @@ void image_tracking::ObjectTrackerYolo::SendFinishedTracksTo(feature_extraction:
 					for (int j = 0; j < this->currentTracks.at(i).persons.size(); j++)
 					{
 						auto& p = this->currentTracks.at(i).persons.at(j);
-						cv::Scalar color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
+						const cv::Scalar color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
 						rectangle(drawingAll, cv::Point(p.x, p.y), cv::Point(p.x + p.w, p.y + p.h), color);
 					}
 
@@ -164,11 +164,6 @@ void image_tracking::ObjectTrackerYolo::SendFinishedTracksTo(feature_extraction:
 						image_out_path << dto::Configuration::TRACK_IMAGES_DIRECTORY << "Track-" << this->currentTracks.at(i).trackId <<
 							"_yoloBB.jpg";
 						imwrite(image_out_path.str().c_str(), drawingAll);
-					}
-					if (dto::Configuration::SHOW_TRACK_IMAGES)
-					{
-						imshow("Track Bounding Boxes", drawingAll);
-						cv::waitKey(1);
 					}
 				}
 

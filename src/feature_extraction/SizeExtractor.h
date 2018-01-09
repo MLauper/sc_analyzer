@@ -9,6 +9,6 @@ namespace feature_extraction
 	public:
 		SizeExtractor();
 		~SizeExtractor();
-		void extractBodySizes(dto::Track& track, dto::Camera camera);
+		static void extractBodySizes(dto::Track& track, dto::Camera camera);
 	};
 }

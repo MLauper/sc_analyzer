@@ -4,7 +4,7 @@
 #undef min
 #undef max
 
-image_segmentation::Controller::Controller(dto::Camera& camera)
+image_segmentation::Controller::Controller(dto::Camera& camera): current_image_time(nullptr)
 {
 	this->camera = camera;
 	this->br = new BackgroundRemover(camera);
@@ -261,7 +261,7 @@ void image_segmentation::Controller::ProcessImage(SYSTEMTIME* time, af::array& i
 	//	//af::free(this->current_image_grayscale);
 }
 
-af::array image_segmentation::Controller::binThreshold(const af::array& in, float thresholdValue)
+af::array image_segmentation::Controller::binThreshold(const af::array& in, const float thresholdValue)
 {
 	af::array ret_val = in.copy();
 	ret_val = (ret_val < thresholdValue) * 0.0f + 1.0f * (ret_val > thresholdValue);

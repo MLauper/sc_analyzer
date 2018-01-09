@@ -1,6 +1,4 @@
 #pragma once
-#include <opencv2/core/base.hpp>
-#include <opencv2/core/mat.hpp>
 #include "../dto/Image.h"
 #include <yolo/yolo_v2_class.hpp>
 #include "../dto/Camera.h"
@@ -11,8 +9,8 @@ namespace image_segmentation
 	{
 	public:
 		PersonDetector();
-		void extractPersonContours(dto::Image& Image, dto::Camera& camera);
-		void detectPersonsYolo(dto::Image& Image, dto::Camera& camera);
+		void extractPersonContours(dto::Image& Image, dto::Camera& camera) const;
+		void detectPersonsYolo(dto::Image& Image, dto::Camera& camera) const;
 	private:
 		int minRegionWidth;
 		int minRegionHeight;

@@ -11,7 +11,7 @@ feature_extraction::SizeExtractor::~SizeExtractor()
 {
 }
 
-void feature_extraction::SizeExtractor::extractBodySizes(dto::Track& track, dto::Camera camera)
+void feature_extraction::SizeExtractor::extractBodySizes(dto::Track& track, const dto::Camera camera)
 {
 	// Calculate values based on calibration value
 	track.estimatedPersonSize.height = track.persons.at(track.optimalPersonId).h * camera.pixelToCentimeterRatio;

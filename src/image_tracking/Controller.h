@@ -1,7 +1,5 @@
 #pragma once
-#include <opencv2/core/base.hpp>
 #include "ObjectTracker.h"
-#include <opencv2/core/mat.hpp>
 #include "../dto/Image.h"
 #include "../feature_extraction/Controller.h"
 #include "ObjectTrackerYolo.h"

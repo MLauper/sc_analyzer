@@ -119,7 +119,7 @@ public:
 				if (isListOfImages(input) && readStringList(input, imageList))
 				{
 					inputType = IMAGE_LIST;
-					nrFrames = (nrFrames < (int)imageList.size()) ? nrFrames : (int)imageList.size();
+					nrFrames = nrFrames < static_cast<int>(imageList.size()) ? nrFrames : static_cast<int>(imageList.size());
 				}
 				else
 					inputType = VIDEO_FILE;
@@ -194,9 +194,10 @@ public:
 		FileNode n = fs.getFirstTopLevelNode();
 		if (n.type() != FileNode::SEQ)
 			return false;
-		FileNodeIterator it = n.begin(), it_end = n.end();
+		FileNodeIterator it = n.begin();
+		const FileNodeIterator it_end = n.end();
 		for (; it != it_end; ++it)
-			l.push_back((string)*it);
+			l.push_back(static_cast<string>(*it));
 		return true;
 	}
 
@@ -261,7 +262,7 @@ enum { DETECTION = 0, CAPTURING = 1, CALIBRATED = 2 };
 bool runCalibrationAndSave(Settings& s, Size imageSize, Mat& cameraMatrix, Mat& distCoeffs,
                            vector<vector<Point2f>> imagePoints);
 
-int main(int argc, char* argv[])
+int main(const int argc, char* argv[])
 {
 	help();
 
@@ -298,13 +299,12 @@ int main(int argc, char* argv[])
 	//! [get_input]
 	for (;;)
 	{
-		Mat view;
 		bool blinkOutput = false;
 
-		view = s.nextImage();
+		Mat view = s.nextImage();
 
 		//-----  If no more image, or got enough, then stop calibration and show result -------------
-		if (mode == CAPTURING && imagePoints.size() >= (size_t)s.nrFrames)
+		if (mode == CAPTURING && imagePoints.size() >= static_cast<size_t>(s.nrFrames))
 		{
 			if (runCalibrationAndSave(s, imageSize, cameraMatrix, distCoeffs, imagePoints))
 				mode = CALIBRATED;
@@ -378,17 +378,17 @@ int main(int argc, char* argv[])
 		//! [pattern_found]
 		//----------------------------- Output Text ------------------------------------------------
 		//! [output_text]
-		string msg = (mode == CAPTURING) ? "100/100" : mode == CALIBRATED ? "Calibrated" : "Press 'g' to start";
+		string msg = mode == CAPTURING ? "100/100" : mode == CALIBRATED ? "Calibrated" : "Press 'g' to start";
 		int baseLine = 0;
-		Size textSize = getTextSize(msg, 1, 1, 1, &baseLine);
-		Point textOrigin(view.cols - 2 * textSize.width - 10, view.rows - 2 * baseLine - 10);
+		const Size textSize = getTextSize(msg, 1, 1, 1, &baseLine);
+		const Point textOrigin(view.cols - 2 * textSize.width - 10, view.rows - 2 * baseLine - 10);
 
 		if (mode == CAPTURING)
 		{
 			if (s.showUndistorsed)
-				msg = format("%d/%d Undist", (int)imagePoints.size(), s.nrFrames);
+				msg = format("%d/%d Undist", static_cast<int>(imagePoints.size()), s.nrFrames);
 			else
-				msg = format("%d/%d", (int)imagePoints.size(), s.nrFrames);
+				msg = format("%d/%d", static_cast<int>(imagePoints.size()), s.nrFrames);
 		}
 
 		putText(view, msg, textOrigin, 1, 1, mode == CALIBRATED ? GREEN : RED);
@@ -400,7 +400,7 @@ int main(int argc, char* argv[])
 		//! [output_undistorted]
 		if (mode == CALIBRATED && s.showUndistorsed)
 		{
-			Mat temp = view.clone();
+			const Mat temp = view.clone();
 			if (s.useFisheye)
 				fisheye::undistortImage(temp, view, cameraMatrix, distCoeffs);
 			else
@@ -410,7 +410,7 @@ int main(int argc, char* argv[])
 		//------------------------------ Show image and check for input commands -------------------
 		//! [await_input]
 		imshow("Image View", view);
-		char key = (char)waitKey(s.inputCapture.isOpened() ? 50 : s.delay);
+		const char key = static_cast<char>(waitKey(s.inputCapture.isOpened() ? 50 : s.delay));
 
 		if (key == ESC_KEY)
 			break;
@@ -430,7 +430,7 @@ int main(int argc, char* argv[])
 	//! [show_results]
 	if (s.inputType == Settings::IMAGE_LIST && s.showUndistorsed)
 	{
-		Mat view, rview, map1, map2;
+		Mat rview, map1, map2;
 
 		if (s.useFisheye)
 		{
@@ -450,12 +450,12 @@ int main(int argc, char* argv[])
 
 		for (size_t i = 0; i < s.imageList.size(); i++)
 		{
-			view = imread(s.imageList[i], IMREAD_COLOR);
+			Mat view = imread(s.imageList[i], IMREAD_COLOR);
 			if (view.empty())
 				continue;
 			remap(view, rview, map1, map2, INTER_LINEAR);
 			imshow("Image View", rview);
-			char c = (char)waitKey();
+			const char c = static_cast<char>(waitKey());
 			if (c == ESC_KEY || c == 'q' || c == 'Q')
 				break;
 		}
@@ -470,11 +470,11 @@ static double computeReprojectionErrors(const vector<vector<Point3f>>& objectPoi
                                         const vector<vector<Point2f>>& imagePoints,
                                         const vector<Mat>& rvecs, const vector<Mat>& tvecs,
                                         const Mat& cameraMatrix, const Mat& distCoeffs,
-                                        vector<float>& perViewErrors, bool fisheye)
+                                        vector<float>& perViewErrors, const bool fisheye)
 {
 	vector<Point2f> imagePoints2;
 	size_t totalPoints = 0;
-	double totalErr = 0, err;
+	double totalErr = 0;
 	perViewErrors.resize(objectPoints.size());
 
 	for (size_t i = 0; i < objectPoints.size(); ++i)
@@ -488,10 +488,10 @@ static double computeReprojectionErrors(const vector<vector<Point3f>>& objectPoi
 		{
 			projectPoints(objectPoints[i], rvecs[i], tvecs[i], cameraMatrix, distCoeffs, imagePoints2);
 		}
-		err = norm(imagePoints[i], imagePoints2, NORM_L2);
+		double err = norm(imagePoints[i], imagePoints2, NORM_L2);
 
-		size_t n = objectPoints[i].size();
-		perViewErrors[i] = (float)std::sqrt(err * err / n);
+		const size_t n = objectPoints[i].size();
+		perViewErrors[i] = static_cast<float>(std::sqrt(err * err / n));
 		totalErr += err * err;
 		totalPoints += n;
 	}
@@ -501,8 +501,8 @@ static double computeReprojectionErrors(const vector<vector<Point3f>>& objectPoi
 
 //! [compute_errors]
 //! [board_corners]
-static void calcBoardCornerPositions(Size boardSize, float squareSize, vector<Point3f>& corners,
-                                     Settings::Pattern patternType /*= Settings::CHESSBOARD*/)
+static void calcBoardCornerPositions(const Size boardSize, const float squareSize, vector<Point3f>& corners,
+                                     const Settings::Pattern patternType /*= Settings::CHESSBOARD*/)
 {
 	corners.clear();
 
@@ -574,7 +574,7 @@ static bool runCalibration(Settings& s, Size& imageSize, Mat& cameraMatrix, Mat&
 
 	cout << "Re-projection error reported by calibrateCamera: " << rms << endl;
 
-	bool ok = checkRange(cameraMatrix) && checkRange(distCoeffs);
+	const bool ok = checkRange(cameraMatrix) && checkRange(distCoeffs);
 
 	totalAvgErr = computeReprojectionErrors(objectPoints, imagePoints, rvecs, tvecs, cameraMatrix,
 	                                        distCoeffs, reprojErrs, s.useFisheye);
@@ -586,7 +586,7 @@ static bool runCalibration(Settings& s, Size& imageSize, Mat& cameraMatrix, Mat&
 static void saveCameraParams(Settings& s, Size& imageSize, Mat& cameraMatrix, Mat& distCoeffs,
                              const vector<Mat>& rvecs, const vector<Mat>& tvecs,
                              const vector<float>& reprojErrs, const vector<vector<Point2f>>& imagePoints,
-                             double totalAvgErr)
+                             const double totalAvgErr)
 {
 	FileStorage fs(s.outputFileName, FileStorage::WRITE);
 
@@ -594,12 +594,12 @@ static void saveCameraParams(Settings& s, Size& imageSize, Mat& cameraMatrix, Ma
 	time(&tm);
 	struct tm* t2 = localtime(&tm);
 	char buf[1024];
-	strftime(buf, sizeof(buf), "%c", t2);
+	strftime(buf, sizeof buf, "%c", t2);
 
 	fs << "calibration_time" << buf;
 
 	if (!rvecs.empty() || !reprojErrs.empty())
-		fs << "nr_of_frames" << (int)std::max(rvecs.size(), reprojErrs.size());
+		fs << "nr_of_frames" << static_cast<int>(std::max(rvecs.size(), reprojErrs.size()));
 	fs << "image_width" << imageSize.width;
 	fs << "image_height" << imageSize.height;
 	fs << "board_width" << s.boardSize.width;
@@ -652,9 +652,9 @@ static void saveCameraParams(Settings& s, Size& imageSize, Mat& cameraMatrix, Ma
 	if (s.writeExtrinsics && !rvecs.empty() && !tvecs.empty())
 	{
 		CV_Assert(rvecs[0].type() == tvecs[0].type())		;
-		Mat bigmat((int)rvecs.size(), 6, CV_MAKETYPE(rvecs[0].type(), 1));
-		bool needReshapeR = rvecs[0].depth() != 1 ? true : false;
-		bool needReshapeT = tvecs[0].depth() != 1 ? true : false;
+		const Mat bigmat(static_cast<int>(rvecs.size()), 6, CV_MAKETYPE(rvecs[0].type(), 1));
+		const bool needReshapeR = rvecs[0].depth() != 1 ? true : false;
+		const bool needReshapeT = tvecs[0].depth() != 1 ? true : false;
 
 		for (size_t i = 0; i < rvecs.size(); i++)
 		{
@@ -684,7 +684,7 @@ static void saveCameraParams(Settings& s, Size& imageSize, Mat& cameraMatrix, Ma
 
 	if (s.writePoints && !imagePoints.empty())
 	{
-		Mat imagePtMat((int)imagePoints.size(), (int)imagePoints[0].size(), CV_32FC2);
+		Mat imagePtMat(static_cast<int>(imagePoints.size()), static_cast<int>(imagePoints[0].size()), CV_32FC2);
 		for (size_t i = 0; i < imagePoints.size(); i++)
 		{
 			Mat r = imagePtMat.row(int(i)).reshape(2, imagePtMat.cols);
@@ -697,14 +697,14 @@ static void saveCameraParams(Settings& s, Size& imageSize, Mat& cameraMatrix, Ma
 
 //! [run_and_save]
 bool runCalibrationAndSave(Settings& s, Size imageSize, Mat& cameraMatrix, Mat& distCoeffs,
-                           vector<vector<Point2f>> imagePoints)
+                           const vector<vector<Point2f>> imagePoints)
 {
 	vector<Mat> rvecs, tvecs;
 	vector<float> reprojErrs;
 	double totalAvgErr = 0;
 
-	bool ok = runCalibration(s, imageSize, cameraMatrix, distCoeffs, imagePoints, rvecs, tvecs, reprojErrs,
-	                         totalAvgErr);
+	const bool ok = runCalibration(s, imageSize, cameraMatrix, distCoeffs, imagePoints, rvecs, tvecs, reprojErrs,
+	                               totalAvgErr);
 	cout << (ok ? "Calibration succeeded" : "Calibration failed")
 		<< ". avg re projection error = " << totalAvgErr << endl;
 

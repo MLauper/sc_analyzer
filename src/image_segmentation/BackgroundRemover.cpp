@@ -1,10 +1,10 @@
 #include "BackgroundRemover.h"
-#include <opencv2/cudalegacy.hpp>
+//#include <opencv2/cudalegacy.hpp>
 #include "../dto/Image.h"
 #include "../dto/Configuration.h"
 #include "../dto/Camera.h"
 
-image_segmentation::BackgroundRemover::BackgroundRemover(dto::Camera& camera)
+image_segmentation::BackgroundRemover::BackgroundRemover(dto::Camera& camera): keyboard(0)
 {
 	//create Background Subtractor objects
 	this->fps = camera.fps;
@@ -16,7 +16,7 @@ image_segmentation::BackgroundRemover::BackgroundRemover(dto::Camera& camera)
 	//namedWindow("Contours", cv::WINDOW_AUTOSIZE);
 }
 
-void image_segmentation::BackgroundRemover::removeBackground(dto::Image& image, dto::Camera& camera)
+void image_segmentation::BackgroundRemover::removeBackground(dto::Image& image, dto::Camera& camera) const
 {
 	//read the first file of the sequence
 	//image.cv_image_original = cv::imread(image.path);
@@ -27,12 +27,6 @@ void image_segmentation::BackgroundRemover::removeBackground(dto::Image& image, 
 		image_out_path << dto::Configuration::ORIGINAL_IMAGES_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix
 			<< "\\" << image.filename << "_original.jpg";
 		imwrite(image_out_path.str().c_str(), image.cv_image_original);
-	}
-
-	if (dto::Configuration::SHOW_ORIGINAL_IMAGES)
-	{
-		imshow("Original", image.cv_image_original);
-		cv::waitKey(1);
 	}
 
 	image.cv_gpu_image.upload(image.cv_image_original);
@@ -86,11 +80,11 @@ void image_segmentation::BackgroundRemover::removeBackground(dto::Image& image, 
 	// Remove the shadow parts and the noise
 	threshold(image.cv_fgmask, image.cv_fgmask, 128, 255, cv::THRESH_BINARY);
 
-	int erosion_type = cv::MORPH_ELLIPSE;
-	int erosion_size = 3;
-	cv::Mat element = getStructuringElement(erosion_type,
-	                                        cv::Size(2 * erosion_size + 1, 2 * erosion_size + 1),
-	                                        cv::Point(erosion_size, erosion_size));
+	const int erosion_type = cv::MORPH_ELLIPSE;
+	const int erosion_size = 3;
+	const cv::Mat element = getStructuringElement(erosion_type,
+	                                              cv::Size(2 * erosion_size + 1, 2 * erosion_size + 1),
+	                                              cv::Point(erosion_size, erosion_size));
 	dilate(image.cv_fgmask, image.cv_fgmask, element);
 
 	image.cv_gpu_fgmask.upload(image.cv_fgmask);
@@ -112,21 +106,10 @@ void image_segmentation::BackgroundRemover::removeBackground(dto::Image& image, 
 			<< image.filename << "_FG.jpg";
 		imwrite(image_out_path.str().c_str(), image.cv_fgimg);
 	}
-	if (dto::Configuration::SAVE_FG_MASK)
-	{
-		std::stringstream image_out_path;
-		image_out_path << dto::Configuration::FG_MASKS_DIRECTORY << image.filename << "_FG_MASK.jpg";
-		imwrite(image_out_path.str().c_str(), image.cv_fgmask);
-	}
 
 	if (dto::Configuration::SHOW_FG_IMAGES)
 	{
 		imshow("FG Images", image.cv_fgimg);
-		cv::waitKey(1);
-	}
-	if (dto::Configuration::SHOW_FG_MASKS)
-	{
-		imshow("FG Mask", image.cv_fgmask);
 		cv::waitKey(1);
 	}
 }

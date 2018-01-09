@@ -8,7 +8,7 @@ namespace feature_extraction
 	{
 	public:
 		FrameSelector();
-		void SelectFrame(dto::Track& track, const dto::Camera& camera);
-		void SaveRegion(dto::Track& track, const dto::Camera& camera);
+		void SelectFrame(dto::Track& track, const dto::Camera& camera) const;
+		void SaveRegion(dto::Track& track, const dto::Camera& camera) const;
 	};
 }

@@ -1,10 +1,9 @@
 ﻿#define NOMINMAX
 
-#include "image_acquisition/image_acquisition.h"
-#include "image_segmentation/image_segmentation.h"
+//#include "image_acquisition/image_acquisition.h"
 #include "image_acquisition/MKVFileLoader.h"
 
-int main(int argc, char* argv[])
+int main(const int argc, char* argv[])
 {
 	// Read commandline arguments
 	if (argc != 5)
@@ -44,7 +43,7 @@ int main(int argc, char* argv[])
 		camera.secondGateMode = dto::Camera::gateMode::minLeft;
 		camera.secondGateValue = 770;
 		camera.optimalPersonLocation = cv::Point(770, 950);
-		camera.pixelToCentimeterRatio = (180.0f / 515.0f);
+		camera.pixelToCentimeterRatio = 180.0f / 515.0f;
 
 		// Camera distortion
 		const double cam_fx = 1.5429064838570325e+03;
@@ -71,7 +70,7 @@ int main(int argc, char* argv[])
 		camera.secondGateMode = dto::Camera::gateMode::minLeft;
 		camera.secondGateValue = 922;
 		camera.optimalPersonLocation = cv::Point(922, 950);
-		camera.pixelToCentimeterRatio = (180.0f / 540.0f);
+		camera.pixelToCentimeterRatio = 180.0f / 540.0f;
 
 		// Camera distortion
 		const double cam_fx = 1.5429064838570325e+03;

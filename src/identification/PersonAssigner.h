@@ -10,6 +10,6 @@ namespace identification
 	public:
 		PersonAssigner();
 		~PersonAssigner();
-		void assignTracksToPerson(std::vector<dto::Track>& tracks, std::vector<dto::Person>& persons);
+		static void assignTracksToPerson(std::vector<dto::Track>& tracks, std::vector<dto::Person>& persons);
 	};
 }

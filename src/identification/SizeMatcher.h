@@ -9,6 +9,6 @@ namespace identification
 	public:
 		SizeMatcher();
 		~SizeMatcher();
-		void matchAllSizes(std::vector<dto::Track>& tracks);
+		void matchAllSizes(std::vector<dto::Track>& tracks) const;
 	};
 }

@@ -10,19 +10,19 @@ identification::SizeMatcher::~SizeMatcher()
 {
 }
 
-void identification::SizeMatcher::matchAllSizes(std::vector<dto::Track>& tracks)
+void identification::SizeMatcher::matchAllSizes(std::vector<dto::Track>& tracks) const
 {
 	for (auto& t : tracks)
 	{
 		for (auto& comp : tracks)
 		{
-			float diffHeight = abs(t.estimatedPersonSize.height - comp.estimatedPersonSize.height);
-			float diffWidth = abs(t.estimatedPersonSize.width - comp.estimatedPersonSize.width);
+			const float diffHeight = abs(t.estimatedPersonSize.height - comp.estimatedPersonSize.height);
+			const float diffWidth = abs(t.estimatedPersonSize.width - comp.estimatedPersonSize.width);
 
-			float probHeight = 1 - (diffHeight / 50);
+			float probHeight = 1 - diffHeight / 50;
 			if (probHeight < 0.0f) probHeight = 0.0f;
 
-			float probWidth = 1 - (diffWidth / 20);
+			float probWidth = 1 - diffWidth / 20;
 			if (probWidth < 0.0f) probWidth = 0.0f;
 
 			dto::Track::suggestion suggestionHeight;

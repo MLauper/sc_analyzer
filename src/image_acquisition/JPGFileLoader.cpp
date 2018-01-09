@@ -1,6 +1,6 @@
 #include "JPGFileLoader.h"
 #include <string>
-#include <bemapiset.h>
+//#include <bemapiset.h>
 #include <tchar.h>
 #include <filesystem>
 #include <arrayfire.h>
@@ -11,21 +11,21 @@
 
 namespace fs = std::experimental::filesystem;
 
-void image_acquisition::FileLoader::WatchDirectory()
+void image_acquisition::FileLoader::WatchDirectory() const
 {
 	// Watch Directory
-	LPCTSTR lpDir = this->directory.c_str();
+	const LPCTSTR lpDir = this->directory.c_str();
 
 	// Extract Drive
 	TCHAR lpDrive[4];
 	TCHAR lpFile[_MAX_FNAME];
 	TCHAR lpExt[_MAX_EXT];
 	_tsplitpath_s(lpDir, lpDrive, 4, nullptr, 0, lpFile, _MAX_FNAME, lpExt, _MAX_EXT);
-	lpDrive[2] = (TCHAR)'\\';
-	lpDrive[3] = (TCHAR)'\0';
+	lpDrive[2] = static_cast<TCHAR>('\\');
+	lpDrive[3] = static_cast<TCHAR>('\0');
 
 	// Watch directory for file creations
-	HANDLE dwChangeHandle = FindFirstChangeNotification(
+	const HANDLE dwChangeHandle = FindFirstChangeNotification(
 		lpDir, // directory to watch 
 		FALSE, // do not watch subtree 
 		FILE_NOTIFY_CHANGE_FILE_NAME); // watch file name changes 
@@ -69,10 +69,10 @@ void image_acquisition::FileLoader::WatchDirectory()
 	}
 }
 
-void image_acquisition::FileLoader::ProcessFiles()
+void image_acquisition::FileLoader::ProcessFiles() const
 {
 	// Directory to process files in
-	LPCSTR lpDir = this->directory.c_str();
+	const LPCSTR lpDir = this->directory.c_str();
 
 	// Loop through files in directory
 	const auto di = fs::directory_iterator(lpDir);
@@ -83,7 +83,7 @@ void image_acquisition::FileLoader::ProcessFiles()
 		// Read full file path
 		auto p = *it;
 		std::string fPathS = p.path().string();
-		LPCSTR fPath = fPathS.c_str();
+		const LPCSTR fPath = fPathS.c_str();
 		//std::cout << "comparing " << fPath << " with " << this->path_prefix_c << "\n";
 		if (isPrefix(fPath, this->path_prefix_c))
 		{
@@ -99,7 +99,7 @@ void image_acquisition::FileLoader::ProcessFiles()
 		const HANDLE hFile = CreateFile(
 			fPath,
 			GENERIC_READ,
-			(FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE),
+			FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
 			nullptr,
 			OPEN_EXISTING,
 			0,
@@ -141,29 +141,7 @@ void image_acquisition::FileLoader::ProcessFiles()
 
 		image.filetime = stLocal;
 
-		if (dto::Configuration::LOAD_AF_IMAGE)
-		{
-			image.af_image_color = af::loadImage(image.path.c_str(), true);
-		}
-
 		image.cv_image_original = cv::imread(image.path);
-
-		if (dto::Configuration::CREATE_DISTORTED_IMAGE)
-		{
-			remap(image.cv_image_original, image.cv_image_distorted, this->dist_map1, this->dist_map2, cv::INTER_LINEAR);
-			if (dto::Configuration::SHOW_DISTORTED_IMAGE)
-			{
-				imshow("DistortedImage", image.cv_image_distorted);
-				cv::waitKey(1);
-			}
-
-			if (dto::Configuration::SAVE_DISTORTED_IMAGE)
-			{
-				std::stringstream image_out_path;
-				image_out_path << dto::Configuration::ORIGINAL_IMAGES_DIRECTORY << image.filename << "_distorted.jpg";
-				imwrite(image_out_path.str().c_str(), image.cv_image_distorted);
-			}
-		}
 
 
 		//Process image
@@ -193,7 +171,7 @@ void image_acquisition::FileLoader::ProcessFiles()
 	}
 }
 
-image_acquisition::FileLoader::FileLoader(std::string directory, std::string prefix,
+image_acquisition::FileLoader::FileLoader(const std::string directory, std::string prefix,
                                           image_segmentation::Controller* segmentation_controller)
 {
 	this->directory = directory;
@@ -220,18 +198,9 @@ image_acquisition::FileLoader::FileLoader(dto::Camera& camera, image_segmentatio
 	this->path_prefix_c = this->path_prefix.c_str();
 
 	this->segmentation_controller = segmentation_controller;
-
-	if (dto::Configuration::CREATE_DISTORTED_IMAGE)
-	{
-		initUndistortRectifyMap(
-			camera.cameraMatrix, camera.distCoeffs, cv::Mat(),
-			getOptimalNewCameraMatrix(camera.cameraMatrix, camera.distCoeffs, cv::Size(camera.width, camera.height), 1,
-			                          cv::Size(camera.width, camera.height), nullptr), cv::Size(camera.width, camera.height),
-			CV_16SC2, this->dist_map1, this->dist_map2);
-	}
 }
 
-void image_acquisition::FileLoader::SetDirectory(std::string directory)
+void image_acquisition::FileLoader::SetDirectory(const std::string directory)
 {
 	this->directory = directory;
 }
@@ -268,7 +237,7 @@ std::string image_acquisition::FileLoader::extract_filename(char const* path_c)
 		{
 			if (start != path_c)
 			{
-				std::string str(start, path_c);
+				const std::string str(start, path_c);
 				ret.push_back(str);
 			}
 			else

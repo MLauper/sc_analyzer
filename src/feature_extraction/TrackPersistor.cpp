@@ -11,7 +11,7 @@ feature_extraction::TrackPersistor::~TrackPersistor()
 {
 }
 
-void feature_extraction::TrackPersistor::persistTrack(dto::Track& track, dto::Camera& camera)
+void feature_extraction::TrackPersistor::persistTrack(dto::Track& track, dto::Camera& camera) const
 {
 	this->sql_helper.persist_track(track, camera);
 }

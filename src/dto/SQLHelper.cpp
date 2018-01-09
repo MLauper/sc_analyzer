@@ -17,7 +17,7 @@ dto::SQLHelper::~SQLHelper()
 {
 }
 
-void dto::SQLHelper::testSQLConnection()
+void dto::SQLHelper::testSQLConnection() const
 {
 	try
 	{
@@ -46,7 +46,7 @@ void dto::SQLHelper::testSQLConnection()
 	}
 }
 
-void dto::SQLHelper::persist_camera(const Camera& camera)
+void dto::SQLHelper::persist_camera(const Camera& camera) const
 {
 	std::string select_query;
 	std::string insert_query;
@@ -101,10 +101,9 @@ void dto::SQLHelper::persist_camera(const Camera& camera)
 	}
 }
 
-void dto::SQLHelper::retrieve_camera(Camera& camera, const char* directory, const char* prefix, const char* scene)
+void dto::SQLHelper::retrieve_camera(Camera& camera, const char* directory, const char* prefix, const char* scene) const
 {
 	std::string select_query;
-	nanodbc::result result;
 
 	try
 	{
@@ -117,7 +116,7 @@ void dto::SQLHelper::retrieve_camera(Camera& camera, const char* directory, cons
 
 		select_query = select_query_stream.str();
 
-		result = execute(*conn, select_query);
+		nanodbc::result result = execute(*conn, select_query);
 
 		if (result.rowset_size() != 1)
 		{
@@ -142,7 +141,7 @@ void dto::SQLHelper::retrieve_camera(Camera& camera, const char* directory, cons
 	}
 }
 
-void dto::SQLHelper::persist_track(const Track& track, const Camera& camera)
+void dto::SQLHelper::persist_track(const Track& track, const Camera& camera) const
 {
 	// Ensure that camera is persisted
 	this->persist_camera(camera);
@@ -152,7 +151,7 @@ void dto::SQLHelper::persist_track(const Track& track, const Camera& camera)
 	std::string select_track_query;
 	nanodbc::result result;
 
-	int camera_id, track_id;
+	int camera_id = 0, track_id = 0;
 
 	try
 	{
@@ -303,16 +302,14 @@ void dto::SQLHelper::persist_track(const Track& track, const Camera& camera)
 	}
 }
 
-void dto::SQLHelper::persist_persons(std::vector<Person>& persons)
+void dto::SQLHelper::persist_persons(std::vector<Person>& persons) const
 {
 	for (auto& p : persons)
 	{
 		std::string insert_person_query;
 		std::string select_person_query;
 
-		int person_db_id;
-
-		nanodbc::result result;
+		int person_db_id = 0;
 
 		// Insert Person
 		try
@@ -343,7 +340,7 @@ void dto::SQLHelper::persist_persons(std::vector<Person>& persons)
 
 			select_person_query = select_query_stream.str();
 
-			result = execute(*conn, select_person_query);
+			nanodbc::result result = execute(*conn, select_person_query);
 
 			if (result.next())
 			{
@@ -386,10 +383,9 @@ void dto::SQLHelper::persist_persons(std::vector<Person>& persons)
 	}
 }
 
-void dto::SQLHelper::retrieve_camera(Camera& camera, int camera_id)
+void dto::SQLHelper::retrieve_camera(Camera& camera, const int camera_id) const
 {
 	std::string select_query;
-	nanodbc::result result;
 
 	try
 	{
@@ -400,7 +396,7 @@ void dto::SQLHelper::retrieve_camera(Camera& camera, int camera_id)
 
 		select_query = select_query_stream.str();
 
-		result = execute(*conn, select_query);
+		nanodbc::result result = execute(*conn, select_query);
 
 		if (result.rowset_size() != 1)
 		{
@@ -425,10 +421,9 @@ void dto::SQLHelper::retrieve_camera(Camera& camera, int camera_id)
 	}
 }
 
-std::vector<dto::Track> dto::SQLHelper::retrieve_all_tracks()
+std::vector<dto::Track> dto::SQLHelper::retrieve_all_tracks() const
 {
 	std::string select_query;
-	nanodbc::result result;
 
 	std::vector<Track> tracks;
 
@@ -451,7 +446,7 @@ std::vector<dto::Track> dto::SQLHelper::retrieve_all_tracks()
 
 		select_query = select_query_stream.str();
 
-		result = execute(*conn, select_query);
+		nanodbc::result result = execute(*conn, select_query);
 
 		while (result.next())
 		{
@@ -465,7 +460,7 @@ std::vector<dto::Track> dto::SQLHelper::retrieve_all_tracks()
 			t.estimatedPersonSize.height = result.get<float>("personSize_height");
 			t.estimatedPersonSize.width = result.get<float>("personSize_width");
 
-			std::string walkingDirection = result.get<std::string>("walkingDirection");
+			const std::string walkingDirection = result.get<std::string>("walkingDirection");
 			if (walkingDirection == "in_in") t.walkingDirection = Track::WalkingDirection::in_in;
 			else if (walkingDirection == "in_out") t.walkingDirection = Track::WalkingDirection::in_out;
 			else if (walkingDirection == "out_in") t.walkingDirection = Track::WalkingDirection::out_in;
@@ -559,7 +554,7 @@ std::vector<dto::Track> dto::SQLHelper::retrieve_all_tracks()
 	return tracks;
 }
 
-void dto::SQLHelper::backup_database(char* destination)
+void dto::SQLHelper::backup_database(char* destination) const
 {
 	std::string backup_query;
 	try

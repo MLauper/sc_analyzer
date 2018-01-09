@@ -5,7 +5,7 @@
 
 identification::FeaturePointMatcher::FeaturePointMatcher()
 {
-	int minHessian = 400;
+	const int minHessian = 400;
 	this->surf_detector_ = cv::xfeatures2d::SURF::create(minHessian);
 
 	this->sift_detector_ = cv::xfeatures2d::SIFT::create();
@@ -61,28 +61,6 @@ void identification::FeaturePointMatcher::matchAllFeaturePoints(std::vector<dto:
 				std::cerr << "Sift did not get feature points. Error: " << e.what() << std::endl;
 			}
 		}
-		else
-		{
-			// Detect SURF Keypoints
-			try
-			{
-				this->surf_detector_->detectAndCompute(t.cv_optimalPersonCut_Full, cv::Mat(), t.surf_keyPoints, t.surf_descriptors);
-			}
-			catch (std::exception e)
-			{
-				std::cerr << "Surf did not get feature points. Error: " << e.what() << std::endl;
-			}
-
-			// Detect SIFT Keypoints
-			try
-			{
-				this->sift_detector_->detectAndCompute(t.cv_optimalPersonCut, cv::Mat(), t.sift_keyPoints, t.sift_descriptors);
-			}
-			catch (std::exception e)
-			{
-				std::cerr << "Sift did not match on track. Error: " << e.what() << std::endl;
-			}
-		}
 	}
 
 	for (auto& t : tracks)
@@ -109,7 +87,8 @@ void identification::FeaturePointMatcher::matchAllFeaturePoints(std::vector<dto:
 
 					dto::Track::suggestion surf_suggestion;
 					surf_suggestion.track = &comp;
-					surf_suggestion.likelihood = ((float)good_surf_matches.size() / (float)t.surf_keyPoints.size());
+					surf_suggestion.likelihood = static_cast<float>(good_surf_matches.size()) / static_cast<float>(t.surf_keyPoints.
+					                                                                                                 size());
 					t.surf_keypoint_suggestion.push_back(surf_suggestion);
 				}
 				else
@@ -151,7 +130,8 @@ void identification::FeaturePointMatcher::matchAllFeaturePoints(std::vector<dto:
 
 					dto::Track::suggestion sift_suggestion;
 					sift_suggestion.track = &comp;
-					sift_suggestion.likelihood = ((float)good_sift_matches.size() / (float)t.sift_keyPoints.size());
+					sift_suggestion.likelihood = static_cast<float>(good_sift_matches.size()) / static_cast<float>(t.sift_keyPoints.
+					                                                                                                 size());
 					t.sift_keypoint_suggestion.push_back(sift_suggestion);
 				}
 				else

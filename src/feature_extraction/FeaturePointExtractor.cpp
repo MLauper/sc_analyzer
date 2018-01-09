@@ -4,7 +4,7 @@
 
 feature_extraction::FeaturePointExtractor::FeaturePointExtractor()
 {
-	int minHessian = 400;
+	const int minHessian = 400;
 	this->surf_detector_ = cv::xfeatures2d::SURF::create(minHessian);
 
 	this->sift_detector_ = cv::xfeatures2d::SIFT::create();
@@ -15,22 +15,12 @@ feature_extraction::FeaturePointExtractor::~FeaturePointExtractor()
 {
 }
 
-void feature_extraction::FeaturePointExtractor::extractFeaturePoints(dto::Track& track, dto::Camera& camera)
+void feature_extraction::FeaturePointExtractor::extractFeaturePoints(dto::Track& track, dto::Camera& camera) const
 {
 	if (dto::Configuration::USE_FG_IMAGE_FOR_FEATURE_POINTS)
 	{
 		// Detect SURF Keypoints
 		this->surf_detector_->detectAndCompute(track.cv_optimalPersonCut, cv::Mat(), track.surf_keyPoints,
-		                                       track.surf_descriptors);
-
-		// Detect SIFT Keypoints
-		this->sift_detector_->detectAndCompute(track.cv_optimalPersonCut, cv::Mat(), track.sift_keyPoints,
-		                                       track.sift_descriptors);
-	}
-	else
-	{
-		// Detect SURF Keypoints
-		this->surf_detector_->detectAndCompute(track.cv_optimalPersonCut_Full, cv::Mat(), track.surf_keyPoints,
 		                                       track.surf_descriptors);
 
 		// Detect SIFT Keypoints
@@ -47,13 +37,6 @@ void feature_extraction::FeaturePointExtractor::extractFeaturePoints(dto::Track&
 			drawKeypoints(track.cv_optimalPersonCut, track.surf_keyPoints, drawing_surf, cv::Scalar::all(-1),
 			              cv::DrawMatchesFlags::DEFAULT);
 			drawKeypoints(track.cv_optimalPersonCut, track.sift_keyPoints, drawing_sift, cv::Scalar::all(-1),
-			              cv::DrawMatchesFlags::DEFAULT);
-		}
-		else
-		{
-			drawKeypoints(track.cv_optimalPersonCut_Full, track.surf_keyPoints, drawing_surf, cv::Scalar::all(-1),
-			              cv::DrawMatchesFlags::DEFAULT);
-			drawKeypoints(track.cv_optimalPersonCut_Full, track.sift_keyPoints, drawing_sift, cv::Scalar::all(-1),
 			              cv::DrawMatchesFlags::DEFAULT);
 		}
 

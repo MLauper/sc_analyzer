@@ -1,5 +1,5 @@
 #include "MKVFileLoader.h"
-#include <opencv2/highgui.hpp>
+//#include <opencv2/highgui.hpp>
 #include "dto/Configuration.h"
 
 
@@ -15,12 +15,12 @@ image_acquisition::MKVFileLoader::~MKVFileLoader()
 {
 }
 
-void image_acquisition::MKVFileLoader::process_file()
+void image_acquisition::MKVFileLoader::process_file() const
 {
 	cv::VideoCapture capture(this->camera.videoFilePath.c_str());
 	cv::Mat frame;
 
-	int numOfSkippedFrames = static_cast<int>((24 / camera.fps)) - 1;
+	const int numOfSkippedFrames = static_cast<int>((24 / camera.fps)) - 1;
 
 	if (!capture.isOpened())
 		std::cerr << "Error when reading from File: " << camera.videoFilePath.c_str() << std::endl;
@@ -75,7 +75,7 @@ std::string image_acquisition::MKVFileLoader::extract_filename(char const* path_
 		{
 			if (start != path_c)
 			{
-				std::string str(start, path_c);
+				const std::string str(start, path_c);
 				ret.push_back(str);
 			}
 			else

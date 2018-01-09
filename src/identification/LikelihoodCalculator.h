@@ -8,6 +8,6 @@ namespace identification
 	public:
 		LikelihoodCalculator();
 		~LikelihoodCalculator();
-		void calculateAllLikelihoods(std::vector<dto::Track>& tracks);
+		void calculateAllLikelihoods(std::vector<dto::Track>& tracks) const;
 	};
 }
