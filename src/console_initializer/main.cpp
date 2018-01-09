@@ -33,7 +33,8 @@ int main(int argc, char* argv[])
 	camera.backgroundThreshold = 16;
 
 	// Static values based on camera
-	if (camera.prefix == "out_CAMERA_room_") {
+	if (camera.prefix == "out_CAMERA_room_")
+	{
 		camera.entry_side = dto::Camera::entrySide::entry_bottom;
 		camera.personCountMode = dto::Camera::personCountUpWhen::in_to_entry;
 		camera.width = 1920;
@@ -58,7 +59,8 @@ int main(int argc, char* argv[])
 		const double p2 = -4.3121497449825881e-03;
 		const double k3 = 3.7852955947755049e-02;
 		camera.distCoeffs = (cv::Mat1d(1, 5) << k1, k2, p1, p2, k3);
-	} else if (camera.prefix == "out_CAMERA_door_")
+	}
+	else if (camera.prefix == "out_CAMERA_door_")
 	{
 		camera.entry_side = dto::Camera::entrySide::entry_bottom;
 		camera.personCountMode = dto::Camera::personCountUpWhen::entry_to_in;
@@ -84,14 +86,15 @@ int main(int argc, char* argv[])
 		const double p2 = -4.3121497449825881e-03;
 		const double k3 = 3.7852955947755049e-02;
 		camera.distCoeffs = (cv::Mat1d(1, 5) << k1, k2, p1, p2, k3);
-	} else
+	}
+	else
 	{
 		std::cerr << "Unknown camera. Required information not available..." << std::endl;
 		return -1;
 	}
-	
+
 	image_segmentation::Controller* controller = new image_segmentation::Controller(camera);
-	
+
 	// To use the FileLoader instead of mkv loader, use the following lines
 	//image_acquisition::FileLoader file_loader(camera, controller);
 	//file_loader.ProcessFiles();

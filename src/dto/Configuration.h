@@ -2,11 +2,12 @@
 #include <string>
 #include "../image_tracking/ObjectTracker.h"
 
-namespace dto {
-	namespace Configuration {
-		
+namespace dto
+{
+	namespace Configuration
+	{
 		const bool LOAD_AF_IMAGE = false;
-		
+
 		const bool CREATE_DISTORTED_IMAGE = false;
 		const bool SHOW_DISTORTED_IMAGE = false;
 		const bool SAVE_DISTORTED_IMAGE = false;
@@ -80,7 +81,7 @@ namespace dto {
 		const bool SAVE_FEATURE_POINT_IMAGES = true;
 		const bool USE_FG_IMAGE_FOR_FEATURE_POINTS = true;
 		const bool STORE_TRACK_RESULTS_IN_DB = true;
-				
+
 		const nanodbc::string DATABASE_ODBC_NAME = "sc_analyzer";
 		const nanodbc::string DATABASE_USER = "db_user";
 		const nanodbc::string DATABASE_PASSWORD = "Rtchir3ORJe2";
@@ -91,7 +92,7 @@ namespace dto {
 		const float size_height_suggestion_weight = 0.15f;
 		const float upper_body_color_suggestion_weight = 0.15f;
 		const float lower_body_color_suggestion_weight = 0.15f;
-		
+
 		const bool SAVE_PERSON_IDENTIFICATION = true;
 		const float ALWAYS_MATCH_LIKELIHOOD = 0.5f;
 		const bool PRINT_PERSON_SELECTOR_STEPS = false;

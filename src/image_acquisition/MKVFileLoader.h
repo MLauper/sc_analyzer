@@ -3,7 +3,8 @@
 #include "../image_segmentation/Controller.h"
 #include "../dto/Camera.h"
 
-namespace image_acquisition {
+namespace image_acquisition
+{
 	class MKVFileLoader
 	{
 	public:
@@ -16,4 +17,3 @@ namespace image_acquisition {
 		image_segmentation::Controller* segmentation_controller;
 	};
 }
-

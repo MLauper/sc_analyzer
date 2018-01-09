@@ -14,6 +14,7 @@ namespace dto
 			entry_bottom,
 			none
 		};
+
 		enum gateMode
 		{
 			minLeft,
@@ -21,11 +22,13 @@ namespace dto
 			minTop,
 			minBottom
 		};
+
 		enum personCountUpWhen
 		{
 			in_to_entry,
 			entry_to_in
 		};
+
 	public:
 		std::string directory;
 		std::string prefix;
@@ -56,6 +59,5 @@ namespace dto
 		std::string urlPassword;
 
 		std::string videoFilePath;
-		
 	};
 }

@@ -3,7 +3,8 @@
 #include "../dto/Track.h"
 #include "../dto/Person.h"
 
-namespace identification {
+namespace identification
+{
 	class PersonAssigner
 	{
 	public:

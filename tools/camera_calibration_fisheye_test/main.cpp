@@ -26,7 +26,7 @@ int main(int argc, char** argv)
 	auto k2 = -2.7198599864624484e-02;
 	auto p1 = 1.8642215800088423e-02;
 	auto p2 = -5.8100785090142732e-03;
-	Mat distCoeffs = (Mat1d(1, 4) << k1, k2, p1, p2);	 
+	Mat distCoeffs = (Mat1d(1, 4) << k1, k2, p1, p2);
 
 	Size imageSize(2592, 1944);
 
@@ -34,9 +34,9 @@ int main(int argc, char** argv)
 
 	Mat newCamMat;
 	fisheye::estimateNewCameraMatrixForUndistortRectify(cameraMatrix, distCoeffs, imageSize,
-		Matx33d::eye(), newCamMat, 0.99f);
+	                                                    Matx33d::eye(), newCamMat, 0.99f);
 	fisheye::initUndistortRectifyMap(cameraMatrix, distCoeffs, Matx33d::eye(), newCamMat, imageSize,
-		CV_16SC2, map1, map2);
+	                                 CV_16SC2, map1, map2);
 
 	//initUndistortRectifyMap(
 	//	cameraMatrix, distCoeffs, Mat(),
@@ -48,7 +48,7 @@ int main(int argc, char** argv)
 	input = imread("C:\\Temp\\out_CAMERA_pan_overview_0000000151.mkv_snapshot_13.20.jpg", IMREAD_COLOR);
 
 	remap(input, output, map1, map2, INTER_LINEAR);
-	
+
 	imwrite("c:\\Temp\\out_test.jpg", output);
 	imshow("Image View", output);
 	waitKey();

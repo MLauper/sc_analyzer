@@ -16,15 +16,13 @@ namespace feature_extraction
 		Controller();
 		void processTrack(dto::Track& track, dto::Camera& camera);
 	private:
-		feature_extraction::DirectionExtractor direction_extractor_;
-		feature_extraction::FrameSelector frame_selector_;
-		feature_extraction::ColorExtractor color_extractor_;
-		feature_extraction::BodyPartExtractor body_part_extractor_;
-		feature_extraction::SizeExtractor size_extractor_;
-		feature_extraction::FeaturePointExtractor feature_point_extractor_;
-		feature_extraction::TrackPersistor track_persistor_;
+		DirectionExtractor direction_extractor_;
+		FrameSelector frame_selector_;
+		ColorExtractor color_extractor_;
+		BodyPartExtractor body_part_extractor_;
+		SizeExtractor size_extractor_;
+		FeaturePointExtractor feature_point_extractor_;
+		TrackPersistor track_persistor_;
 		int personsInTheRoom;
 	};
-
-
 }

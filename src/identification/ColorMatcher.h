@@ -2,7 +2,8 @@
 #include <vector>
 #include "dto/Track.h"
 
-namespace identification {
+namespace identification
+{
 	class ColorMatcher
 	{
 	public:

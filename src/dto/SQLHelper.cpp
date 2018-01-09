@@ -8,8 +8,8 @@
 
 dto::SQLHelper::SQLHelper()
 {
-	this->conn = new nanodbc::connection(dto::Configuration::DATABASE_ODBC_NAME, dto::Configuration::DATABASE_USER,
-	                                     dto::Configuration::DATABASE_PASSWORD, 5);
+	this->conn = new nanodbc::connection(Configuration::DATABASE_ODBC_NAME, Configuration::DATABASE_USER,
+	                                     Configuration::DATABASE_PASSWORD, 5);
 }
 
 
@@ -101,7 +101,7 @@ void dto::SQLHelper::persist_camera(const Camera& camera)
 	}
 }
 
-void dto::SQLHelper::retrieve_camera(dto::Camera& camera, const char* directory, const char* prefix, const char* scene)
+void dto::SQLHelper::retrieve_camera(Camera& camera, const char* directory, const char* prefix, const char* scene)
 {
 	std::string select_query;
 	nanodbc::result result;
@@ -139,11 +139,10 @@ void dto::SQLHelper::retrieve_camera(dto::Camera& camera, const char* directory,
 	{
 		std::cerr << "Error in SQL Query: " << select_query << std::endl;
 		std::cerr << e.what() << std::endl;
-		return;
 	}
 }
 
-void dto::SQLHelper::persist_track(const dto::Track& track, const dto::Camera& camera)
+void dto::SQLHelper::persist_track(const Track& track, const Camera& camera)
 {
 	// Ensure that camera is persisted
 	this->persist_camera(camera);
@@ -190,10 +189,10 @@ void dto::SQLHelper::persist_track(const dto::Track& track, const dto::Camera& c
 		std::ostringstream instert_query_stream;
 
 		std::string walkingDirection;
-		if (track.walkingDirection == dto::Track::WalkingDirection::in_in) walkingDirection = "in_in";
-		else if (track.walkingDirection == dto::Track::WalkingDirection::in_out) walkingDirection = "in_out";
-		else if (track.walkingDirection == dto::Track::WalkingDirection::out_in) walkingDirection = "out_in";
-		else if (track.walkingDirection == dto::Track::WalkingDirection::out_out) walkingDirection = "out_out";
+		if (track.walkingDirection == Track::WalkingDirection::in_in) walkingDirection = "in_in";
+		else if (track.walkingDirection == Track::WalkingDirection::in_out) walkingDirection = "in_out";
+		else if (track.walkingDirection == Track::WalkingDirection::out_in) walkingDirection = "out_in";
+		else if (track.walkingDirection == Track::WalkingDirection::out_out) walkingDirection = "out_out";
 		else walkingDirection = "";
 
 		instert_query_stream << "INSERT INTO tracks"
@@ -302,16 +301,15 @@ void dto::SQLHelper::persist_track(const dto::Track& track, const dto::Camera& c
 			std::cerr << e.what() << std::endl;
 		}
 	}
-
 }
 
-void dto::SQLHelper::persist_persons(std::vector<dto::Person>& persons)
+void dto::SQLHelper::persist_persons(std::vector<Person>& persons)
 {
 	for (auto& p : persons)
 	{
 		std::string insert_person_query;
 		std::string select_person_query;
-		
+
 		int person_db_id;
 
 		nanodbc::result result;
@@ -366,7 +364,6 @@ void dto::SQLHelper::persist_persons(std::vector<dto::Person>& persons)
 		// Update Track
 		for (auto& t : p.tracks)
 		{
-
 			std::string update_track_query;
 
 			try
@@ -387,10 +384,9 @@ void dto::SQLHelper::persist_persons(std::vector<dto::Person>& persons)
 			}
 		}
 	}
-
 }
 
-void dto::SQLHelper::retrieve_camera(dto::Camera& camera, int camera_id)
+void dto::SQLHelper::retrieve_camera(Camera& camera, int camera_id)
 {
 	std::string select_query;
 	nanodbc::result result;
@@ -426,7 +422,6 @@ void dto::SQLHelper::retrieve_camera(dto::Camera& camera, int camera_id)
 	{
 		std::cerr << "Error in SQL Query: " << select_query << std::endl;
 		std::cerr << e.what() << std::endl;
-		return;
 	}
 }
 
@@ -435,7 +430,7 @@ std::vector<dto::Track> dto::SQLHelper::retrieve_all_tracks()
 	std::string select_query;
 	nanodbc::result result;
 
-	std::vector<dto::Track> tracks;
+	std::vector<Track> tracks;
 
 	try
 	{
@@ -460,8 +455,8 @@ std::vector<dto::Track> dto::SQLHelper::retrieve_all_tracks()
 
 		while (result.next())
 		{
-			dto::Track t;
-			dto::Camera c;
+			Track t;
+			Camera c;
 
 			t.track_db_id = result.get<int>("id");
 			t.trackId = result.get<int>("trackId");
@@ -471,10 +466,10 @@ std::vector<dto::Track> dto::SQLHelper::retrieve_all_tracks()
 			t.estimatedPersonSize.width = result.get<float>("personSize_width");
 
 			std::string walkingDirection = result.get<std::string>("walkingDirection");
-			if (walkingDirection == "in_in") t.walkingDirection = dto::Track::WalkingDirection::in_in;
-			else if (walkingDirection == "in_out") t.walkingDirection = dto::Track::WalkingDirection::in_out;
-			else if (walkingDirection == "out_in") t.walkingDirection = dto::Track::WalkingDirection::out_in;
-			else if (walkingDirection == "out_out") t.walkingDirection = dto::Track::WalkingDirection::out_out;
+			if (walkingDirection == "in_in") t.walkingDirection = Track::WalkingDirection::in_in;
+			else if (walkingDirection == "in_out") t.walkingDirection = Track::WalkingDirection::in_out;
+			else if (walkingDirection == "out_in") t.walkingDirection = Track::WalkingDirection::out_in;
+			else if (walkingDirection == "out_out") t.walkingDirection = Track::WalkingDirection::out_out;
 
 			c.scene = result.get<int>("camera_scene");
 			c.directory = result.get<std::string>("camera_directory");
@@ -583,6 +578,5 @@ void dto::SQLHelper::backup_database(char* destination)
 	{
 		std::cerr << "Error in SQL Query: " << backup_query << std::endl;
 		std::cerr << e.what() << std::endl;
-		return;
 	}
 }

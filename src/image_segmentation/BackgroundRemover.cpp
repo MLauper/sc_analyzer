@@ -24,20 +24,21 @@ void image_segmentation::BackgroundRemover::removeBackground(dto::Image& image, 
 	if (dto::Configuration::SAVE_ORIGINAL_IMAGES)
 	{
 		std::stringstream image_out_path;
-		image_out_path << dto::Configuration::ORIGINAL_IMAGES_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << image.filename << "_original.jpg";
-		cv::imwrite(image_out_path.str().c_str(), image.cv_image_original);
+		image_out_path << dto::Configuration::ORIGINAL_IMAGES_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix
+			<< "\\" << image.filename << "_original.jpg";
+		imwrite(image_out_path.str().c_str(), image.cv_image_original);
 	}
 
 	if (dto::Configuration::SHOW_ORIGINAL_IMAGES)
 	{
-		cv::imshow("Original", image.cv_image_original);
+		imshow("Original", image.cv_image_original);
 		cv::waitKey(1);
 	}
 
 	image.cv_gpu_image.upload(image.cv_image_original);
 	this->gpuMOG2->apply(image.cv_gpu_image, image.cv_gpu_fgmask);
 
-	
+
 	//update the background model
 	//this->pMOG2->apply(this->frame, this->fgMaskMOG2);
 	//get the frame number and write it on the current frame
@@ -56,11 +57,11 @@ void image_segmentation::BackgroundRemover::removeBackground(dto::Image& image, 
 	//show the current frame and the fg masks
 
 	//this->d_fgmask.download(this->fgmask);
-	
+
 	//imshow("FG Mask MOG 2", this->fgmask);
 
 	// Witkey is required, otherwise all imshow will not work
-	
+
 	//search for the next image in the sequence
 	std::ostringstream oss;
 	//oss << (frameNumber + 1);
@@ -100,32 +101,32 @@ void image_segmentation::BackgroundRemover::removeBackground(dto::Image& image, 
 
 	image.cv_gpu_fgimg.download(image.cv_fgimg);
 
-//	std::stringstream image_out_path;
-//	image_out_path << "c:\\temp\\\extracted_persons\\" << filename << "_diff.jpg";
-//	imwrite(image_out_path.str().c_str(), fgimg);
+	//	std::stringstream image_out_path;
+	//	image_out_path << "c:\\temp\\\extracted_persons\\" << filename << "_diff.jpg";
+	//	imwrite(image_out_path.str().c_str(), fgimg);
 
 	if (dto::Configuration::SAVE_FG_IMAGES)
 	{
 		std::stringstream image_out_path;
-		image_out_path << dto::Configuration::FG_IMAGES_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << image.filename << "_FG.jpg";
-		cv::imwrite(image_out_path.str().c_str(), image.cv_fgimg);
+		image_out_path << dto::Configuration::FG_IMAGES_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\"
+			<< image.filename << "_FG.jpg";
+		imwrite(image_out_path.str().c_str(), image.cv_fgimg);
 	}
 	if (dto::Configuration::SAVE_FG_MASK)
 	{
 		std::stringstream image_out_path;
 		image_out_path << dto::Configuration::FG_MASKS_DIRECTORY << image.filename << "_FG_MASK.jpg";
-		cv::imwrite(image_out_path.str().c_str(), image.cv_fgmask);
+		imwrite(image_out_path.str().c_str(), image.cv_fgmask);
 	}
 
 	if (dto::Configuration::SHOW_FG_IMAGES)
 	{
-		cv::imshow("FG Images", image.cv_fgimg);
+		imshow("FG Images", image.cv_fgimg);
 		cv::waitKey(1);
 	}
 	if (dto::Configuration::SHOW_FG_MASKS)
 	{
-		cv::imshow("FG Mask", image.cv_fgmask);
+		imshow("FG Mask", image.cv_fgmask);
 		cv::waitKey(1);
 	}
-	
 }

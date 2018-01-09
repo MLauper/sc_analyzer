@@ -19,7 +19,8 @@ void feature_extraction::DirectionExtractor::extractDirection(dto::Track& track,
 		float borderPercentage = dto::Configuration::IMAGE_BORDER_PERCENTATGE;
 
 		// Analyse Region Positions
-		if (camera.entry_side == dto::Camera::entrySide::entry_bottom) {
+		if (camera.entry_side == dto::Camera::entrySide::entry_bottom)
+		{
 			if (firstPerson.y + firstPerson.h >= (camera.height - (int)(camera.height * borderPercentage)))
 			{
 				isFirstRegionOnEntranceSide = true;
@@ -65,13 +66,21 @@ void feature_extraction::DirectionExtractor::extractDirection(dto::Track& track,
 
 
 		// Get walking direction
-		if (isFirstRegionOnEntranceSide == true && isLastRegionOnEntranceSide == true) track.walkingDirection = dto::Track::WalkingDirection::out_out;
-		if (isFirstRegionOnEntranceSide == true && isLastRegionOnEntranceSide == false) track.walkingDirection = dto::Track::WalkingDirection::out_in;
-		if (isFirstRegionOnEntranceSide == false && isLastRegionOnEntranceSide == true) track.walkingDirection = dto::Track::WalkingDirection::in_out;
-		if (isFirstRegionOnEntranceSide == false && isLastRegionOnEntranceSide == false) track.walkingDirection = dto::Track::WalkingDirection::in_in;
-
+		if (isFirstRegionOnEntranceSide == true && isLastRegionOnEntranceSide == true)
+			track.walkingDirection = dto::Track::
+				WalkingDirection::out_out;
+		if (isFirstRegionOnEntranceSide == true && isLastRegionOnEntranceSide == false)
+			track.walkingDirection = dto::Track::
+				WalkingDirection::out_in;
+		if (isFirstRegionOnEntranceSide == false && isLastRegionOnEntranceSide == true)
+			track.walkingDirection = dto::Track::
+				WalkingDirection::in_out;
+		if (isFirstRegionOnEntranceSide == false && isLastRegionOnEntranceSide == false)
+			track.walkingDirection = dto::Track::
+				WalkingDirection::in_in;
 	}
-	else {
+	else
+	{
 		std::cout << "WE ARE USING CAMERA " << camera.directory << " with prefix " << camera.prefix << std::endl;
 
 		bool isFirstRegionOnEntranceSide = false;
@@ -80,7 +89,8 @@ void feature_extraction::DirectionExtractor::extractDirection(dto::Track& track,
 		float borderPercentage = 0.03f;
 
 		// Analyse Region Positions
-		if (camera.entry_side == dto::Camera::entrySide::entry_bottom) {
+		if (camera.entry_side == dto::Camera::entrySide::entry_bottom)
+		{
 			if (track.regions.at(0).maxY >= (camera.height - (int)(camera.height * borderPercentage)))
 			{
 				isFirstRegionOnEntranceSide = true;
@@ -126,11 +136,18 @@ void feature_extraction::DirectionExtractor::extractDirection(dto::Track& track,
 
 
 		// Get walking direction
-		if (isFirstRegionOnEntranceSide == true && isLastRegionOnEntranceSide == true) track.walkingDirection = dto::Track::WalkingDirection::out_out;
-		if (isFirstRegionOnEntranceSide == true && isLastRegionOnEntranceSide == false) track.walkingDirection = dto::Track::WalkingDirection::out_in;
-		if (isFirstRegionOnEntranceSide == false && isLastRegionOnEntranceSide == true) track.walkingDirection = dto::Track::WalkingDirection::in_out;
-		if (isFirstRegionOnEntranceSide == false && isLastRegionOnEntranceSide == false) track.walkingDirection = dto::Track::WalkingDirection::in_in;
-
+		if (isFirstRegionOnEntranceSide == true && isLastRegionOnEntranceSide == true)
+			track.walkingDirection = dto::Track::
+				WalkingDirection::out_out;
+		if (isFirstRegionOnEntranceSide == true && isLastRegionOnEntranceSide == false)
+			track.walkingDirection = dto::Track::
+				WalkingDirection::out_in;
+		if (isFirstRegionOnEntranceSide == false && isLastRegionOnEntranceSide == true)
+			track.walkingDirection = dto::Track::
+				WalkingDirection::in_out;
+		if (isFirstRegionOnEntranceSide == false && isLastRegionOnEntranceSide == false)
+			track.walkingDirection = dto::Track::
+				WalkingDirection::in_in;
 	}
 
 
@@ -138,7 +155,8 @@ void feature_extraction::DirectionExtractor::extractDirection(dto::Track& track,
 	{
 		std::ofstream fileStream;
 		std::stringstream filePath;
-		filePath << dto::Configuration::STATISTICS_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << "Track-" << track.trackId << "_statistics.txt";
+		filePath << dto::Configuration::STATISTICS_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" <<
+			"Track-" << track.trackId << "_statistics.txt";
 		fileStream.open(filePath.str().c_str(), std::fstream::app);
 		switch (track.walkingDirection)
 		{
@@ -155,7 +173,7 @@ void feature_extraction::DirectionExtractor::extractDirection(dto::Track& track,
 			fileStream << "Walking Direction: " << "in_in" << std::endl;
 			break;
 		}
-		
+
 		fileStream.close();
 	}
 }

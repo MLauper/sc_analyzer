@@ -1,7 +1,6 @@
 #include "ColorMatcher.h"
 
 
-
 identification::ColorMatcher::ColorMatcher()
 {
 }
@@ -15,8 +14,8 @@ void identification::ColorMatcher::matchAllColors(std::vector<dto::Track>& track
 {
 	for (auto& t : tracks)
 	{
-		for (auto& comp : tracks) {
-
+		for (auto& comp : tracks)
+		{
 			// Upper Bodycolor Suggestion
 			float diffColorUpperBody_1 = abs(t.primary_color_ids.upperBody - comp.primary_color_ids.upperBody);
 			float diffColorUpperBody_2 = abs(t.primary_color_ids.upperBody - comp.primary_color_ids.upperBody - 16);

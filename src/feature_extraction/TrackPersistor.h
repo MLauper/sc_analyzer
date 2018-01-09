@@ -3,7 +3,8 @@
 #include "../dto/Track.h"
 #include "../dto/SQLHelper.h"
 
-namespace feature_extraction {
+namespace feature_extraction
+{
 	class TrackPersistor
 	{
 	public:

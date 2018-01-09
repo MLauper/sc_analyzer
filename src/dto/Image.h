@@ -30,9 +30,8 @@ namespace dto
 		cv::Mat cv_bgimg;
 		cv::cuda::GpuMat cv_gpu_bgimg;
 
-		std::vector<dto::Region> regions;
+		std::vector<Region> regions;
 
 		std::vector<bbox_t> yoloPersons;
-
 	};
 }

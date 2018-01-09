@@ -12,9 +12,10 @@ void feature_extraction::Controller::processTrack(dto::Track& track, dto::Camera
 	{
 		std::ofstream fileStream;
 		std::stringstream filePath;
-		filePath << dto::Configuration::STATISTICS_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << "Track-" << track.trackId << "_statistics.txt";
+		filePath << dto::Configuration::STATISTICS_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" <<
+			"Track-" << track.trackId << "_statistics.txt";
 		fileStream.open(filePath.str().c_str(), std::fstream::app);
-		
+
 		fileStream << "Yolo Bounding Boxes" << std::endl;
 		fileStream << "x: ";
 		for (auto& bb : track.persons)
@@ -43,14 +44,16 @@ void feature_extraction::Controller::processTrack(dto::Track& track, dto::Camera
 
 	direction_extractor_.extractDirection(track, camera);
 	frame_selector_.SelectFrame(track, camera);
-	if (track.optimalPersonId != -1) {
+	if (track.optimalPersonId != -1)
+	{
 		frame_selector_.SaveRegion(track, camera);
 		body_part_extractor_.extractBodyParts(track, camera);
 		color_extractor_.extractPrimaryColors(track, camera);
 		size_extractor_.extractBodySizes(track, camera);
 		feature_point_extractor_.extractFeaturePoints(track, camera);
 
-		if (dto::Configuration::STORE_TRACK_RESULTS_IN_DB){
+		if (dto::Configuration::STORE_TRACK_RESULTS_IN_DB)
+		{
 			track_persistor_.persistTrack(track, camera);
 		}
 	}
@@ -62,7 +65,4 @@ void feature_extraction::Controller::processTrack(dto::Track& track, dto::Camera
 	//{
 	//	std::cout << "=============PERSON LEFT ROOM============" << "\n" << "PERSON COUNT: " << --this->personsInTheRoom << "\n";
 	//}
-
-
 }
-

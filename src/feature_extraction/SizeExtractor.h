@@ -2,7 +2,8 @@
 #include "../dto/Camera.h"
 #include "../dto/Track.h"
 
-namespace feature_extraction {
+namespace feature_extraction
+{
 	class SizeExtractor
 	{
 	public:

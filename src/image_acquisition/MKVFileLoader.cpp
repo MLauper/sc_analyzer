@@ -3,7 +3,8 @@
 #include "dto/Configuration.h"
 
 
-image_acquisition::MKVFileLoader::MKVFileLoader(dto::Camera& camera, image_segmentation::Controller* segmentation_controller)
+image_acquisition::MKVFileLoader::MKVFileLoader(dto::Camera& camera,
+                                                image_segmentation::Controller* segmentation_controller)
 {
 	this->camera = camera;
 	this->segmentation_controller = segmentation_controller;
@@ -19,18 +20,19 @@ void image_acquisition::MKVFileLoader::process_file()
 	cv::VideoCapture capture(this->camera.videoFilePath.c_str());
 	cv::Mat frame;
 
-	int numOfSkippedFrames = static_cast<int>((24/camera.fps)) - 1;
+	int numOfSkippedFrames = static_cast<int>((24 / camera.fps)) - 1;
 
 	if (!capture.isOpened())
 		std::cerr << "Error when reading from File: " << camera.videoFilePath.c_str() << std::endl;
-	
+
 	int i = 0;
-	for (; ; )
+	for (; ;)
 	{
 		dto::Image image;
-		
+
 		bool isImageEmpty = false;
-		for (int j = 0; j < numOfSkippedFrames; j++) {
+		for (int j = 0; j < numOfSkippedFrames; j++)
+		{
 			capture >> image.cv_image_original;
 			if (image.cv_image_original.empty())
 				isImageEmpty = true;
@@ -41,7 +43,7 @@ void image_acquisition::MKVFileLoader::process_file()
 		image_path_stream << camera.directory << camera.prefix << "frame-" << i++ << ".jpg";
 		image.path = image_path_stream.str();
 		image.filename = this->extract_filename(image.path.c_str());
-		
+
 		this->segmentation_controller->ProcessImage(image);
 	}
 
@@ -58,12 +60,11 @@ void image_acquisition::MKVFileLoader::process_file()
 
 		this->segmentation_controller->ProcessImage(image);
 	}
-	
 }
 
 std::string image_acquisition::MKVFileLoader::extract_filename(char const* path_c)
 {
-	const std::set<char> delimiters = { '\\' };
+	const std::set<char> delimiters = {'\\'};
 
 	std::vector<std::string> ret;
 

@@ -7,7 +7,7 @@ namespace dto
 	struct Region
 	{
 		std::vector<cv::Point> contour;
-		
+
 		int minX;
 		int minY;
 		int maxX;

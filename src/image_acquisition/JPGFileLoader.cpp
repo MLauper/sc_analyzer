@@ -132,7 +132,7 @@ void image_acquisition::FileLoader::ProcessFiles()
 		//printf("%s\n", szBuf);
 
 		CloseHandle(hFile);
-		
+
 		dto::Image image;
 
 		// Extract FileName
@@ -150,10 +150,10 @@ void image_acquisition::FileLoader::ProcessFiles()
 
 		if (dto::Configuration::CREATE_DISTORTED_IMAGE)
 		{
-			cv::remap(image.cv_image_original, image.cv_image_distorted, this->dist_map1, this->dist_map2, cv::INTER_LINEAR);
+			remap(image.cv_image_original, image.cv_image_distorted, this->dist_map1, this->dist_map2, cv::INTER_LINEAR);
 			if (dto::Configuration::SHOW_DISTORTED_IMAGE)
 			{
-				cv::imshow("DistortedImage", image.cv_image_distorted);
+				imshow("DistortedImage", image.cv_image_distorted);
 				cv::waitKey(1);
 			}
 
@@ -161,10 +161,9 @@ void image_acquisition::FileLoader::ProcessFiles()
 			{
 				std::stringstream image_out_path;
 				image_out_path << dto::Configuration::ORIGINAL_IMAGES_DIRECTORY << image.filename << "_distorted.jpg";
-				cv::imwrite(image_out_path.str().c_str(), image.cv_image_distorted);
+				imwrite(image_out_path.str().c_str(), image.cv_image_distorted);
 			}
 		}
-
 
 
 		//Process image
@@ -195,7 +194,7 @@ void image_acquisition::FileLoader::ProcessFiles()
 }
 
 image_acquisition::FileLoader::FileLoader(std::string directory, std::string prefix,
-	image_segmentation::Controller* segmentation_controller)
+                                          image_segmentation::Controller* segmentation_controller)
 {
 	this->directory = directory;
 
@@ -226,7 +225,8 @@ image_acquisition::FileLoader::FileLoader(dto::Camera& camera, image_segmentatio
 	{
 		initUndistortRectifyMap(
 			camera.cameraMatrix, camera.distCoeffs, cv::Mat(),
-			cv::getOptimalNewCameraMatrix(camera.cameraMatrix, camera.distCoeffs, cv::Size(camera.width, camera.height), 1, cv::Size(camera.width, camera.height), 0), cv::Size(camera.width, camera.height),
+			getOptimalNewCameraMatrix(camera.cameraMatrix, camera.distCoeffs, cv::Size(camera.width, camera.height), 1,
+			                          cv::Size(camera.width, camera.height), nullptr), cv::Size(camera.width, camera.height),
 			CV_16SC2, this->dist_map1, this->dist_map2);
 	}
 }

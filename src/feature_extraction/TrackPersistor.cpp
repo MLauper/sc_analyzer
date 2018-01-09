@@ -4,7 +4,6 @@
 
 feature_extraction::TrackPersistor::TrackPersistor()
 {
-	
 }
 
 

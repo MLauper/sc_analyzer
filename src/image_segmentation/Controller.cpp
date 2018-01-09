@@ -28,7 +28,6 @@ image_segmentation::Controller::Controller(dto::Camera& camera)
 	this->morphMask2 = af::constant(1, 19, 19);
 
 	this->stat_out = std::ofstream("c:\\temp\\\extracted_persons\\_statistics.txt");
-
 }
 
 void image_segmentation::Controller::ProcessImage(dto::Image& image)
@@ -41,7 +40,6 @@ void image_segmentation::Controller::ProcessImage(dto::Image& image)
 
 	//std::vector<std::vector<cv::Point>> contours = pd.extractPersonContours(temp_image, temp_mask, image.filename);
 	this->image_tracking_controller.ProcessImage(image, camera);
-
 }
 
 void image_segmentation::Controller::ProcessImage(SYSTEMTIME* time, af::array& image, std::string path,
@@ -49,18 +47,18 @@ void image_segmentation::Controller::ProcessImage(SYSTEMTIME* time, af::array& i
 {
 	std::cout << "___________________------------______________\n";
 
-//	br.removeBackground(path, filename);
-//	cv::cuda::GpuMat d_img = br.getFGImage();
-//	cv::cuda::GpuMat d_fgmask = br.getFGMask();
-//
-//	cv::Mat temp_image;
-//	d_img.download(temp_image);
-//
-//	cv::Mat temp_mask;
-//	d_fgmask.download(temp_mask);
-//
-//	std::vector<std::vector<cv::Point>> contours = pd.extractPersonContours(temp_image, temp_mask, filename);
-//	this->image_tracking_controller.ProcessImage(d_img, d_fgmask, contours);
+	//	br.removeBackground(path, filename);
+	//	cv::cuda::GpuMat d_img = br.getFGImage();
+	//	cv::cuda::GpuMat d_fgmask = br.getFGMask();
+	//
+	//	cv::Mat temp_image;
+	//	d_img.download(temp_image);
+	//
+	//	cv::Mat temp_mask;
+	//	d_fgmask.download(temp_mask);
+	//
+	//	std::vector<std::vector<cv::Point>> contours = pd.extractPersonContours(temp_image, temp_mask, filename);
+	//	this->image_tracking_controller.ProcessImage(d_img, d_fgmask, contours);
 	//pd.detectPerson(d_img);
 
 

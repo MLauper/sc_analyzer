@@ -9,7 +9,6 @@ identification::FeaturePointMatcher::FeaturePointMatcher()
 	this->surf_detector_ = cv::xfeatures2d::SURF::create(minHessian);
 
 	this->sift_detector_ = cv::xfeatures2d::SIFT::create();
-
 }
 
 
@@ -95,7 +94,8 @@ void identification::FeaturePointMatcher::matchAllFeaturePoints(std::vector<dto:
 				// Match SURF
 				std::vector<cv::DMatch> surfMatches;
 				this->bf_matcher = cv::BFMatcher::create();
-				if (t.surf_descriptors.type() == comp.surf_descriptors.type()) {
+				if (t.surf_descriptors.type() == comp.surf_descriptors.type())
+				{
 					bf_matcher->match(t.surf_descriptors, comp.surf_descriptors, surfMatches);
 
 					std::vector<cv::DMatch> good_surf_matches;
@@ -111,7 +111,8 @@ void identification::FeaturePointMatcher::matchAllFeaturePoints(std::vector<dto:
 					surf_suggestion.track = &comp;
 					surf_suggestion.likelihood = ((float)good_surf_matches.size() / (float)t.surf_keyPoints.size());
 					t.surf_keypoint_suggestion.push_back(surf_suggestion);
-				} else
+				}
+				else
 				{
 					dto::Track::suggestion surf_suggestion;
 					surf_suggestion.track = &comp;
@@ -135,7 +136,8 @@ void identification::FeaturePointMatcher::matchAllFeaturePoints(std::vector<dto:
 				std::vector<cv::DMatch> siftMatches;
 				this->bf_matcher = cv::BFMatcher::create();
 				if (t.sift_descriptors.type() == comp.sift_descriptors.type() &&
-					t.sift_keyPoints.size() != 0 && comp.sift_keyPoints.size() != 0) {
+					t.sift_keyPoints.size() != 0 && comp.sift_keyPoints.size() != 0)
+				{
 					bf_matcher->match(t.sift_descriptors, comp.sift_descriptors, siftMatches);
 
 					std::vector<cv::DMatch> good_sift_matches;
@@ -151,7 +153,8 @@ void identification::FeaturePointMatcher::matchAllFeaturePoints(std::vector<dto:
 					sift_suggestion.track = &comp;
 					sift_suggestion.likelihood = ((float)good_sift_matches.size() / (float)t.sift_keyPoints.size());
 					t.sift_keypoint_suggestion.push_back(sift_suggestion);
-				} else
+				}
+				else
 				{
 					dto::Track::suggestion sift_suggestion;
 					sift_suggestion.track = &comp;

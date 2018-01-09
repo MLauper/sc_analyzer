@@ -30,13 +30,12 @@ image_segmentation::PersonDetector::PersonDetector()
 	this->maxRatio = 0.625f;
 
 	std::stringstream yoloConfigPath;
-	yoloConfigPath << std::getenv("YOLO_PATH") << dto::Configuration::yoloConfig;
+	yoloConfigPath << getenv("YOLO_PATH") << dto::Configuration::yoloConfig;
 
 	std::stringstream yoloWeightsPath;
-	yoloWeightsPath << std::getenv("YOLO_PATH") << dto::Configuration::yoloWeights;
+	yoloWeightsPath << getenv("YOLO_PATH") << dto::Configuration::yoloWeights;
 
 	this->yoloDetector = new Detector(yoloConfigPath.str().c_str(), yoloWeightsPath.str().c_str(), 0);
-
 }
 
 void image_segmentation::PersonDetector::extractPersonContours(
@@ -45,8 +44,9 @@ void image_segmentation::PersonDetector::extractPersonContours(
 	std::vector<std::vector<cv::Point>> contours;
 	std::vector<cv::Vec4i> hierarchy;
 
-	try {
-		cv::findContours(image.cv_fgmask, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
+	try
+	{
+		findContours(image.cv_fgmask, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
 	}
 	catch (std::exception e)
 	{
@@ -55,7 +55,7 @@ void image_segmentation::PersonDetector::extractPersonContours(
 
 	for (int i = 0; i < contours.size(); i++)
 	{
-		int minX = INT_MAX, maxX = 0, minY = INT_MAX , maxY = 0;
+		int minX = INT_MAX, maxX = 0, minY = INT_MAX, maxY = 0;
 		for (cv::Point p : contours.at(i))
 		{
 			if (p.x < minX) minX = p.x;
@@ -76,12 +76,14 @@ void image_segmentation::PersonDetector::extractPersonContours(
 		if (minY < this->minRegionY) continue;
 		if (maxY > this->maxRegionY) continue;
 
-		if (minY != 0 && maxY != imageHeight) {
+		if (minY != 0 && maxY != imageHeight)
+		{
 			if (height < this->minRegionHeight) continue;
 			if (height > this->maxRegionHeight) continue;
 			if (ratio < this->minRatio) continue;
 			if (ratio > this->maxRatio) continue;
-		} else
+		}
+		else
 		{
 			if (height < minRegionHeight / 3) continue;
 			if (height > maxRegionHeight) continue;
@@ -104,21 +106,22 @@ void image_segmentation::PersonDetector::extractPersonContours(
 		cv::RNG rng(12345);
 		for (size_t i = 0; i < contours.size(); i++)
 		{
-		  cv::Scalar color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
-		  cv::drawContours(drawingAll, contours, (int)i, color, 2, 8, hierarchy, 0, cv::Point());
+			cv::Scalar color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
+			drawContours(drawingAll, contours, (int)i, color, 2, 8, hierarchy, 0, cv::Point());
 		}
 
 		if (dto::Configuration::SHOW_ALL_CONTOURS)
 		{
-			cv::imshow("All Contours", drawingAll);
+			imshow("All Contours", drawingAll);
 			cv::waitKey(1);
 		}
 
 		if (dto::Configuration::SAVE_ALL_CONTOURS)
 		{
 			std::stringstream image_out_path;
-			image_out_path << dto::Configuration::ALL_CONTOURS_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << image.filename << "_all_contours.jpg";
-			cv::imwrite(image_out_path.str().c_str(), drawingAll);
+			image_out_path << dto::Configuration::ALL_CONTOURS_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix <<
+				"\\" << image.filename << "_all_contours.jpg";
+			imwrite(image_out_path.str().c_str(), drawingAll);
 		}
 	}
 
@@ -129,21 +132,23 @@ void image_segmentation::PersonDetector::extractPersonContours(
 		for (size_t i = 0; i < image.regions.size(); i++)
 		{
 			cv::Scalar color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
-			
-			cv::drawContours(drawingAll, std::vector<std::vector<cv::Point>>(1, image.regions.at(i).contour), 0, color, 2, 8, 0, 0, cv::Point());
+
+			drawContours(drawingAll, std::vector<std::vector<cv::Point>>(1, image.regions.at(i).contour), 0, color, 2, 8, 0, 0,
+			             cv::Point());
 		}
 
 		if (dto::Configuration::SHOW_ALL_CONTOURS)
 		{
-			cv::imshow("Accepted Contours", drawingAll);
+			imshow("Accepted Contours", drawingAll);
 			cv::waitKey(1);
 		}
 
 		if (dto::Configuration::SAVE_CONTOUR_IMAGES)
 		{
 			std::stringstream image_out_path;
-			image_out_path << dto::Configuration::CONTOUR_IMAGES_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << image.filename << "_accepted_contours.jpg";
-			cv::imwrite(image_out_path.str().c_str(), drawingAll);
+			image_out_path << dto::Configuration::CONTOUR_IMAGES_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix
+				<< "\\" << image.filename << "_accepted_contours.jpg";
+			imwrite(image_out_path.str().c_str(), drawingAll);
 		}
 	}
 
@@ -175,7 +180,6 @@ void image_segmentation::PersonDetector::extractPersonContours(
 	//	image_out_path_passed << "c:\\temp\\\extracted_persons\\" << filename << "_contoursPassed.jpg";
 	//	cv::imwrite(image_out_path_passed.str().c_str(), drawing);
 	//}
-
 }
 
 void image_segmentation::PersonDetector::detectPersonsYolo(dto::Image& Image, dto::Camera& camera)
@@ -185,32 +189,34 @@ void image_segmentation::PersonDetector::detectPersonsYolo(dto::Image& Image, dt
 	if (dto::Configuration::USE_HIGH_CONTRAST_IMAGE_FOR_YOLO)
 	{
 		cv::Mat lab_image;
-		cv::cvtColor(Image.cv_image_original, lab_image, CV_BGR2Lab);
+		cvtColor(Image.cv_image_original, lab_image, CV_BGR2Lab);
 		std::vector<cv::Mat> lab_planes(3);
-		cv::split(lab_image, lab_planes); 
+		split(lab_image, lab_planes);
 		cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE();
 		clahe->setClipLimit(4);
 		cv::Mat dst;
 		clahe->apply(lab_planes[0], dst);
 		dst.copyTo(lab_planes[0]);
 		cv::merge(lab_planes, lab_image);
-		cv::cvtColor(lab_image, Image.cv_image_high_contrast, CV_Lab2BGR);
-				
+		cvtColor(lab_image, Image.cv_image_high_contrast, CV_Lab2BGR);
+
 		yoloObjects = this->yoloDetector->detect(Image.cv_image_original, 0.3f, false);
-	} else if (dto::Configuration::USE_FG_IMAGE_FOR_YOLO){
+	}
+	if (dto::Configuration::USE_FG_IMAGE_FOR_YOLO)
+	{
 		yoloObjects = this->yoloDetector->detect(Image.cv_fgimg, 0.3f, false);
 	}
-	else {
-		yoloObjects = this->yoloDetector->detect(Image.cv_image_original, 0.3f, false);
-	}
+	yoloObjects = this->yoloDetector->detect(Image.cv_image_original, 0.3f, false);
 
-	if (dto::Configuration::PRINT_YOLO_PERSONS) {
+	if (dto::Configuration::PRINT_YOLO_PERSONS)
+	{
 		std::cout << "Yolo Detected Objects: \n";
 		for (auto& obj : yoloObjects)
 		{
 			if (obj.obj_id == dto::Configuration::yoloPersonObjectId)
 			{
-				std::cout << "  Person at: " << obj.x << " " << obj.y << ", dimensions: " << obj.w << " " << obj.h << "Propability: " << obj.prob << std::endl;
+				std::cout << "  Person at: " << obj.x << " " << obj.y << ", dimensions: " << obj.w << " " << obj.h <<
+					"Propability: " << obj.prob << std::endl;
 			}
 		}
 		std::cout << std::endl;
@@ -232,19 +238,21 @@ void image_segmentation::PersonDetector::detectPersonsYolo(dto::Image& Image, dt
 		{
 			cv::Scalar color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
 
-			cv::rectangle(drawingAll, cv::Point(person.x, person.y), cv::Point(person.x + person.w, person.y + person.h), color, 3);
+			rectangle(drawingAll, cv::Point(person.x, person.y), cv::Point(person.x + person.w, person.y + person.h), color, 3);
 		}
 
-		if (dto::Configuration::SHOW_YOLO_PERSONS_IMAGES) {
-			cv::imshow("Yolo Persons", drawingAll);
+		if (dto::Configuration::SHOW_YOLO_PERSONS_IMAGES)
+		{
+			imshow("Yolo Persons", drawingAll);
 			cv::waitKey(1);
 		}
 
 		if (dto::Configuration::SAVE_YOLO_PERSONS_IMAGES)
 		{
 			std::stringstream image_out_path;
-			image_out_path << dto::Configuration::YOLO_PERSONS_IMAGES_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << Image.filename << "_yolo_persons.jpg";
-			cv::imwrite(image_out_path.str().c_str(), drawingAll);
+			image_out_path << dto::Configuration::YOLO_PERSONS_IMAGES_DIRECTORY << "scene-" << camera.scene << "\\" << camera.
+				prefix << "\\" << Image.filename << "_yolo_persons.jpg";
+			imwrite(image_out_path.str().c_str(), drawingAll);
 		}
 	}
 }

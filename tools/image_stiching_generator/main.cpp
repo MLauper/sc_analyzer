@@ -18,7 +18,7 @@ int main()
 		"C:\\Temp\\stiching\\out_CAMERA_room_0000000000.mkv_snapshot_10.12.jpg",
 	};
 
-	for (const auto & path : inputImagesPaths)
+	for (const auto& path : inputImagesPaths)
 	{
 		inputImages.push_back(cv::imread(path));
 	}

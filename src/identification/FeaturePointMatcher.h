@@ -3,7 +3,8 @@
 #include "dto/Track.h"
 #include <opencv2/xfeatures2d/nonfree.hpp>
 
-namespace identification {
+namespace identification
+{
 	class FeaturePointMatcher
 	{
 	public:

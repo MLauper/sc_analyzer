@@ -1,7 +1,8 @@
 #pragma once
 #include "dto/Track.h"
 
-namespace identification {
+namespace identification
+{
 	class LikelihoodCalculator
 	{
 	public:

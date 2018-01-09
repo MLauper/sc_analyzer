@@ -10,10 +10,13 @@ namespace dto
 	{
 		enum WalkingDirection
 		{
-			out_in,  // Person walks in the room
-			in_out,  // Person walks out of the room
-			out_out, // Person walsk in the room and leaves it again
-			in_in    // Person moves inside the room
+			out_in,
+			// Person walks in the room
+			in_out,
+			// Person walks out of the room
+			out_out,
+			// Person walsk in the room and leaves it again
+			in_in // Person moves inside the room
 		};
 
 		struct Cv_optimalPersonBodyParts
@@ -22,19 +25,22 @@ namespace dto
 			cv::Mat upperBody;
 			cv::Mat lowerBody;
 		};
+
 		struct primaryColorIds
 		{
 			int upperBody;
 			int lowerBody;
 		};
+
 		struct personSize
 		{
 			float height;
 			float width;
 		};
+
 		struct suggestion
 		{
-			dto::Track* track;
+			Track* track;
 			float likelihood;
 		};
 
@@ -42,11 +48,11 @@ namespace dto
 		int trackId;
 
 		// List of detected regions of one person
-		std::vector<dto::Region> regions;
+		std::vector<Region> regions;
 		// List of detected bounding boxes of one person
 		std::vector<bbox_t> persons;
 		// List of images, corresponding with list of bounding boxes
-		std::vector<dto::Image> images;
+		std::vector<Image> images;
 
 		// Walking direction of the person
 		WalkingDirection walkingDirection;
@@ -80,7 +86,7 @@ namespace dto
 		int track_db_id;
 
 		// Originating camera of this track
-		dto::Camera camera;
+		Camera camera;
 
 		// Identification - Likelihood for the same person
 		std::vector<suggestion> surf_keypoint_suggestion;

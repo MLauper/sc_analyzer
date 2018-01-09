@@ -22,5 +22,4 @@ namespace image_tracking
 		int latestTrackId = 0;
 		cv::Mat drawingAll;
 	};
-
 }

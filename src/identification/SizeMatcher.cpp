@@ -1,7 +1,6 @@
 #include "SizeMatcher.h"
 
 
-
 identification::SizeMatcher::SizeMatcher()
 {
 }
@@ -15,8 +14,8 @@ void identification::SizeMatcher::matchAllSizes(std::vector<dto::Track>& tracks)
 {
 	for (auto& t : tracks)
 	{
-		for (auto& comp : tracks) {
-
+		for (auto& comp : tracks)
+		{
 			float diffHeight = abs(t.estimatedPersonSize.height - comp.estimatedPersonSize.height);
 			float diffWidth = abs(t.estimatedPersonSize.width - comp.estimatedPersonSize.width);
 

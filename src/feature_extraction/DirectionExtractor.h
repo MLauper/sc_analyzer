@@ -10,5 +10,4 @@ namespace feature_extraction
 		DirectionExtractor();
 		void extractDirection(dto::Track& track, dto::Camera& camera);
 	};
-
 }

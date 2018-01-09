@@ -12,7 +12,6 @@
 
 int main()
 {
-
 	std::cout << "Start Identification" << std::endl << std::endl;
 
 	dto::SQLHelper sql_helper;
@@ -46,7 +45,7 @@ int main()
 
 	identification::LikelihoodCalculator likelihood_calculator;
 	likelihood_calculator.calculateAllLikelihoods(tracks);
-	
+
 	identification::PersonAssigner person_assigner;
 	person_assigner.assignTracksToPerson(tracks, persons);
 
@@ -60,13 +59,16 @@ int main()
 		fileStream.open(filePath.str().c_str(), std::fstream::app);
 
 		fileStream << "Person Identification Statistics" << std::endl;
-		for (int i = 0; i < persons.size(); i++) {
+		for (int i = 0; i < persons.size(); i++)
+		{
 			fileStream << " Person " << i << ": " << std::endl;
-			for (int j = 0; j < persons.at(i).tracks.size(); j++) {
-				fileStream << "  Scene: " << persons.at(i).tracks.at(j).camera.scene << ", Track: " << persons.at(i).tracks.at(j).trackId << std::endl;
+			for (int j = 0; j < persons.at(i).tracks.size(); j++)
+			{
+				fileStream << "  Scene: " << persons.at(i).tracks.at(j).camera.scene << ", Track: " << persons.at(i).tracks.at(j).
+				                                                                                               trackId << std::endl;
 			}
 		}
-		
+
 		fileStream << std::endl;
 
 		fileStream.close();

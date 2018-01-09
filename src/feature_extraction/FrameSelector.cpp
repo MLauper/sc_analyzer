@@ -18,27 +18,34 @@ void feature_extraction::FrameSelector::SelectFrame(dto::Track& track, const dto
 			int distance_y;
 		};
 		std::vector<personCandidate> optimalPersonCandidates;
-		
+
 		// Find any candidate that lies within the configured region on y-axis
 		for (int i = 0; i < track.persons.size(); i++)
 		{
 			int candidateDistance = abs(
 				(
 					static_cast<int>(track.persons.at(i).y) + static_cast<int>(track.persons.at(i).h)
-				)- camera.optimalPersonLocation.y);
+				) - camera.optimalPersonLocation.y);
 			if (candidateDistance < dto::Configuration::MAX_OPTIMAL_DISTANCE)
 			{
 				personCandidate c;
 				c.personID = i;
 				c.distance_y = candidateDistance;
-				c.distance_x = abs((static_cast<int>(track.persons.at(i).x) + static_cast<int>(track.persons.at(i).w)) - camera.optimalPersonLocation.x);
+				c.distance_x = abs(
+					(static_cast<int>(track.persons.at(i).x) + static_cast<int>(track.persons.at(i).w)) - camera.optimalPersonLocation.
+					                                                                                             x);
 				optimalPersonCandidates.push_back(c);
 
-				if (dto::Configuration::PRINT_FRAME_SELECTION_STEPS) {
+				if (dto::Configuration::PRINT_FRAME_SELECTION_STEPS)
+				{
 					std::cout << "Found candidate with ID: " << i << std::endl;
-					std::cout << " y-Position: " << static_cast<int>(track.persons.at(i).y) << " + " << static_cast<int>(track.persons.at(i).h) << " = " << static_cast<int>(track.persons.at(i).y) + static_cast<int>(track.persons.at(i).h) << std::endl;
+					std::cout << " y-Position: " << static_cast<int>(track.persons.at(i).y) << " + " << static_cast<int>(track.persons.
+					                                                                                                           at(i).h)
+						<< " = " << static_cast<int>(track.persons.at(i).y) + static_cast<int>(track.persons.at(i).h) << std::endl;
 					std::cout << " y-Distance to " << camera.optimalPersonLocation.y << ": " << candidateDistance << std::endl;
-					std::cout << " x-Position: " << static_cast<int>(track.persons.at(i).x) << " + " << static_cast<int>(track.persons.at(i).w) << " = " << static_cast<int>(track.persons.at(i).x) + static_cast<int>(track.persons.at(i).w) << std::endl;
+					std::cout << " x-Position: " << static_cast<int>(track.persons.at(i).x) << " + " << static_cast<int>(track.persons.
+					                                                                                                           at(i).w)
+						<< " = " << static_cast<int>(track.persons.at(i).x) + static_cast<int>(track.persons.at(i).w) << std::endl;
 					std::cout << " x-Distance to " << camera.optimalPersonLocation.x << ": " << c.distance_x << std::endl;
 				}
 			}
@@ -51,14 +58,14 @@ void feature_extraction::FrameSelector::SelectFrame(dto::Track& track, const dto
 		{
 			if (optimalPersonCandidates.at(i).distance_x < optimalRegionDistance)
 			{
-				if (dto::Configuration::PRINT_FRAME_SELECTION_STEPS) {
+				if (dto::Configuration::PRINT_FRAME_SELECTION_STEPS)
+				{
 					std::cout << "Select better candidate ID: " << optimalPersonCandidates.at(i).personID << std::endl;
 				}
 				track.optimalPersonId = optimalPersonCandidates.at(i).personID;
 				optimalRegionDistance = optimalPersonCandidates.at(i).distance_x;
 			}
 		}
-
 	}
 
 
@@ -67,11 +74,13 @@ void feature_extraction::FrameSelector::SelectFrame(dto::Track& track, const dto
 		std::ofstream fileStream;
 
 		std::stringstream filePath;
-		filePath << dto::Configuration::STATISTICS_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << "Track-" << track.trackId << "_statistics.txt";
+		filePath << dto::Configuration::STATISTICS_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" <<
+			"Track-" << track.trackId << "_statistics.txt";
 		fileStream.open(filePath.str().c_str(), std::fstream::app);
-		
+
 		fileStream << "Selected Track Picture: " << track.optimalPersonId << std::endl;
-		if (track.optimalPersonId != -1) {
+		if (track.optimalPersonId != -1)
+		{
 			auto& selectedPerson = track.persons.at(track.optimalPersonId);
 			fileStream << "Selected Track Location Point: " << (selectedPerson.x + (selectedPerson.w / 2)) << "x" << (
 				selectedPerson.y + (selectedPerson.h / 2)) << std::endl;
@@ -82,7 +91,8 @@ void feature_extraction::FrameSelector::SelectFrame(dto::Track& track, const dto
 	if (dto::Configuration::SAVE_OPTIMAL_TRACK_IMAGE && track.optimalPersonId != -1)
 	{
 		cv::Mat drawingAll;
-		if (track.optimalPersonId != -1) {
+		if (track.optimalPersonId != -1)
+		{
 			drawingAll = track.images.at(track.optimalPersonId).cv_image_original.clone();
 			cv::Scalar color = cv::Scalar(0, 255, 0);
 
@@ -91,8 +101,9 @@ void feature_extraction::FrameSelector::SelectFrame(dto::Track& track, const dto
 		}
 
 		std::stringstream image_out_path;
-		image_out_path << dto::Configuration::OPTIMAL_TRACK_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << "Track-" << track.trackId << "_optimalImage-original.jpg";
-		cv::imwrite(image_out_path.str().c_str(), drawingAll);
+		image_out_path << dto::Configuration::OPTIMAL_TRACK_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix <<
+			"\\" << "Track-" << track.trackId << "_optimalImage-original.jpg";
+		imwrite(image_out_path.str().c_str(), drawingAll);
 	}
 }
 
@@ -111,11 +122,13 @@ void feature_extraction::FrameSelector::SaveRegion(dto::Track& track, const dto:
 	if (dto::Configuration::SAVE_OPTIMAL_TRACK_IMAGE_CUT)
 	{
 		std::stringstream image_out_path;
-		image_out_path << dto::Configuration::OPTIMAL_TRACK_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << "Track-" << track.trackId << "_optimalImage-cut.jpg";
-		cv::imwrite(image_out_path.str().c_str(), track.cv_optimalPersonCut);
+		image_out_path << dto::Configuration::OPTIMAL_TRACK_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix <<
+			"\\" << "Track-" << track.trackId << "_optimalImage-cut.jpg";
+		imwrite(image_out_path.str().c_str(), track.cv_optimalPersonCut);
 
 		std::stringstream image_out_path_full;
-		image_out_path_full << dto::Configuration::OPTIMAL_TRACK_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix << "\\" << "Track-" << track.trackId << "_optimalImage-cut_Full.jpg";
-		cv::imwrite(image_out_path_full.str().c_str(), track.cv_optimalPersonCut_Full);
+		image_out_path_full << dto::Configuration::OPTIMAL_TRACK_DIRECTORY << "scene-" << camera.scene << "\\" << camera.
+			prefix << "\\" << "Track-" << track.trackId << "_optimalImage-cut_Full.jpg";
+		imwrite(image_out_path_full.str().c_str(), track.cv_optimalPersonCut_Full);
 	}
 }
