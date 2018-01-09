@@ -80,7 +80,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)external;$(SolutionDir)Include;C:\Program Files\opencv\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)external;$(SolutionDir)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -102,7 +102,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
       <AdditionalDependencies>LIBCURL.LIB;opencv_video331d.lib;opencv_videoio331d.lib;image_segmentation.lib;dto.lib</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>C:\libcurl;C:\Program Files\opencv\x64\vc14\lib;$(OutputPath)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(CURL_PATH);$(CV_PATH)x64\vc14\lib;$(OutputPath)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

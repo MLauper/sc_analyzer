@@ -86,7 +86,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Include;C:\Program Files\opencv\include;%(AdditionalIncludeDirectories);$(CudaToolkitIncludeDir);$(AF_PATH)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Include;%(AdditionalIncludeDirectories);$(CudaToolkitIncludeDir);$(AF_PATH)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -102,7 +102,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </CudaCompile>
     <Lib>
       <AdditionalDependencies>opencv_core331d.lib;opencv_xobjdetect331d.lib;opencv_xfeatures2d331d.lib;opencv_features2d331d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Program Files\opencv\x64\vc14\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(CV_PATH)x64\vc14\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

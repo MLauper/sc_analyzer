@@ -53,8 +53,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "camera_calibration_fisheye"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "camera_calibration_fisheye_test", "tools\camera_calibration_fisheye_test\camera_calibration_fisheye_test.vcxproj", "{40253FAA-D382-42F5-8CC2-737C1CA9D064}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo_person_counter", "tools\demo_person_counter\demo_person_counter.vcxproj", "{118BF599-5DC7-456C-97E7-B0B9AC0F4270}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "feature_point_match_test", "tools\feature_point_match_test\feature_point_match_test.vcxproj", "{8AEF5D2F-DE62-4A65-B3A2-A47D43F020CC}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "image_stiching_generator", "tools\image_stiching_generator\image_stiching_generator.vcxproj", "{5BF43355-7789-41B7-8BFC-9947B9FC5AFD}"
@@ -155,14 +153,6 @@ Global
 		{40253FAA-D382-42F5-8CC2-737C1CA9D064}.Release|x64.Build.0 = Debug|x64
 		{40253FAA-D382-42F5-8CC2-737C1CA9D064}.Release|x86.ActiveCfg = Debug|Win32
 		{40253FAA-D382-42F5-8CC2-737C1CA9D064}.Release|x86.Build.0 = Debug|Win32
-		{118BF599-5DC7-456C-97E7-B0B9AC0F4270}.Debug|x64.ActiveCfg = Debug|x64
-		{118BF599-5DC7-456C-97E7-B0B9AC0F4270}.Debug|x64.Build.0 = Debug|x64
-		{118BF599-5DC7-456C-97E7-B0B9AC0F4270}.Debug|x86.ActiveCfg = Debug|Win32
-		{118BF599-5DC7-456C-97E7-B0B9AC0F4270}.Debug|x86.Build.0 = Debug|Win32
-		{118BF599-5DC7-456C-97E7-B0B9AC0F4270}.Release|x64.ActiveCfg = Debug|x64
-		{118BF599-5DC7-456C-97E7-B0B9AC0F4270}.Release|x64.Build.0 = Debug|x64
-		{118BF599-5DC7-456C-97E7-B0B9AC0F4270}.Release|x86.ActiveCfg = Debug|Win32
-		{118BF599-5DC7-456C-97E7-B0B9AC0F4270}.Release|x86.Build.0 = Debug|Win32
 		{8AEF5D2F-DE62-4A65-B3A2-A47D43F020CC}.Debug|x64.ActiveCfg = Debug|x64
 		{8AEF5D2F-DE62-4A65-B3A2-A47D43F020CC}.Debug|x64.Build.0 = Debug|x64
 		{8AEF5D2F-DE62-4A65-B3A2-A47D43F020CC}.Debug|x86.ActiveCfg = Debug|Win32

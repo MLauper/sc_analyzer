@@ -45,8 +45,8 @@ namespace dto {
 		//const int yoloPersonObjectId = 8;
 
 		// Yolo Coco dataset
-		const std::string yoloConfig = "C:\\code\\sc_analyzer\\x64\\Debug\\yolo.cfg.txt";
-		const std::string yoloWeights = "C:\\code\\sc_analyzer\\x64\\Debug\\yolo.weights";
+		const std::string yoloConfig = "yolo.cfg.txt";
+		const std::string yoloWeights = "yolo.weights";
 		const int yoloPersonObjectId = 0;
 
 		const bool PRINT_YOLO_PERSONS = false;

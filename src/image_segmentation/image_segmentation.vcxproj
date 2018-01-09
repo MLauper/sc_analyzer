@@ -80,7 +80,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>OPENCV;WIN32;WIN64;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Include;C:\Program Files\opencv\include;$(AF_PATH)/include;%(AdditionalIncludeDirectories);$(CudaToolkitIncludeDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Include;$(AF_PATH)/include;%(AdditionalIncludeDirectories);$(CudaToolkitIncludeDir)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -106,7 +106,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
       <AdditionalDependencies>yolo_cpp_dll.lib;opencv_core331d.lib;opencv_imgproc331d.lib;opencv_imgcodecs331d.lib;opencv_highgui331d.lib;opencv_bgsegm331d.lib;opencv_video331d.lib;opencv_cudabgsegm331d.lib;opencv_cudalegacy331d.lib;opencv_cudaobjdetect331d.lib;opencv_cudaimgproc331d.lib</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>$(OutDir);C:\Program Files\opencv\x64\vc14\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(OutDir);$(CV_PATH)x64\vc14\lib;$(YOLO_PATH)</AdditionalLibraryDirectories>
     </Lib>
     <ProjectReference>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>

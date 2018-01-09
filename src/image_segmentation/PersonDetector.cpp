@@ -29,7 +29,13 @@ image_segmentation::PersonDetector::PersonDetector()
 	this->minRatio = 0.3f;
 	this->maxRatio = 0.625f;
 
-	this->yoloDetector = new Detector(dto::Configuration::yoloConfig, dto::Configuration::yoloWeights, 0);
+	std::stringstream yoloConfigPath;
+	yoloConfigPath << std::getenv("YOLO_PATH") << dto::Configuration::yoloConfig;
+
+	std::stringstream yoloWeightsPath;
+	yoloWeightsPath << std::getenv("YOLO_PATH") << dto::Configuration::yoloWeights;
+
+	this->yoloDetector = new Detector(yoloConfigPath.str().c_str(), yoloWeightsPath.str().c_str(), 0);
 
 }
 
