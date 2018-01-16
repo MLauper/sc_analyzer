@@ -7,10 +7,6 @@
 **/CMakeCache.txt
 **/cmake_install.cmake
 
-# Doxygen Output files
-html/
-latex/
-
 # VSCode Project Files
 .vscode
 
