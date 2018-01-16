@@ -89,15 +89,15 @@ static double computeReprojectionErrors(
 	vector<float>& per_view_errors)
 {
 	vector<Point2f> image_points2;
-	int total_points = 0;
+	auto total_points = 0;
 	double total_err = 0;
 	per_view_errors.resize(object_points.size());
 
-	for (int i = 0; i < static_cast<int>(object_points.size()); i++)
+	for (auto i = 0; i < static_cast<int>(object_points.size()); i++)
 	{
 		projectPoints(Mat(object_points[i]), rvecs[i], tvecs[i],
 		              camera_matrix, dist_coeffs, image_points2);
-		double err = norm(Mat(image_points[i]), Mat(image_points2), NORM_L2);
+		const auto err = norm(Mat(image_points[i]), Mat(image_points2), NORM_L2);
 		const auto n = static_cast<int>(object_points[i].size());
 		per_view_errors[i] = static_cast<float>(std::sqrt(err * err / n));
 		total_err += err * err;
@@ -180,7 +180,7 @@ static void saveCameraParams(const string& filename,
 
 	time_t tt;
 	time(&tt);
-	auto t2 = localtime(&tt);
+	const auto t2 = localtime(&tt);
 	char buf[1024];
 	strftime(buf, sizeof buf - 1, "%c", t2);
 
@@ -275,7 +275,7 @@ static bool run_and_save(const string& outputFilename,
 	vector<float> reprojErrs;
 	double totalAvgErr = 0;
 
-	const bool ok = runCalibration(imagePoints, imageSize, boardSize, patternType, squareSize,
+	const auto ok = runCalibration(imagePoints, imageSize, boardSize, patternType, squareSize,
 	                               aspectRatio, flags, cameraMatrix, distCoeffs,
 	                               rvecs, tvecs, reprojErrs, totalAvgErr);
 	printf("%s. avg reprojection error = %.2f\n",
@@ -303,12 +303,12 @@ int main(const int argc, char** argv)
 	string inputFilename = "";
 
 	int i;
-	bool undistortImage = false;
-	int flags = 0;
+	auto undistortImage = false;
+	auto flags = 0;
 	VideoCapture capture;
 	clock_t prevTimestamp = 0;
 	int mode = detection;
-	int cameraId = 0;
+	auto cameraId = 0;
 	vector<vector<Point2f>> imagePoints;
 	vector<string> imageList;
 	pattern pattern = chessboard;
@@ -326,7 +326,7 @@ int main(const int argc, char** argv)
 	boardSize.height = parser.get<int>("h");
 	if (parser.has("pt"))
 	{
-		const string val = parser.get<string>("pt");
+		const auto val = parser.get<string>("pt");
 		if (val == "circles")
 			pattern = circles_grid;
 		else if (val == "acircles")
@@ -336,23 +336,23 @@ int main(const int argc, char** argv)
 		else
 			return fprintf(stderr, "Invalid pattern type: must be chessboard or circles\n"), -1;
 	}
-	float squareSize = parser.get<float>("s");
-	int nframes = parser.get<int>("n");
-	float aspectRatio = parser.get<float>("a");
-	int delay = parser.get<int>("d");
-	bool writePoints = parser.has("op");
-	bool writeExtrinsics = parser.has("oe");
+	const auto squareSize = parser.get<float>("s");
+	auto nframes = parser.get<int>("n");
+	const auto aspectRatio = parser.get<float>("a");
+	const auto delay = parser.get<int>("d");
+	const auto writePoints = parser.has("op");
+	const auto writeExtrinsics = parser.has("oe");
 	if (parser.has("a"))
 		flags |= CALIB_FIX_ASPECT_RATIO;
 	if (parser.has("zt"))
 		flags |= CALIB_ZERO_TANGENT_DIST;
 	if (parser.has("p"))
 		flags |= CALIB_FIX_PRINCIPAL_POINT;
-	bool flipVertical = parser.has("v");
-	bool videofile = parser.has("V");
+	const auto flipVertical = parser.has("v");
+	const auto videofile = parser.has("V");
 	if (parser.has("o"))
 		outputFilename = parser.get<string>("o");
-	bool showUndistorted = parser.has("su");
+	const auto showUndistorted = parser.has("su");
 	if (isdigit(parser.get<string>("@input_data")[0]))
 		cameraId = parser.get<int>("@input_data");
 	else
@@ -400,7 +400,7 @@ int main(const int argc, char** argv)
 	for (i = 0;; i++)
 	{
 		Mat view, viewGray;
-		bool blink = false;
+		auto blink = false;
 
 		if (capture.isOpened())
 		{
@@ -463,8 +463,8 @@ int main(const int argc, char** argv)
 			drawChessboardCorners(view, boardSize, Mat(pointbuf), found);
 
 		string msg = mode == capturing ? "100/100" : mode == calibrated ? "Calibrated" : "Press 'g' to start";
-		int baseLine = 0;
-		const Size textSize = getTextSize(msg, 1, 1, 1, &baseLine);
+		auto baseLine = 0;
+		const auto textSize = getTextSize(msg, 1, 1, 1, &baseLine);
 		const Point textOrigin(view.cols - 2 * textSize.width - 10, view.rows - 2 * baseLine - 10);
 
 		if (mode == capturing)
@@ -483,12 +483,12 @@ int main(const int argc, char** argv)
 
 		if (mode == calibrated && undistortImage)
 		{
-			const Mat temp = view.clone();
+			const auto temp = view.clone();
 			undistort(temp, view, cameraMatrix, distCoeffs);
 		}
 
 		imshow("Image View", view);
-		const char key = static_cast<char>(waitKey(capture.isOpened() ? 50 : 500));
+		const auto key = static_cast<char>(waitKey(capture.isOpened() ? 50 : 500));
 
 		if (key == 27)
 			break;
@@ -525,13 +525,13 @@ int main(const int argc, char** argv)
 
 		for (i = 0; i < static_cast<int>(imageList.size()); i++)
 		{
-			Mat view = imread(imageList[i], 1);
+			auto view = imread(imageList[i], 1);
 			if (view.empty())
 				continue;
 			//undistort( view, rview, cameraMatrix, distCoeffs, cameraMatrix );
 			remap(view, rview, map1, map2, INTER_LINEAR);
 			imshow("Image View", rview);
-			const char c = static_cast<char>(waitKey());
+			const auto c = static_cast<char>(waitKey());
 			if (c == 27 || c == 'q' || c == 'Q')
 				break;
 		}

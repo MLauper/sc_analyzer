@@ -20,15 +20,15 @@ int main()
 		inputImages.push_back(cv::imread(path));
 	}
 
-	const bool try_use_gpu = false;
-	bool divide_images = false;
-	const cv::Stitcher::Mode mode = cv::Stitcher::PANORAMA;
+	const auto try_use_gpu = false;
+	//auto divide_images = false;
+	const auto mode = cv::Stitcher::PANORAMA;
 	const std::string result_name = "c:\\temp\\stiching\\result.jpg";
 
 	cv::Mat pano;
-	cv::Ptr<cv::Stitcher> stitcher = cv::Stitcher::create(mode, try_use_gpu);
+	auto stitcher = cv::Stitcher::create(mode, try_use_gpu);
 
-	const cv::Stitcher::Status status = stitcher->stitch(inputImages, pano);
+	const auto status = stitcher->stitch(inputImages, pano);
 
 	if (status != cv::Stitcher::OK)
 	{

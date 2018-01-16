@@ -14,7 +14,7 @@ namespace fs = std::experimental::filesystem;
 void image_acquisition::FileLoader::WatchDirectory() const
 {
 	// Watch Directory
-	const LPCTSTR lpDir = this->directory.c_str();
+	const auto lpDir = this->directory.c_str();
 
 	// Extract Drive
 	TCHAR lpDrive[4];
@@ -25,7 +25,7 @@ void image_acquisition::FileLoader::WatchDirectory() const
 	lpDrive[3] = static_cast<TCHAR>('\0');
 
 	// Watch directory for file creations
-	const HANDLE dwChangeHandle = FindFirstChangeNotification(
+	const auto dwChangeHandle = FindFirstChangeNotification(
 		lpDir, // directory to watch 
 		FALSE, // do not watch subtree 
 		FILE_NOTIFY_CHANGE_FILE_NAME); // watch file name changes 
@@ -45,7 +45,7 @@ void image_acquisition::FileLoader::WatchDirectory() const
 	// Wait for file changes
 	while (true)
 	{
-		const DWORD dwWaitStatus = WaitForSingleObject(dwChangeHandle, INFINITE);
+		const auto dwWaitStatus = WaitForSingleObject(dwChangeHandle, INFINITE);
 
 		switch (dwWaitStatus)
 		{
@@ -72,7 +72,7 @@ void image_acquisition::FileLoader::WatchDirectory() const
 void image_acquisition::FileLoader::ProcessFiles() const
 {
 	// Directory to process files in
-	const LPCSTR lpDir = this->directory.c_str();
+	const auto lpDir = this->directory.c_str();
 
 	// Loop through files in directory
 	const auto di = fs::directory_iterator(lpDir);
@@ -82,8 +82,8 @@ void image_acquisition::FileLoader::ProcessFiles() const
 	{
 		// Read full file path
 		auto p = *it;
-		std::string fPathS = p.path().string();
-		const LPCSTR fPath = fPathS.c_str();
+		auto fPathS = p.path().string();
+		const auto fPath = fPathS.c_str();
 		//std::cout << "comparing " << fPath << " with " << this->path_prefix_c << "\n";
 		if (isPrefix(fPath, this->path_prefix_c))
 		{
@@ -96,7 +96,7 @@ void image_acquisition::FileLoader::ProcessFiles() const
 		}
 
 		// Create file handler to read last modified date
-		const HANDLE hFile = CreateFile(
+		const auto hFile = CreateFile(
 			fPath,
 			GENERIC_READ,
 			FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
@@ -230,7 +230,7 @@ std::string image_acquisition::FileLoader::extract_filename(char const* path_c)
 
 	std::vector<std::string> ret;
 
-	char const* start = path_c;
+	auto start = path_c;
 	for (; *path_c; ++path_c)
 	{
 		if (delimiters.find(*path_c) != delimiters.end())

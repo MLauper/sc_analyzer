@@ -11,7 +11,7 @@ feature_extraction::BodyPartExtractor::~BodyPartExtractor()
 {
 }
 
-void feature_extraction::BodyPartExtractor::extractBodyParts(dto::Track& track, dto::Camera& camera) const
+void feature_extraction::BodyPartExtractor::extractBodyParts(dto::Track& track, dto::Camera& camera)
 {
 	auto& optimalImage = track.cv_optimalPersonCut;
 

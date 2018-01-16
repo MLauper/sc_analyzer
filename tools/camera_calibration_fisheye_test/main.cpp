@@ -14,7 +14,7 @@
 using namespace cv;
 using namespace std;
 
-int main(int argc, char** argv)
+int main(int /*argc*/, char** /*argv*/)
 {
 	const auto fx = 7.4120290822874836e+02;
 	const auto cx = 1.3250517972817070e+03;
@@ -45,7 +45,7 @@ int main(int argc, char** argv)
 
 	Mat output;
 
-	Mat input = imread("C:\\Temp\\out_CAMERA_pan_overview_0000000151.mkv_snapshot_13.20.jpg", IMREAD_COLOR);
+	const auto input = imread("C:\\Temp\\out_CAMERA_pan_overview_0000000151.mkv_snapshot_13.20.jpg", IMREAD_COLOR);
 
 	remap(input, output, map1, map2, INTER_LINEAR);
 

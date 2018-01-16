@@ -20,9 +20,9 @@ void identification::LikelihoodCalculator::calculateAllLikelihoods(std::vector<d
 {
 	for (auto& t : tracks)
 	{
-		for (int i = 0; i < tracks.size(); i++)
+		for (auto i = 0; i < tracks.size(); i++)
 		{
-			float overall_likelihood = 0.0f;
+			auto overall_likelihood = 0.0f;
 			overall_likelihood += t.size_width_suggestion.at(i).likelihood * dto::Configuration::size_width_suggestion_weight;
 			overall_likelihood += t.size_height_suggestion.at(i).likelihood * dto::Configuration::size_height_suggestion_weight;
 			overall_likelihood += t.surf_keypoint_suggestion.at(i).likelihood * dto::Configuration::

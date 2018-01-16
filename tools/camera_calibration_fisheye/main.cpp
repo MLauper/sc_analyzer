@@ -26,7 +26,11 @@ static void help()
 class Settings
 {
 public:
-	Settings() : goodInput(false)
+	Settings() : calibrationPattern(), squareSize(0), nrFrames(0), aspectRatio(0), delay(0), writePoints(false),
+	             writeExtrinsics(false), calibZeroTangentDist(false), calibFixPrincipalPoint(false), flipVertical(false),
+	             showUndistorsed(false), useFisheye(false), fixK1(false), fixK2(false), fixK3(false), fixK4(false),
+	             fixK5(false), cameraID(0), atImageList(0), inputType(),
+	             goodInput(false), flag(0)
 	{
 	}
 
@@ -191,11 +195,11 @@ public:
 		FileStorage fs(filename, FileStorage::READ);
 		if (!fs.isOpened())
 			return false;
-		FileNode n = fs.getFirstTopLevelNode();
+		auto n = fs.getFirstTopLevelNode();
 		if (n.type() != FileNode::SEQ)
 			return false;
-		FileNodeIterator it = n.begin();
-		const FileNodeIterator it_end = n.end();
+		auto it = n.begin();
+		const auto it_end = n.end();
 		for (; it != it_end; ++it)
 			l.push_back(static_cast<string>(*it));
 		return true;
@@ -203,14 +207,13 @@ public:
 
 	static bool isListOfImages(const string& filename)
 	{
-		string s(filename);
+		auto s(filename);
 		// Look for file extension
 		if (s.find(".xml") == string::npos && s.find(".yaml") == string::npos && s.find(".yml") == string::npos)
 			return false;
 		return true;
 	}
 
-public:
 	Size boardSize; // The size of the board -> Number of items by width and height
 	Pattern calibrationPattern; // One of the Chessboard, circles, or asymmetric circle pattern
 	float squareSize; // The size of a square in your defined unit (point, millimeter,etc).
@@ -244,7 +247,7 @@ private:
 	string patternToUse;
 };
 
-static inline void read(const FileNode& node, Settings& x, const Settings& default_value = Settings())
+static void read(const FileNode& node, Settings& x, const Settings& default_value = Settings())
 {
 	if (node.empty())
 		x = default_value;
@@ -252,7 +255,7 @@ static inline void read(const FileNode& node, Settings& x, const Settings& defau
 		x.read(node);
 }
 
-static inline void write(FileStorage& fs, const String&, const Settings& s)
+static void write(FileStorage& fs, const String&, const Settings& s)
 {
 	s.write(fs);
 }
@@ -299,9 +302,9 @@ int main(const int argc, char* argv[])
 	//! [get_input]
 	for (;;)
 	{
-		bool blinkOutput = false;
+		auto blinkOutput = false;
 
-		Mat view = s.nextImage();
+		auto view = s.nextImage();
 
 		//-----  If no more image, or got enough, then stop calibration and show result -------------
 		if (mode == CAPTURING && imagePoints.size() >= static_cast<size_t>(s.nrFrames))
@@ -328,7 +331,7 @@ int main(const int argc, char* argv[])
 
 		bool found;
 
-		int chessBoardFlags = CALIB_CB_ADAPTIVE_THRESH | CALIB_CB_NORMALIZE_IMAGE;
+		auto chessBoardFlags = CALIB_CB_ADAPTIVE_THRESH | CALIB_CB_NORMALIZE_IMAGE;
 
 		if (!s.useFisheye)
 		{
@@ -379,8 +382,8 @@ int main(const int argc, char* argv[])
 		//----------------------------- Output Text ------------------------------------------------
 		//! [output_text]
 		string msg = mode == CAPTURING ? "100/100" : mode == CALIBRATED ? "Calibrated" : "Press 'g' to start";
-		int baseLine = 0;
-		const Size textSize = getTextSize(msg, 1, 1, 1, &baseLine);
+		auto baseLine = 0;
+		const auto textSize = getTextSize(msg, 1, 1, 1, &baseLine);
 		const Point textOrigin(view.cols - 2 * textSize.width - 10, view.rows - 2 * baseLine - 10);
 
 		if (mode == CAPTURING)
@@ -400,7 +403,7 @@ int main(const int argc, char* argv[])
 		//! [output_undistorted]
 		if (mode == CALIBRATED && s.showUndistorsed)
 		{
-			const Mat temp = view.clone();
+			const auto temp = view.clone();
 			if (s.useFisheye)
 				fisheye::undistortImage(temp, view, cameraMatrix, distCoeffs);
 			else
@@ -410,7 +413,7 @@ int main(const int argc, char* argv[])
 		//------------------------------ Show image and check for input commands -------------------
 		//! [await_input]
 		imshow("Image View", view);
-		const char key = static_cast<char>(waitKey(s.inputCapture.isOpened() ? 50 : s.delay));
+		const auto key = static_cast<char>(waitKey(s.inputCapture.isOpened() ? 50 : s.delay));
 
 		if (key == ESC_KEY)
 			break;
@@ -450,12 +453,12 @@ int main(const int argc, char* argv[])
 
 		for (size_t i = 0; i < s.imageList.size(); i++)
 		{
-			Mat view = imread(s.imageList[i], IMREAD_COLOR);
+			auto view = imread(s.imageList[i], IMREAD_COLOR);
 			if (view.empty())
 				continue;
 			remap(view, rview, map1, map2, INTER_LINEAR);
 			imshow("Image View", rview);
-			const char c = static_cast<char>(waitKey());
+			const auto c = static_cast<char>(waitKey());
 			if (c == ESC_KEY || c == 'q' || c == 'Q')
 				break;
 		}
@@ -488,9 +491,9 @@ static double computeReprojectionErrors(const vector<vector<Point3f>>& objectPoi
 		{
 			projectPoints(objectPoints[i], rvecs[i], tvecs[i], cameraMatrix, distCoeffs, imagePoints2);
 		}
-		double err = norm(imagePoints[i], imagePoints2, NORM_L2);
+		const auto err = norm(imagePoints[i], imagePoints2, NORM_L2);
 
-		const size_t n = objectPoints[i].size();
+		const auto n = objectPoints[i].size();
 		perViewErrors[i] = static_cast<float>(std::sqrt(err * err / n));
 		totalErr += err * err;
 		totalPoints += n;
@@ -510,14 +513,14 @@ static void calcBoardCornerPositions(const Size boardSize, const float squareSiz
 	{
 	case Settings::CHESSBOARD:
 	case Settings::CIRCLES_GRID:
-		for (int i = 0; i < boardSize.height; ++i)
-			for (int j = 0; j < boardSize.width; ++j)
+		for (auto i = 0; i < boardSize.height; ++i)
+			for (auto j = 0; j < boardSize.width; ++j)
 				corners.push_back(Point3f(j * squareSize, i * squareSize, 0));
 		break;
 
 	case Settings::ASYMMETRIC_CIRCLES_GRID:
-		for (int i = 0; i < boardSize.height; i++)
-			for (int j = 0; j < boardSize.width; j++)
+		for (auto i = 0; i < boardSize.height; i++)
+			for (auto j = 0; j < boardSize.width; j++)
 				corners.push_back(Point3f((2 * j + i % 2) * squareSize, i * squareSize, 0));
 		break;
 	default:
@@ -560,7 +563,7 @@ static bool runCalibration(Settings& s, Size& imageSize, Mat& cameraMatrix, Mat&
 
 		rvecs.reserve(_rvecs.rows);
 		tvecs.reserve(_tvecs.rows);
-		for (int i = 0; i < int(objectPoints.size()); i++)
+		for (auto i = 0; i < int(objectPoints.size()); i++)
 		{
 			rvecs.push_back(_rvecs.row(i));
 			tvecs.push_back(_tvecs.row(i));
@@ -574,7 +577,7 @@ static bool runCalibration(Settings& s, Size& imageSize, Mat& cameraMatrix, Mat&
 
 	cout << "Re-projection error reported by calibrateCamera: " << rms << endl;
 
-	const bool ok = checkRange(cameraMatrix) && checkRange(distCoeffs);
+	const auto ok = checkRange(cameraMatrix) && checkRange(distCoeffs);
 
 	totalAvgErr = computeReprojectionErrors(objectPoints, imagePoints, rvecs, tvecs, cameraMatrix,
 	                                        distCoeffs, reprojErrs, s.useFisheye);
@@ -592,7 +595,7 @@ static void saveCameraParams(Settings& s, Size& imageSize, Mat& cameraMatrix, Ma
 
 	time_t tm;
 	time(&tm);
-	struct tm* t2 = localtime(&tm);
+	auto t2 = localtime(&tm);
 	char buf[1024];
 	strftime(buf, sizeof buf, "%c", t2);
 
@@ -653,13 +656,13 @@ static void saveCameraParams(Settings& s, Size& imageSize, Mat& cameraMatrix, Ma
 	{
 		CV_Assert(rvecs[0].type() == tvecs[0].type())		;
 		const Mat bigmat(static_cast<int>(rvecs.size()), 6, CV_MAKETYPE(rvecs[0].type(), 1));
-		const bool needReshapeR = rvecs[0].depth() != 1 ? true : false;
-		const bool needReshapeT = tvecs[0].depth() != 1 ? true : false;
+		const auto needReshapeR = rvecs[0].depth() != 1 ? true : false;
+		const auto needReshapeT = tvecs[0].depth() != 1 ? true : false;
 
 		for (size_t i = 0; i < rvecs.size(); i++)
 		{
-			Mat r = bigmat(Range(int(i), int(i + 1)), Range(0, 3));
-			Mat t = bigmat(Range(int(i), int(i + 1)), Range(3, 6));
+			auto r = bigmat(Range(int(i), int(i + 1)), Range(0, 3));
+			auto t = bigmat(Range(int(i), int(i + 1)), Range(3, 6));
 
 			if (needReshapeR)
 				rvecs[i].reshape(1, 1).copyTo(r);
@@ -687,7 +690,7 @@ static void saveCameraParams(Settings& s, Size& imageSize, Mat& cameraMatrix, Ma
 		Mat imagePtMat(static_cast<int>(imagePoints.size()), static_cast<int>(imagePoints[0].size()), CV_32FC2);
 		for (size_t i = 0; i < imagePoints.size(); i++)
 		{
-			Mat r = imagePtMat.row(int(i)).reshape(2, imagePtMat.cols);
+			auto r = imagePtMat.row(int(i)).reshape(2, imagePtMat.cols);
 			Mat imgpti(imagePoints[i]);
 			imgpti.copyTo(r);
 		}
@@ -703,7 +706,7 @@ bool runCalibrationAndSave(Settings& s, Size imageSize, Mat& cameraMatrix, Mat& 
 	vector<float> reprojErrs;
 	double totalAvgErr = 0;
 
-	const bool ok = runCalibration(s, imageSize, cameraMatrix, distCoeffs, imagePoints, rvecs, tvecs, reprojErrs,
+	const auto ok = runCalibration(s, imageSize, cameraMatrix, distCoeffs, imagePoints, rvecs, tvecs, reprojErrs,
 	                               totalAvgErr);
 	cout << (ok ? "Calibration succeeded" : "Calibration failed")
 		<< ". avg re projection error = " << totalAvgErr << endl;

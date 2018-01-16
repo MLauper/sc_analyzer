@@ -10,7 +10,7 @@ image_tracking::ObjectTrackerYolo::ObjectTrackerYolo()
 void image_tracking::ObjectTrackerYolo::apply(dto::Image& image)
 {
 	std::vector<dto::Track*> updatedTracks;
-	for (int x = 0; x < image.yoloPersons.size(); x++)
+	for (auto x = 0; x < image.yoloPersons.size(); x++)
 	{
 		auto& p = image.yoloPersons.at(x);
 
@@ -19,13 +19,13 @@ void image_tracking::ObjectTrackerYolo::apply(dto::Image& image)
 		// Try to find a previous region that fits
 		std::vector<dto::Track*> candidateTracks;
 
-		for (int i = 0; i < this->currentTracks.size(); i++)
+		for (auto i = 0; i < this->currentTracks.size(); i++)
 		{
 			auto& prevPerson = this->currentTracks.at(i).persons.back();
 
 			const cv::Rect prevBB(prevPerson.x, prevPerson.y, prevPerson.w, prevPerson.h);
 
-			const bool intersectingBB = (curBB & prevBB).area() > 0;
+			const auto intersectingBB = (curBB & prevBB).area() > 0;
 
 			if (intersectingBB) { candidateTracks.push_back(&this->currentTracks.at(i)); }
 		}
@@ -55,14 +55,14 @@ void image_tracking::ObjectTrackerYolo::apply(dto::Image& image)
 		else if (candidateTracks.size() > 1)
 		{
 			const cv::Point center_current(p.x + p.w / 2, p.y + p.h / 2);
-			dto::Track* selectedTrack = candidateTracks.at(0);
-			double selectedTrackDistance = DBL_MAX;
-			for (dto::Track* ct : candidateTracks)
+			auto selectedTrack = candidateTracks.at(0);
+			auto selectedTrackDistance = DBL_MAX;
+			for (auto ct : candidateTracks)
 			{
 				const auto& prevPerson = ct->persons.back();
 				const cv::Point center_previous(prevPerson.x + prevPerson.w / 2, prevPerson.y + prevPerson.h / 2);
 
-				const double candidateDistance = norm(center_previous - center_current);
+				const auto candidateDistance = norm(center_previous - center_current);
 
 				if (candidateDistance < selectedTrackDistance)
 				{
@@ -89,12 +89,12 @@ void image_tracking::ObjectTrackerYolo::apply(dto::Image& image)
 		}
 	}
 
-	for (dto::Track* t : updatedTracks)
+	for (auto t : updatedTracks)
 	{
 		t->numImagesWithoutRegion = 0;
 	}
 
-	for (int i = 0; i < this->currentTracks.size(); i++)
+	for (auto i = 0; i < this->currentTracks.size(); i++)
 	{
 		this->currentTracks.at(i).numImagesWithoutRegion++;
 	}
@@ -102,7 +102,7 @@ void image_tracking::ObjectTrackerYolo::apply(dto::Image& image)
 
 bool image_tracking::ObjectTrackerYolo::hasFinishedTracks()
 {
-	for (int i = 0; i < this->currentTracks.size(); i++)
+	for (auto i = 0; i < this->currentTracks.size(); i++)
 	{
 		if (this->currentTracks.at(i).numImagesWithoutRegion >= this->maxNumberOfMissingFramesInTrack)
 		{
@@ -116,7 +116,7 @@ bool image_tracking::ObjectTrackerYolo::hasFinishedTracks()
 void image_tracking::ObjectTrackerYolo::SendFinishedTracksTo(feature_extraction::Controller& controller,
                                                              dto::Camera& camera)
 {
-	for (int i = 0; i < this->currentTracks.size(); i++)
+	for (auto i = 0; i < this->currentTracks.size(); i++)
 	{
 		if (this->currentTracks.at(i).numImagesWithoutRegion >= this->maxNumberOfMissingFramesInTrack)
 		{
@@ -127,18 +127,18 @@ void image_tracking::ObjectTrackerYolo::SendFinishedTracksTo(feature_extraction:
 					// Save all Track Images
 					if (dto::Configuration::SAVE_TRACK_IMAGES)
 					{
-						for (int j = 0; j < this->currentTracks.at(i).persons.size(); j++)
+						for (auto j = 0; j < this->currentTracks.at(i).persons.size(); j++)
 						{
 							std::stringstream image_out_path;
 							image_out_path << dto::Configuration::TRACK_IMAGES_DIRECTORY << "scene-" << camera.scene << "\\" << camera.prefix
 								<< "\\" << "Track-" << this->currentTracks.at(i).trackId << "-" << j << "_original.jpg";
 							//cv::imwrite(image_out_path.str().c_str(), this->currentTracks.at(i).images.at(j).cv_image_original);
 						}
-						for (int j = 0; j < this->currentTracks.at(i).persons.size(); j++)
+						for (auto j = 0; j < this->currentTracks.at(i).persons.size(); j++)
 						{
 							auto& p = this->currentTracks.at(i).persons.at(j);
-							cv::Mat drawing = this->currentTracks.at(i).images.at(j).cv_image_original.clone();
-							const cv::Scalar color = cv::Scalar(0, 255, 0);
+							auto drawing = this->currentTracks.at(i).images.at(j).cv_image_original.clone();
+							const auto color = cv::Scalar(0, 255, 0);
 							rectangle(drawing, cv::Point(p.x, p.y), cv::Point(p.x + p.w, p.y + p.h), color, 3);
 
 							std::stringstream image_out_path;
@@ -151,10 +151,10 @@ void image_tracking::ObjectTrackerYolo::SendFinishedTracksTo(feature_extraction:
 					// Collect all BBs on one Image
 					cv::Mat drawingAll = cv::Mat::zeros(this->currentTracks.at(i).images.at(0).cv_image_original.size(), CV_8UC3);
 					cv::RNG rng(12345);
-					for (int j = 0; j < this->currentTracks.at(i).persons.size(); j++)
+					for (auto j = 0; j < this->currentTracks.at(i).persons.size(); j++)
 					{
 						auto& p = this->currentTracks.at(i).persons.at(j);
-						const cv::Scalar color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
+						const auto color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
 						rectangle(drawingAll, cv::Point(p.x, p.y), cv::Point(p.x + p.w, p.y + p.h), color);
 					}
 

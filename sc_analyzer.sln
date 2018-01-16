@@ -46,6 +46,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "identification", "src\ident
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "backup_database", "tools\backup_database\backup_database.vcxproj", "{5FD4D974-E365-4FD3-BA4B-459FACA7D596}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EB6FEDD9-9527-4A18-BCB2-FE1F6D432C48} = {EB6FEDD9-9527-4A18-BCB2-FE1F6D432C48}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "camera_calibration", "tools\camera_calibration\camera_calibration.vcxproj", "{21B33717-DC91-457A-95C9-FC65F54DB316}"
 EndProject
@@ -54,6 +57,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "camera_calibration_fisheye_test", "tools\camera_calibration_fisheye_test\camera_calibration_fisheye_test.vcxproj", "{40253FAA-D382-42F5-8CC2-737C1CA9D064}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "feature_point_match_test", "tools\feature_point_match_test\feature_point_match_test.vcxproj", "{8AEF5D2F-DE62-4A65-B3A2-A47D43F020CC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EB6FEDD9-9527-4A18-BCB2-FE1F6D432C48} = {EB6FEDD9-9527-4A18-BCB2-FE1F6D432C48}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "image_stiching_generator", "tools\image_stiching_generator\image_stiching_generator.vcxproj", "{5BF43355-7789-41B7-8BFC-9947B9FC5AFD}"
 EndProject

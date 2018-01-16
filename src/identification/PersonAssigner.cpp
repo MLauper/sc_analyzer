@@ -25,7 +25,7 @@ void identification::PersonAssigner::assignTracksToPerson(std::vector<dto::Track
 
 	//if (tracks.size() > 1) std::sort(tracks.begin(), tracks.end(), compare_tracks);
 
-	int i = 0;
+	auto i = 0;
 
 	for (auto& t : tracks)
 	{
@@ -36,7 +36,7 @@ void identification::PersonAssigner::assignTracksToPerson(std::vector<dto::Track
 			// Create new person if track and match does not have any
 			if (t.assignedPersonId == -1 && match->assignedPersonId == -1)
 			{
-				const int assignment = i++;
+				const auto assignment = i++;
 				t.assignedPersonId = assignment;
 				match->assignedPersonId = assignment;
 			}
@@ -54,8 +54,8 @@ void identification::PersonAssigner::assignTracksToPerson(std::vector<dto::Track
 			{
 				if (t.overall_suggestion.at(1).likelihood > dto::Configuration::ALWAYS_MATCH_LIKELIHOOD)
 				{
-					const int replace_id = t.assignedPersonId;
-					const int replacement_id = match->assignedPersonId;
+					const auto replace_id = t.assignedPersonId;
+					const auto replacement_id = match->assignedPersonId;
 					if (replace_id != replacement_id)
 					{
 						for (auto& x : tracks) if (x.assignedPersonId == replace_id) x.assignedPersonId = replacement_id;
@@ -76,8 +76,8 @@ void identification::PersonAssigner::assignTracksToPerson(std::vector<dto::Track
 		}
 	}
 
-	int j = -1;
-	int current_id = -1;
+	auto j = -1;
+	auto current_id = -1;
 	for (auto& t : tracks)
 	{
 		// New id, create new person

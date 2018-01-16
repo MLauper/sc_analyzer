@@ -5,7 +5,7 @@
 
 identification::FeaturePointMatcher::FeaturePointMatcher()
 {
-	const int minHessian = 400;
+	const auto minHessian = 400;
 	this->surf_detector_ = cv::xfeatures2d::SURF::create(minHessian);
 
 	this->sift_detector_ = cv::xfeatures2d::SIFT::create();
@@ -77,7 +77,7 @@ void identification::FeaturePointMatcher::matchAllFeaturePoints(std::vector<dto:
 					bf_matcher->match(t.surf_descriptors, comp.surf_descriptors, surfMatches);
 
 					std::vector<cv::DMatch> good_surf_matches;
-					for (int i = 0; i < t.surf_descriptors.rows; i++)
+					for (auto i = 0; i < t.surf_descriptors.rows; i++)
 					{
 						if (surfMatches[i].distance <= 0.25)
 						{
@@ -120,7 +120,7 @@ void identification::FeaturePointMatcher::matchAllFeaturePoints(std::vector<dto:
 					bf_matcher->match(t.sift_descriptors, comp.sift_descriptors, siftMatches);
 
 					std::vector<cv::DMatch> good_sift_matches;
-					for (int i = 0; i < t.sift_descriptors.rows; i++)
+					for (auto i = 0; i < t.sift_descriptors.rows; i++)
 					{
 						if (siftMatches[i].distance <= 0.25)
 						{

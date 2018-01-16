@@ -1,13 +1,9 @@
 #include "JPGFileLoader.h"
-#include <string>
-//#include <bemapiset.h>
 #include <tchar.h>
 #include <filesystem>
 #include <arrayfire.h>
 #include <strsafe.h>
-//#include <set>
 #include "dto/Image.h"
-#include "dto/Configuration.h"
 #include "RTSPImageCapture.h"
 
 namespace fs = std::experimental::filesystem;

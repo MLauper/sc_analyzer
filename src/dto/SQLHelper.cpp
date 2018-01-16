@@ -32,9 +32,9 @@ void dto::SQLHelper::testSQLConnection() const
 
 		std::cout << "Retrieving data from DB: " << std::endl;
 
-		nanodbc::result row = execute(*conn, NANODBC_TEXT("SELECT id, directory, prefix FROM cameras"));
+		auto row = execute(*conn, NANODBC_TEXT("SELECT id, directory, prefix FROM cameras"));
 
-		for (int i = 1; row.next(); ++i)
+		for (auto i = 1; row.next(); ++i)
 		{
 			std::cout << i << ": " << row.get<std::string>("directory") << std::endl;
 		}
@@ -116,7 +116,7 @@ void dto::SQLHelper::retrieve_camera(Camera& camera, const char* directory, cons
 
 		select_query = select_query_stream.str();
 
-		nanodbc::result result = execute(*conn, select_query);
+		auto result = execute(*conn, select_query);
 
 		if (result.rowset_size() != 1)
 		{
@@ -151,7 +151,7 @@ void dto::SQLHelper::persist_track(const Track& track, const Camera& camera) con
 	std::string select_track_query;
 	nanodbc::result result;
 
-	int camera_id = 0, track_id = 0;
+	auto camera_id = 0, track_id = 0;
 
 	try
 	{
@@ -309,7 +309,7 @@ void dto::SQLHelper::persist_persons(std::vector<Person>& persons) const
 		std::string insert_person_query;
 		std::string select_person_query;
 
-		int person_db_id = 0;
+		auto person_db_id = 0;
 
 		// Insert Person
 		try
@@ -340,7 +340,7 @@ void dto::SQLHelper::persist_persons(std::vector<Person>& persons) const
 
 			select_person_query = select_query_stream.str();
 
-			nanodbc::result result = execute(*conn, select_person_query);
+			auto result = execute(*conn, select_person_query);
 
 			if (result.next())
 			{
@@ -396,7 +396,7 @@ void dto::SQLHelper::retrieve_camera(Camera& camera, const int camera_id) const
 
 		select_query = select_query_stream.str();
 
-		nanodbc::result result = execute(*conn, select_query);
+		auto result = execute(*conn, select_query);
 
 		if (result.rowset_size() != 1)
 		{
@@ -446,7 +446,7 @@ std::vector<dto::Track> dto::SQLHelper::retrieve_all_tracks() const
 
 		select_query = select_query_stream.str();
 
-		nanodbc::result result = execute(*conn, select_query);
+		auto result = execute(*conn, select_query);
 
 		while (result.next())
 		{
@@ -460,7 +460,7 @@ std::vector<dto::Track> dto::SQLHelper::retrieve_all_tracks() const
 			t.estimatedPersonSize.height = result.get<float>("personSize_height");
 			t.estimatedPersonSize.width = result.get<float>("personSize_width");
 
-			const std::string walkingDirection = result.get<std::string>("walkingDirection");
+			const auto walkingDirection = result.get<std::string>("walkingDirection");
 			if (walkingDirection == "in_in") t.walkingDirection = Track::WalkingDirection::in_in;
 			else if (walkingDirection == "in_out") t.walkingDirection = Track::WalkingDirection::in_out;
 			else if (walkingDirection == "out_in") t.walkingDirection = Track::WalkingDirection::out_in;

@@ -20,24 +20,26 @@ void image_acquisition::MKVFileLoader::process_file() const
 	cv::VideoCapture capture(this->camera.videoFilePath.c_str());
 	cv::Mat frame;
 
-	const int numOfSkippedFrames = static_cast<int>((24 / camera.fps)) - 1;
+	const auto numOfSkippedFrames = static_cast<int>((24 / camera.fps)) - 1;
 
 	if (!capture.isOpened())
 		std::cerr << "Error when reading from File: " << camera.videoFilePath.c_str() << std::endl;
 
-	int i = 0;
+	auto i = 0;
 	for (; ;)
 	{
 		dto::Image image;
 
-		bool isImageEmpty = false;
-		for (int j = 0; j < numOfSkippedFrames; j++)
+		auto isImageEmpty = false;
+		for (auto j = 0; j <= numOfSkippedFrames; j++)
 		{
 			capture >> image.cv_image_original;
 			if (image.cv_image_original.empty())
 				isImageEmpty = true;
 		}
 		if (isImageEmpty) break;
+
+		std::cout << "Processing frame number " << i << std::endl;
 
 		std::stringstream image_path_stream;
 		image_path_stream << camera.directory << camera.prefix << "frame-" << i++ << ".jpg";
@@ -47,7 +49,7 @@ void image_acquisition::MKVFileLoader::process_file() const
 		this->segmentation_controller->ProcessImage(image);
 	}
 
-	for (int j = 0; j < dto::Configuration::MAX_NUMBER_OF_MISSING_FRAMES_IN_TRACK; j++)
+	for (auto j = 0; j < dto::Configuration::MAX_NUMBER_OF_MISSING_FRAMES_IN_TRACK; j++)
 	{
 		dto::Image image;
 
@@ -68,7 +70,7 @@ std::string image_acquisition::MKVFileLoader::extract_filename(char const* path_
 
 	std::vector<std::string> ret;
 
-	char const* start = path_c;
+	auto start = path_c;
 	for (; *path_c; ++path_c)
 	{
 		if (delimiters.find(*path_c) != delimiters.end())

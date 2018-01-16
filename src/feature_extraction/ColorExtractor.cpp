@@ -21,13 +21,13 @@ void feature_extraction::ColorExtractor::extractMaxHue(dto::Track& track, dto::C
 	{
 		generatedImage = hsv_image.clone();
 	}
-	const int numOfBuckets = 16;
+	const auto numOfBuckets = 16;
 	std::vector<int> hueBuckets(numOfBuckets);
 
 	// Count Pixels
-	for (int i = 0; i < hsv_image.rows; i++)
+	for (auto i = 0; i < hsv_image.rows; i++)
 	{
-		for (int j = 0; j < hsv_image.cols; j++)
+		for (auto j = 0; j < hsv_image.cols; j++)
 		{
 			if (hsv_image.at<cv::Vec3b>(i, j)[2] > 1)
 			{
@@ -71,8 +71,8 @@ void feature_extraction::ColorExtractor::extractMaxHue(dto::Track& track, dto::C
 	}
 
 	maxBucketId = 0;
-	int maxBucketValue = 0;
-	for (int i = 0; i < hueBuckets.size(); i++)
+	auto maxBucketValue = 0;
+	for (auto i = 0; i < hueBuckets.size(); i++)
 	{
 		if (hueBuckets.at(i) > maxBucketValue)
 		{

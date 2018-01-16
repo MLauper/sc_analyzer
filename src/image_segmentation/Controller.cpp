@@ -42,8 +42,8 @@ void image_segmentation::Controller::ProcessImage(dto::Image& image)
 	this->image_tracking_controller.ProcessImage(image, camera);
 }
 
-void image_segmentation::Controller::ProcessImage(SYSTEMTIME* time, af::array& image, std::string path,
-                                                  std::string filename)
+void image_segmentation::Controller::ProcessImage(SYSTEMTIME* /*time*/, af::array& /*image*/, std::string /*path*/,
+                                                  std::string /*filename*/)
 {
 	std::cout << "___________________------------______________\n";
 
@@ -263,7 +263,7 @@ void image_segmentation::Controller::ProcessImage(SYSTEMTIME* time, af::array& i
 
 af::array image_segmentation::Controller::binThreshold(const af::array& in, const float thresholdValue)
 {
-	af::array ret_val = in.copy();
+	auto ret_val = in.copy();
 	ret_val = (ret_val < thresholdValue) * 0.0f + 1.0f * (ret_val > thresholdValue);
 	return ret_val;
 }

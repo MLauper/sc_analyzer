@@ -3,6 +3,7 @@
 #include <opencv2/videostab/ring_buffer.hpp>
 #include <iostream>
 #include <opencv2/videostab/global_motion.hpp>
+#include <opencv2/highgui.hpp>
 
 image_segmentation::PersonDetectorHog::PersonDetectorHog()
 {
@@ -11,30 +12,30 @@ image_segmentation::PersonDetectorHog::PersonDetectorHog()
 
 void image_segmentation::PersonDetectorHog::detectPerson(cv::cuda::GpuMat d_image) const
 {
-	const int win_width = 48;
-	const int win_stride_width = 8;
-	const int win_stride_height = 8;
-	const int block_width = 16;
-	const int block_stride_width = 8;
-	const int block_stride_height = 8;
-	const int cell_width = 8;
-	const int nbins = 9;
+	const auto win_width = 48;
+	const auto win_stride_width = 8;
+	const auto win_stride_height = 8;
+	const auto block_width = 16;
+	const auto block_stride_width = 8;
+	const auto block_stride_height = 8;
+	const auto cell_width = 8;
+	const auto nbins = 9;
 
 	const cv::Size win_size(win_width, win_width * 2);
 	const cv::Size block_size(block_width, block_width);
 	const cv::Size block_stride(block_stride_width, block_stride_height);
 	const cv::Size cell_size(cell_width, cell_width);
 
-	cv::Ptr<cv::cuda::HOG> gpu_hog = cv::cuda::HOG::create(win_size, block_size, block_stride, cell_size, nbins);
-	const cv::Mat detector = gpu_hog->getDefaultPeopleDetector();
+	auto gpu_hog = cv::cuda::HOG::create(win_size, block_size, block_stride, cell_size, nbins);
+	const auto detector = gpu_hog->getDefaultPeopleDetector();
 	gpu_hog->setSVMDetector(detector);
 
 	std::vector<cv::Rect> found;
 
-	const double scale = 1.05;
-	const int nlevels = 13;
-	const int gr_threshold = 8;
-	const double hit_threshold = 1.4;
+	const auto scale = 1.05;
+	const auto nlevels = 13;
+	const auto gr_threshold = 8;
+	const auto hit_threshold = 1.4;
 
 	const cv::Size win_stride(win_stride_width, win_stride_height);
 
@@ -44,8 +45,8 @@ void image_segmentation::PersonDetectorHog::detectPerson(cv::cuda::GpuMat d_imag
 	gpu_hog->setScaleFactor(scale);
 	gpu_hog->setGroupThreshold(gr_threshold);
 
-	const int width = 640;
-	const int height = 480;
+	const auto width = 640;
+	const auto height = 480;
 
 	cv::Mat temp;
 	d_image.download(temp);
@@ -70,7 +71,7 @@ void image_segmentation::PersonDetectorHog::detectPerson(cv::cuda::GpuMat d_imag
 	// Draw positive classified windows
 	for (size_t i = 0; i < found.size(); i++)
 	{
-		cv::Rect r = found[i];
+		auto r = found[i];
 		rectangle(img_to_show, r.tl(), r.br(), cv::Scalar(0, 255, 0), 3);
 	}
 

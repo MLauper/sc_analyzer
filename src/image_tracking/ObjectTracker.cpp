@@ -13,14 +13,14 @@ image_tracking::ObjectTracker::ObjectTracker()
 void image_tracking::ObjectTracker::apply(dto::Image& image)
 {
 	std::vector<int> updatedTracks;
-	for (dto::Region region : image.regions)
+	for (auto region : image.regions)
 	{
-		bool regionAssigned = false;
+		auto regionAssigned = false;
 
 		// Try to find a previous region that fits
-		for (int i = 0; i < this->currentTracks.size(); i++)
+		for (auto i = 0; i < this->currentTracks.size(); i++)
 		{
-			const dto::Region prevRegion = this->currentTracks.at(i).regions.back();
+			const auto prevRegion = this->currentTracks.at(i).regions.back();
 			if (region.minX >= prevRegion.minX && region.minX <= prevRegion.maxX)
 			{
 				this->currentTracks.at(i).regions.push_back(region);
@@ -67,12 +67,12 @@ void image_tracking::ObjectTracker::apply(dto::Image& image)
 		}
 	}
 
-	for (int track_id : updatedTracks)
+	for (auto track_id : updatedTracks)
 	{
 		this->currentTracks.at(track_id).numImagesWithoutRegion = 0;
 	}
 
-	for (int i = 0; i < this->currentTracks.size(); i++)
+	for (auto i = 0; i < this->currentTracks.size(); i++)
 	{
 		this->currentTracks.at(i).numImagesWithoutRegion++;
 
@@ -125,7 +125,7 @@ void image_tracking::ObjectTracker::apply(dto::Image& image)
 
 bool image_tracking::ObjectTracker::hasFinishedTracks()
 {
-	for (int i = 0; i < this->currentTracks.size(); i++)
+	for (auto i = 0; i < this->currentTracks.size(); i++)
 	{
 		if (this->currentTracks.at(i).numImagesWithoutRegion >= this->maxNumberOfMissingFramesInTrack)
 		{
@@ -138,21 +138,22 @@ bool image_tracking::ObjectTracker::hasFinishedTracks()
 
 dto::Track image_tracking::ObjectTracker::getFinishedTrack()
 {
-	for (int i = 0; i < this->currentTracks.size(); i++)
+	for (auto i = 0; i < this->currentTracks.size(); i++)
 	{
 		if (this->currentTracks.at(i).numImagesWithoutRegion >= this->maxNumberOfMissingFramesInTrack)
 		{
-			dto::Track t = this->currentTracks.at(i);
+			auto t = this->currentTracks.at(i);
 			this->currentTracks.erase(this->currentTracks.begin() + i);
 			return t;
 		}
 	}
+	return {};
 }
 
 void image_tracking::ObjectTracker::SendFinishedTracksTo(feature_extraction::Controller& controller,
                                                          dto::Camera& camera)
 {
-	for (int i = 0; i < this->currentTracks.size(); i++)
+	for (auto i = 0; i < this->currentTracks.size(); i++)
 	{
 		if (this->currentTracks.at(i).numImagesWithoutRegion >= this->maxNumberOfMissingFramesInTrack)
 		{
@@ -161,9 +162,9 @@ void image_tracking::ObjectTracker::SendFinishedTracksTo(feature_extraction::Con
 				cv::Mat drawingAll = cv::Mat::zeros(this->currentTracks.at(i).images.at(0).cv_image_original.size(), CV_8UC3);
 				cv::RNG rng(12345);
 
-				for (int j = 0; j < this->currentTracks.at(i).regions.size(); j++)
+				for (auto j = 0; j < this->currentTracks.at(i).regions.size(); j++)
 				{
-					const cv::Scalar color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
+					const auto color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
 					drawContours(drawingAll, std::vector<std::vector<cv::Point>>(1, this->currentTracks.at(i).regions.at(j).contour),
 					             0, color, 2, 8, 0, 0, cv::Point());
 				}

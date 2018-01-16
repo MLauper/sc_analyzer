@@ -8,13 +8,26 @@
 #include "../dto/Image.h"
 #define NOMINMAX
 
+/*! \file Controller.h
+*	\brief Contains Controller class.
+*
+* This file contains the Controller class.
+* It is used to controll all image segmentation
+* steps.
+*/
+
+/*! \brief The image_segmentation namespace contains all classes used for image segmentation.*/
 namespace image_segmentation
 {
+	/*! \brief This class is used to controll all image segmentation steps.*/
 	class Controller
 	{
 	public:
-		Controller(dto::Camera& camera);
+		/*! \brief Constructor.*/
+		explicit Controller(dto::Camera& camera);
+		/*! \brief Process an image based on static configuration.*/
 		static void ProcessImage(SYSTEMTIME* time, af::array& image, std::string path, std::string filename);
+		/*! \brief Process image.*/
 		void ProcessImage(dto::Image& image);
 	private:
 		af::array current_image;

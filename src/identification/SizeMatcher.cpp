@@ -16,13 +16,13 @@ void identification::SizeMatcher::matchAllSizes(std::vector<dto::Track>& tracks)
 	{
 		for (auto& comp : tracks)
 		{
-			const float diffHeight = abs(t.estimatedPersonSize.height - comp.estimatedPersonSize.height);
-			const float diffWidth = abs(t.estimatedPersonSize.width - comp.estimatedPersonSize.width);
+			const auto diffHeight = abs(t.estimatedPersonSize.height - comp.estimatedPersonSize.height);
+			const auto diffWidth = abs(t.estimatedPersonSize.width - comp.estimatedPersonSize.width);
 
-			float probHeight = 1 - diffHeight / 50;
+			auto probHeight = 1 - diffHeight / 50;
 			if (probHeight < 0.0f) probHeight = 0.0f;
 
-			float probWidth = 1 - diffWidth / 20;
+			auto probWidth = 1 - diffWidth / 20;
 			if (probWidth < 0.0f) probWidth = 0.0f;
 
 			dto::Track::suggestion suggestionHeight;

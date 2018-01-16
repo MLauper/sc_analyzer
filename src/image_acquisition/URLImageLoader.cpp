@@ -15,8 +15,8 @@ namespace fs = std::experimental::filesystem;
 
 size_t write_data(char* ptr, const size_t size, const size_t nmemb, void* userdata)
 {
-	std::vector<uchar>* stream = static_cast<std::vector<uchar>*>(userdata);
-	const size_t count = size * nmemb;
+	auto stream = static_cast<std::vector<uchar>*>(userdata);
+	const auto count = size * nmemb;
 	stream->insert(stream->end(), ptr, ptr + count);
 	return count;
 }
@@ -25,7 +25,7 @@ size_t write_data(char* ptr, const size_t size, const size_t nmemb, void* userda
 cv::Mat curlImg(const char* img_url, const char* username, const char* password, const int timeout = 100)
 {
 	std::vector<uchar> stream;
-	CURL* curl = curl_easy_init();
+	auto curl = curl_easy_init();
 	curl_easy_setopt(curl, CURLOPT_URL, img_url); //the img url
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data); // pass the writefunction
 	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &stream); // pass the stream ptr to the writefunction

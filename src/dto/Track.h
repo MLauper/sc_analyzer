@@ -4,52 +4,75 @@
 #include "Image.h"
 #include "Camera.h"
 
+/*! \file Track.h
+*	\brief Contains the track dto..
+*
+* This file contains the tarc dto with all required properties.
+*/
+
+/*! \brief The dto namespace contains all DTOs*/
 namespace dto
 {
+	/*! \brief The track dto struct cotnains all track properties.*/
 	struct Track
 	{
+		/*! \brief This enum lists all possible walking directions.*/
 		enum WalkingDirection
 		{
+			/*! \brief Person walks in the room.*/
 			out_in,
-			// Person walks in the room
+			/*! \brief Person walks out of the room*/
 			in_out,
-			// Person walks out of the room
+			/*! \brief Person walks in the room and leaves it again.*/
 			out_out,
-			// Person walsk in the room and leaves it again
-			in_in // Person moves inside the room
+			/*! \brief Person moves inside the room.*/
+			in_in
 		};
 
+		/*! \brief This struct contains OpenCV representation of the body parts.*/
 		struct Cv_optimalPersonBodyParts
 		{
+			/*! \brief OpenCV representation of the head.*/
 			cv::Mat head;
+			/*! \brief OpenCV representation of the upper body.*/
 			cv::Mat upperBody;
+			/*! \brief OpenCV representation of the lower body.*/
 			cv::Mat lowerBody;
 		};
 
+		/*! \brief This struct contains the ids of the extracted colors.*/
 		struct primaryColorIds
 		{
+			/*! \brief The recognized upper body color id.*/
 			int upperBody;
+			/*! \brief The recognized lower body color id.*/
 			int lowerBody;
 		};
 
+		/*! \brief This struct contains the recognized person sizes.*/
 		struct personSize
 		{
+			/*! \brief The recognized height in cm.*/
 			float height;
+			/*! \brief The recognized width in cm.*/
 			float width;
 		};
 
+		/*! \brief This struct contains a suggestion to assign this track to another one.*/
 		struct suggestion
 		{
+			/*! \brief A pointer to the suggested track.*/
 			Track* track;
+			/*! \brief A likelihood between 0 and 1 how likely the tracks match.*/
 			float likelihood;
 		};
 
-		// This id should be unique per camera (increase with every track)
+		/*! \brief Unique track id per camera.*/
 		int trackId;
 
-		// List of detected regions of one person
+		/*! \brief List of detected regions of one person. */
 		std::vector<Region> regions;
-		// List of detected bounding boxes of one person
+		/*! \brief List of detected bounding boxes of one person. */
 		std::vector<bbox_t> persons;
 		// List of images, corresponding with list of bounding boxes
 		std::vector<Image> images;

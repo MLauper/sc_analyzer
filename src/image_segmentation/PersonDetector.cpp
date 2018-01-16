@@ -51,19 +51,19 @@ void image_segmentation::PersonDetector::extractPersonContours(
 		std::cerr << e.what();
 	}
 
-	for (int i = 0; i < contours.size(); i++)
+	for (auto i = 0; i < contours.size(); i++)
 	{
-		int minX = INT_MAX, maxX = 0, minY = INT_MAX, maxY = 0;
-		for (const cv::Point p : contours.at(i))
+		auto minX = INT_MAX, maxX = 0, minY = INT_MAX, maxY = 0;
+		for (const auto p : contours.at(i))
 		{
 			if (p.x < minX) minX = p.x;
 			if (p.x > maxX) maxX = p.x;
 			if (p.y < minY) minY = p.y;
 			if (p.y > maxY) maxY = p.y;
 		}
-		const int height = maxY - minY;
-		const int width = maxX - minX;
-		const float ratio = static_cast<float>(width) / static_cast<float>(height);
+		const auto height = maxY - minY;
+		const auto width = maxX - minX;
+		const auto ratio = static_cast<float>(width) / static_cast<float>(height);
 
 		//std::cout << "CONTOUR: " << width << "x" << height << ", ration: " << ratio << "\n";
 
@@ -100,11 +100,15 @@ void image_segmentation::PersonDetector::extractPersonContours(
 
 	if (dto::Configuration::SAVE_ALL_CONTOURS)
 	{
-		cv::Mat drawingAll = cv::Mat::zeros(image.cv_fgmask.size(), CV_8UC3);
+		// New Image
+		// cv::Mat drawingAll = cv::Mat::zeros(image.cv_fgmask.size(), CV_8UC3);
+		// Overlay
+		cv::Mat drawingAll = image.cv_image_original.clone();
+
 		cv::RNG rng(12345);
 		for (size_t i = 0; i < contours.size(); i++)
 		{
-			const cv::Scalar color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
+			const auto color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
 			drawContours(drawingAll, contours, static_cast<int>(i), color, 2, 8, hierarchy, 0, cv::Point());
 		}
 
@@ -119,11 +123,14 @@ void image_segmentation::PersonDetector::extractPersonContours(
 
 	if (dto::Configuration::SAVE_CONTOUR_IMAGES)
 	{
-		cv::Mat drawingAll = cv::Mat::zeros(image.cv_fgmask.size(), CV_8UC3);
+		// Blank image
+		// cv::Mat drawingAll = cv::Mat::zeros(image.cv_fgmask.size(), CV_8UC3);
+		// Overlay image
+		cv::Mat drawingAll = image.cv_image_original.clone();
 		cv::RNG rng(12345);
 		for (size_t i = 0; i < image.regions.size(); i++)
 		{
-			const cv::Scalar color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
+			const auto color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
 
 			drawContours(drawingAll, std::vector<std::vector<cv::Point>>(1, image.regions.at(i).contour), 0, color, 2, 8, 0, 0,
 			             cv::Point());
@@ -170,9 +177,7 @@ void image_segmentation::PersonDetector::extractPersonContours(
 
 void image_segmentation::PersonDetector::detectPersonsYolo(dto::Image& Image, dto::Camera& camera) const
 {
-	std::vector<bbox_t> yoloObjects;
-
-	yoloObjects = this->yoloDetector->detect(Image.cv_image_original, 0.3f, false);
+	std::vector<bbox_t> yoloObjects = this->yoloDetector->detect(Image.cv_image_original, 0.3f, false);
 
 	for (auto& obj : yoloObjects)
 	{
@@ -184,11 +189,11 @@ void image_segmentation::PersonDetector::detectPersonsYolo(dto::Image& Image, dt
 
 	if (dto::Configuration::SHOW_YOLO_PERSONS_IMAGES)
 	{
-		cv::Mat drawingAll = Image.cv_image_original.clone();
+		auto drawingAll = Image.cv_image_original.clone();
 		cv::RNG rng(12345);
 		for (auto& person : Image.yoloPersons)
 		{
-			const cv::Scalar color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
+			const auto color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
 
 			rectangle(drawingAll, cv::Point(person.x, person.y), cv::Point(person.x + person.w, person.y + person.h), color, 3);
 		}

@@ -11,12 +11,23 @@
 #include "../dto/Image.h"
 #include "../dto/Camera.h"
 
+/*! \file BackgroundRemover.h
+*	\brief Contains BackgroundRemover class.
+*
+* This file contains the BackgroundRemover class.
+* It is used to remove the image background.
+*/
+
+/*! \brief The image_segmentation namespace contains all classes used for image segmentation.*/
 namespace image_segmentation
 {
+	/*! \brief This class is used to remove image background.*/
 	class BackgroundRemover
 	{
 	public:
-		BackgroundRemover(dto::Camera& camera);
+		/*! \brief Constructor.*/
+		explicit BackgroundRemover(dto::Camera& camera);
+		/*! \brief Remove background from image.*/
 		void removeBackground(dto::Image& image, dto::Camera& camera) const;
 	private:
 

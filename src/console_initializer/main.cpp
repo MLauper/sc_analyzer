@@ -10,7 +10,7 @@ int main(const int argc, char* argv[])
 	{
 		std::cerr << "Commandline arguments not provided. Please provide: scene, prefix, fps, videoFilePath" << std::endl;
 		std::cerr << "Found the following arguments: " << std::endl;
-		for (int i = 1; i < argc; i++)
+		for (auto i = 1; i < argc; i++)
 		{
 			std::cerr << " " << i << ": " << argv[i] << std::endl;
 		}
@@ -46,17 +46,17 @@ int main(const int argc, char* argv[])
 		camera.pixelToCentimeterRatio = 180.0f / 515.0f;
 
 		// Camera distortion
-		const double cam_fx = 1.5429064838570325e+03;
-		const double cam_cx = 9.5369579797955782e+02;
-		const double cam_fy = 1.5429064838570325e+03;
-		const double cam_cy = 5.7690440309632538e+02;
+		const auto cam_fx = 1.5429064838570325e+03;
+		const auto cam_cx = 9.5369579797955782e+02;
+		const auto cam_fy = 1.5429064838570325e+03;
+		const auto cam_cy = 5.7690440309632538e+02;
 		camera.cameraMatrix = (cv::Mat1d(3, 3) << cam_fx, 0, cam_cx, 0, cam_fy, cam_cy, 0, 0, 1);
 
-		const double k1 = -6.2252844915595262e-01;
-		const double k2 = 2.9966919648514401e-01;
-		const double p1 = -8.8257543325885261e-03;
-		const double p2 = -4.3121497449825881e-03;
-		const double k3 = 3.7852955947755049e-02;
+		const auto k1 = -6.2252844915595262e-01;
+		const auto k2 = 2.9966919648514401e-01;
+		const auto p1 = -8.8257543325885261e-03;
+		const auto p2 = -4.3121497449825881e-03;
+		const auto k3 = 3.7852955947755049e-02;
 		camera.distCoeffs = (cv::Mat1d(1, 5) << k1, k2, p1, p2, k3);
 	}
 	else if (camera.prefix == "out_CAMERA_door_")
@@ -73,17 +73,17 @@ int main(const int argc, char* argv[])
 		camera.pixelToCentimeterRatio = 180.0f / 540.0f;
 
 		// Camera distortion
-		const double cam_fx = 1.5429064838570325e+03;
-		const double cam_cx = 9.5369579797955782e+02;
-		const double cam_fy = 1.5429064838570325e+03;
-		const double cam_cy = 5.7690440309632538e+02;
+		const auto cam_fx = 1.5429064838570325e+03;
+		const auto cam_cx = 9.5369579797955782e+02;
+		const auto cam_fy = 1.5429064838570325e+03;
+		const auto cam_cy = 5.7690440309632538e+02;
 		camera.cameraMatrix = (cv::Mat1d(3, 3) << cam_fx, 0, cam_cx, 0, cam_fy, cam_cy, 0, 0, 1);
 
-		const double k1 = -6.2252844915595262e-01;
-		const double k2 = 2.9966919648514401e-01;
-		const double p1 = -8.8257543325885261e-03;
-		const double p2 = -4.3121497449825881e-03;
-		const double k3 = 3.7852955947755049e-02;
+		const auto k1 = -6.2252844915595262e-01;
+		const auto k2 = 2.9966919648514401e-01;
+		const auto p1 = -8.8257543325885261e-03;
+		const auto p2 = -4.3121497449825881e-03;
+		const auto k3 = 3.7852955947755049e-02;
 		camera.distCoeffs = (cv::Mat1d(1, 5) << k1, k2, p1, p2, k3);
 	}
 	else
@@ -92,7 +92,7 @@ int main(const int argc, char* argv[])
 		return -1;
 	}
 
-	image_segmentation::Controller* controller = new image_segmentation::Controller(camera);
+	auto controller = new image_segmentation::Controller(camera);
 
 	// To use the FileLoader instead of mkv loader, use the following lines
 	//image_acquisition::FileLoader file_loader(camera, controller);

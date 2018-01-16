@@ -81,8 +81,8 @@ void image_segmentation::BackgroundRemover::removeBackground(dto::Image& image, 
 	threshold(image.cv_fgmask, image.cv_fgmask, 128, 255, cv::THRESH_BINARY);
 
 	const int erosion_type = cv::MORPH_ELLIPSE;
-	const int erosion_size = 3;
-	const cv::Mat element = getStructuringElement(erosion_type,
+	const auto erosion_size = 3;
+	const auto element = getStructuringElement(erosion_type,
 	                                              cv::Size(2 * erosion_size + 1, 2 * erosion_size + 1),
 	                                              cv::Point(erosion_size, erosion_size));
 	dilate(image.cv_fgmask, image.cv_fgmask, element);
