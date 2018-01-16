@@ -1,0 +1,38 @@
+\hypertarget{classimage__tracking_1_1_object_tracker}{}\section{image\+\_\+tracking\+:\+:Object\+Tracker Class Reference}
+\label{classimage__tracking_1_1_object_tracker}\index{image\+\_\+tracking\+::\+Object\+Tracker@{image\+\_\+tracking\+::\+Object\+Tracker}}
+
+
+This class is used to track objects.  
+
+
+
+
+{\ttfamily \#include $<$Object\+Tracker.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classimage__tracking_1_1_object_tracker_a0e793f373b36336ad4fd25e1e73cdaf4}\label{classimage__tracking_1_1_object_tracker_a0e793f373b36336ad4fd25e1e73cdaf4}} 
+\mbox{\hyperlink{classimage__tracking_1_1_object_tracker_a0e793f373b36336ad4fd25e1e73cdaf4}{Object\+Tracker}} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classimage__tracking_1_1_object_tracker_a59d0071d4ea8dc8a82cdd7bafa4a3005}\label{classimage__tracking_1_1_object_tracker_a59d0071d4ea8dc8a82cdd7bafa4a3005}} 
+void \mbox{\hyperlink{classimage__tracking_1_1_object_tracker_a59d0071d4ea8dc8a82cdd7bafa4a3005}{apply}} (\mbox{\hyperlink{structdto_1_1_image}{dto\+::\+Image}} \&image)
+\begin{DoxyCompactList}\small\item\em Remove background from image. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classimage__tracking_1_1_object_tracker_a7b6a10b4eeb8e9cdedf95e7bffc2ecc6}\label{classimage__tracking_1_1_object_tracker_a7b6a10b4eeb8e9cdedf95e7bffc2ecc6}} 
+bool \mbox{\hyperlink{classimage__tracking_1_1_object_tracker_a7b6a10b4eeb8e9cdedf95e7bffc2ecc6}{has\+Finished\+Tracks}} ()
+\begin{DoxyCompactList}\small\item\em Asks if there are any finished tracks. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classimage__tracking_1_1_object_tracker_a029f09b380ea62d7e8c7191b44d0a92c}\label{classimage__tracking_1_1_object_tracker_a029f09b380ea62d7e8c7191b44d0a92c}} 
+\mbox{\hyperlink{structdto_1_1_track}{dto\+::\+Track}} \mbox{\hyperlink{classimage__tracking_1_1_object_tracker_a029f09b380ea62d7e8c7191b44d0a92c}{get\+Finished\+Track}} ()
+\begin{DoxyCompactList}\small\item\em Retrieve a finished track. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classimage__tracking_1_1_object_tracker_a30e604013c2028c894d3cf5904bce2c8}\label{classimage__tracking_1_1_object_tracker_a30e604013c2028c894d3cf5904bce2c8}} 
+void \mbox{\hyperlink{classimage__tracking_1_1_object_tracker_a30e604013c2028c894d3cf5904bce2c8}{Send\+Finished\+Tracks\+To}} (\mbox{\hyperlink{classfeature__extraction_1_1_controller}{feature\+\_\+extraction\+::\+Controller}} \&controller, \mbox{\hyperlink{structdto_1_1_camera}{dto\+::\+Camera}} \&camera)
+\begin{DoxyCompactList}\small\item\em Send all finished tracks to feature extraction controller. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class is used to track objects. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/image\+\_\+tracking/\mbox{\hyperlink{_object_tracker_8h}{Object\+Tracker.\+h}}\item 
+src/image\+\_\+tracking/Object\+Tracker.\+cpp\end{DoxyCompactItemize}

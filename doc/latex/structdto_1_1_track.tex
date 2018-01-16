@@ -1,0 +1,151 @@
+\hypertarget{structdto_1_1_track}{}\section{dto\+:\+:Track Struct Reference}
+\label{structdto_1_1_track}\index{dto\+::\+Track@{dto\+::\+Track}}
+
+
+The track dto struct cotnains all track properties.  
+
+
+
+
+{\ttfamily \#include $<$Track.\+h$>$}
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structdto_1_1_track_1_1_cv__optimal_person_body_parts}{Cv\+\_\+optimal\+Person\+Body\+Parts}}
+\begin{DoxyCompactList}\small\item\em This struct contains Open\+CV representation of the body parts. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structdto_1_1_track_1_1person_size}{person\+Size}}
+\begin{DoxyCompactList}\small\item\em This struct contains the recognized person sizes. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structdto_1_1_track_1_1primary_color_ids}{primary\+Color\+Ids}}
+\begin{DoxyCompactList}\small\item\em This struct contains the ids of the extracted colors. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structdto_1_1_track_1_1suggestion}{suggestion}}
+\begin{DoxyCompactList}\small\item\em This struct contains a suggestion to assign this track to another one. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{structdto_1_1_track_a2d90d1ffc1df80623114c42f874aad04}{Walking\+Direction}} \{ \mbox{\hyperlink{structdto_1_1_track_a2d90d1ffc1df80623114c42f874aad04a0656e7a4e2814cc36d4b434e1b4ca16b}{out\+\_\+in}}, 
+\mbox{\hyperlink{structdto_1_1_track_a2d90d1ffc1df80623114c42f874aad04a3e83d06d75cc52f383eed0ba79b12d49}{in\+\_\+out}}, 
+\mbox{\hyperlink{structdto_1_1_track_a2d90d1ffc1df80623114c42f874aad04aeb964a5585a9babc2b96baee0abe9064}{out\+\_\+out}}, 
+\mbox{\hyperlink{structdto_1_1_track_a2d90d1ffc1df80623114c42f874aad04a67402e9285253d6a2bcae77df34b6b7d}{in\+\_\+in}}
+ \}
+\begin{DoxyCompactList}\small\item\em This enum lists all possible walking directions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structdto_1_1_track_a320df93fe354da317d91990a238372eb}\label{structdto_1_1_track_a320df93fe354da317d91990a238372eb}} 
+int \mbox{\hyperlink{structdto_1_1_track_a320df93fe354da317d91990a238372eb}{track\+Id}}
+\begin{DoxyCompactList}\small\item\em Unique track id per camera. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structdto_1_1_track_aa1c033def8ecf0b4fb81f8a45c78ea90}\label{structdto_1_1_track_aa1c033def8ecf0b4fb81f8a45c78ea90}} 
+std\+::vector$<$ \mbox{\hyperlink{structdto_1_1_region}{Region}} $>$ \mbox{\hyperlink{structdto_1_1_track_aa1c033def8ecf0b4fb81f8a45c78ea90}{regions}}
+\begin{DoxyCompactList}\small\item\em List of detected regions of one person. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structdto_1_1_track_a60813ab64018da3e4f2de3d95d200a73}\label{structdto_1_1_track_a60813ab64018da3e4f2de3d95d200a73}} 
+std\+::vector$<$ bbox\+\_\+t $>$ \mbox{\hyperlink{structdto_1_1_track_a60813ab64018da3e4f2de3d95d200a73}{persons}}
+\begin{DoxyCompactList}\small\item\em List of detected bounding boxes of one person. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structdto_1_1_track_ae32d3ea9632fb2a4cd85536ebb311cab}\label{structdto_1_1_track_ae32d3ea9632fb2a4cd85536ebb311cab}} 
+std\+::vector$<$ \mbox{\hyperlink{structdto_1_1_image}{Image}} $>$ {\bfseries images}
+\item 
+\mbox{\Hypertarget{structdto_1_1_track_a0979e73bf1445a0c38c59b6a2af683dc}\label{structdto_1_1_track_a0979e73bf1445a0c38c59b6a2af683dc}} 
+\mbox{\hyperlink{structdto_1_1_track_a2d90d1ffc1df80623114c42f874aad04}{Walking\+Direction}} {\bfseries walking\+Direction}
+\item 
+\mbox{\Hypertarget{structdto_1_1_track_a68968ac53f7724b60fbb620f296ddae7}\label{structdto_1_1_track_a68968ac53f7724b60fbb620f296ddae7}} 
+int {\bfseries num\+Images\+Without\+Region}
+\item 
+\mbox{\Hypertarget{structdto_1_1_track_ab4c84e18edb809426e57e4b68de614f6}\label{structdto_1_1_track_ab4c84e18edb809426e57e4b68de614f6}} 
+int {\bfseries optimal\+Person\+Id}
+\item 
+\mbox{\Hypertarget{structdto_1_1_track_a317808d2b38e82b1de40b9d5348fc146}\label{structdto_1_1_track_a317808d2b38e82b1de40b9d5348fc146}} 
+cv\+::\+Mat {\bfseries cv\+\_\+optimal\+Person\+Cut}
+\item 
+\mbox{\Hypertarget{structdto_1_1_track_a83c0879cd70045d4b98a945176a5a50e}\label{structdto_1_1_track_a83c0879cd70045d4b98a945176a5a50e}} 
+cv\+::\+Mat {\bfseries cv\+\_\+optimal\+Person\+Cut\+\_\+\+Full}
+\item 
+\mbox{\Hypertarget{structdto_1_1_track_af76db48503b200395d2e3571ad59154e}\label{structdto_1_1_track_af76db48503b200395d2e3571ad59154e}} 
+\mbox{\hyperlink{structdto_1_1_track_1_1_cv__optimal_person_body_parts}{Cv\+\_\+optimal\+Person\+Body\+Parts}} {\bfseries cv\+\_\+optimal\+Person\+Body\+Parts}
+\item 
+\mbox{\Hypertarget{structdto_1_1_track_a9f9350fedf3164b45cbac90fca2bb584}\label{structdto_1_1_track_a9f9350fedf3164b45cbac90fca2bb584}} 
+\mbox{\hyperlink{structdto_1_1_track_1_1primary_color_ids}{primary\+Color\+Ids}} {\bfseries primary\+\_\+color\+\_\+ids}
+\item 
+\mbox{\Hypertarget{structdto_1_1_track_ae1174b37efdccf2e8d5598f9e8359540}\label{structdto_1_1_track_ae1174b37efdccf2e8d5598f9e8359540}} 
+\mbox{\hyperlink{structdto_1_1_track_1_1person_size}{person\+Size}} {\bfseries estimated\+Person\+Size}
+\item 
+\mbox{\Hypertarget{structdto_1_1_track_ab7835d7d9cb5fabc36d921765bf2ccef}\label{structdto_1_1_track_ab7835d7d9cb5fabc36d921765bf2ccef}} 
+std\+::vector$<$ cv\+::\+Key\+Point $>$ {\bfseries surf\+\_\+key\+Points}
+\item 
+\mbox{\Hypertarget{structdto_1_1_track_a1fdb63bf2082977b1853a4e0d09bf285}\label{structdto_1_1_track_a1fdb63bf2082977b1853a4e0d09bf285}} 
+cv\+::\+Mat {\bfseries surf\+\_\+descriptors}
+\item 
+\mbox{\Hypertarget{structdto_1_1_track_a135e486deb0bd53318ddf31bae2ac13d}\label{structdto_1_1_track_a135e486deb0bd53318ddf31bae2ac13d}} 
+std\+::vector$<$ cv\+::\+Key\+Point $>$ {\bfseries sift\+\_\+key\+Points}
+\item 
+\mbox{\Hypertarget{structdto_1_1_track_a792fbb805358146f7d28fa93626d85c7}\label{structdto_1_1_track_a792fbb805358146f7d28fa93626d85c7}} 
+cv\+::\+Mat {\bfseries sift\+\_\+descriptors}
+\item 
+\mbox{\Hypertarget{structdto_1_1_track_a6ba779456353d9695f5c4c31b063ab43}\label{structdto_1_1_track_a6ba779456353d9695f5c4c31b063ab43}} 
+int {\bfseries track\+\_\+db\+\_\+id}
+\item 
+\mbox{\Hypertarget{structdto_1_1_track_ae9f1cedb3f1b80710ccba00087310077}\label{structdto_1_1_track_ae9f1cedb3f1b80710ccba00087310077}} 
+\mbox{\hyperlink{structdto_1_1_camera}{Camera}} {\bfseries camera}
+\item 
+\mbox{\Hypertarget{structdto_1_1_track_a7e6e2eb3e50df9ab607fda0139180eda}\label{structdto_1_1_track_a7e6e2eb3e50df9ab607fda0139180eda}} 
+std\+::vector$<$ \mbox{\hyperlink{structdto_1_1_track_1_1suggestion}{suggestion}} $>$ {\bfseries surf\+\_\+keypoint\+\_\+suggestion}
+\item 
+\mbox{\Hypertarget{structdto_1_1_track_ad9da714ef8019b266b8585ce419d80a0}\label{structdto_1_1_track_ad9da714ef8019b266b8585ce419d80a0}} 
+std\+::vector$<$ \mbox{\hyperlink{structdto_1_1_track_1_1suggestion}{suggestion}} $>$ {\bfseries sift\+\_\+keypoint\+\_\+suggestion}
+\item 
+\mbox{\Hypertarget{structdto_1_1_track_a22cdf4d7b4104987ca9fc2ae07c3a11a}\label{structdto_1_1_track_a22cdf4d7b4104987ca9fc2ae07c3a11a}} 
+std\+::vector$<$ \mbox{\hyperlink{structdto_1_1_track_1_1suggestion}{suggestion}} $>$ {\bfseries size\+\_\+width\+\_\+suggestion}
+\item 
+\mbox{\Hypertarget{structdto_1_1_track_a76c39030e3a753c2bb77d21a10f9b3c7}\label{structdto_1_1_track_a76c39030e3a753c2bb77d21a10f9b3c7}} 
+std\+::vector$<$ \mbox{\hyperlink{structdto_1_1_track_1_1suggestion}{suggestion}} $>$ {\bfseries size\+\_\+height\+\_\+suggestion}
+\item 
+\mbox{\Hypertarget{structdto_1_1_track_a0ef91841348036a66324c7974c2ae7c5}\label{structdto_1_1_track_a0ef91841348036a66324c7974c2ae7c5}} 
+std\+::vector$<$ \mbox{\hyperlink{structdto_1_1_track_1_1suggestion}{suggestion}} $>$ {\bfseries upper\+\_\+body\+\_\+color\+\_\+suggestion}
+\item 
+\mbox{\Hypertarget{structdto_1_1_track_a6b5927acac3f921af07229487dbd2056}\label{structdto_1_1_track_a6b5927acac3f921af07229487dbd2056}} 
+std\+::vector$<$ \mbox{\hyperlink{structdto_1_1_track_1_1suggestion}{suggestion}} $>$ {\bfseries lower\+\_\+body\+\_\+color\+\_\+suggestion}
+\item 
+\mbox{\Hypertarget{structdto_1_1_track_a978dba2d65e1e1d687d3fc54c47b3dcd}\label{structdto_1_1_track_a978dba2d65e1e1d687d3fc54c47b3dcd}} 
+std\+::vector$<$ \mbox{\hyperlink{structdto_1_1_track_1_1suggestion}{suggestion}} $>$ {\bfseries overall\+\_\+suggestion}
+\item 
+\mbox{\Hypertarget{structdto_1_1_track_a0062705f14f14f5c77303aacdddf2614}\label{structdto_1_1_track_a0062705f14f14f5c77303aacdddf2614}} 
+int {\bfseries assigned\+Person\+Id}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The track dto struct cotnains all track properties. 
+
+\subsection{Member Enumeration Documentation}
+\mbox{\Hypertarget{structdto_1_1_track_a2d90d1ffc1df80623114c42f874aad04}\label{structdto_1_1_track_a2d90d1ffc1df80623114c42f874aad04}} 
+\index{dto\+::\+Track@{dto\+::\+Track}!Walking\+Direction@{Walking\+Direction}}
+\index{Walking\+Direction@{Walking\+Direction}!dto\+::\+Track@{dto\+::\+Track}}
+\subsubsection{\texorpdfstring{Walking\+Direction}{WalkingDirection}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{structdto_1_1_track_a2d90d1ffc1df80623114c42f874aad04}{dto\+::\+Track\+::\+Walking\+Direction}}}
+
+
+
+This enum lists all possible walking directions. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{out\+\_\+in@{out\+\_\+in}!dto\+::\+Track@{dto\+::\+Track}}\index{dto\+::\+Track@{dto\+::\+Track}!out\+\_\+in@{out\+\_\+in}}}\mbox{\Hypertarget{structdto_1_1_track_a2d90d1ffc1df80623114c42f874aad04a0656e7a4e2814cc36d4b434e1b4ca16b}\label{structdto_1_1_track_a2d90d1ffc1df80623114c42f874aad04a0656e7a4e2814cc36d4b434e1b4ca16b}} 
+out\+\_\+in&\mbox{\hyperlink{structdto_1_1_person}{Person}} walks in the room. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{in\+\_\+out@{in\+\_\+out}!dto\+::\+Track@{dto\+::\+Track}}\index{dto\+::\+Track@{dto\+::\+Track}!in\+\_\+out@{in\+\_\+out}}}\mbox{\Hypertarget{structdto_1_1_track_a2d90d1ffc1df80623114c42f874aad04a3e83d06d75cc52f383eed0ba79b12d49}\label{structdto_1_1_track_a2d90d1ffc1df80623114c42f874aad04a3e83d06d75cc52f383eed0ba79b12d49}} 
+in\+\_\+out&\mbox{\hyperlink{structdto_1_1_person}{Person}} walks out of the room. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{out\+\_\+out@{out\+\_\+out}!dto\+::\+Track@{dto\+::\+Track}}\index{dto\+::\+Track@{dto\+::\+Track}!out\+\_\+out@{out\+\_\+out}}}\mbox{\Hypertarget{structdto_1_1_track_a2d90d1ffc1df80623114c42f874aad04aeb964a5585a9babc2b96baee0abe9064}\label{structdto_1_1_track_a2d90d1ffc1df80623114c42f874aad04aeb964a5585a9babc2b96baee0abe9064}} 
+out\+\_\+out&\mbox{\hyperlink{structdto_1_1_person}{Person}} walks in the room and leaves it again. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{in\+\_\+in@{in\+\_\+in}!dto\+::\+Track@{dto\+::\+Track}}\index{dto\+::\+Track@{dto\+::\+Track}!in\+\_\+in@{in\+\_\+in}}}\mbox{\Hypertarget{structdto_1_1_track_a2d90d1ffc1df80623114c42f874aad04a67402e9285253d6a2bcae77df34b6b7d}\label{structdto_1_1_track_a2d90d1ffc1df80623114c42f874aad04a67402e9285253d6a2bcae77df34b6b7d}} 
+in\+\_\+in&\mbox{\hyperlink{structdto_1_1_person}{Person}} moves inside the room. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/dto/\mbox{\hyperlink{_track_8h}{Track.\+h}}\end{DoxyCompactItemize}

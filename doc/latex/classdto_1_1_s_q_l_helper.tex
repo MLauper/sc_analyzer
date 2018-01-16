@@ -1,0 +1,53 @@
+\hypertarget{classdto_1_1_s_q_l_helper}{}\section{dto\+:\+:S\+Q\+L\+Helper Class Reference}
+\label{classdto_1_1_s_q_l_helper}\index{dto\+::\+S\+Q\+L\+Helper@{dto\+::\+S\+Q\+L\+Helper}}
+
+
+The \mbox{\hyperlink{classdto_1_1_s_q_l_helper}{S\+Q\+L\+Helper}} class contains all helper functions and manages the connection state.  
+
+
+
+
+{\ttfamily \#include $<$S\+Q\+L\+Helper.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classdto_1_1_s_q_l_helper_a4d57dbef6437f18e649382da9121e5ec}\label{classdto_1_1_s_q_l_helper_a4d57dbef6437f18e649382da9121e5ec}} 
+\mbox{\hyperlink{classdto_1_1_s_q_l_helper_a4d57dbef6437f18e649382da9121e5ec}{S\+Q\+L\+Helper}} ()
+\begin{DoxyCompactList}\small\item\em Constructor of the \mbox{\hyperlink{classdto_1_1_s_q_l_helper}{S\+Q\+L\+Helper}} class. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classdto_1_1_s_q_l_helper_aee0b3df207398a74da2305a69577cb98}\label{classdto_1_1_s_q_l_helper_aee0b3df207398a74da2305a69577cb98}} 
+\mbox{\hyperlink{classdto_1_1_s_q_l_helper_aee0b3df207398a74da2305a69577cb98}{$\sim$\+S\+Q\+L\+Helper}} ()
+\begin{DoxyCompactList}\small\item\em Destructor of the \mbox{\hyperlink{classdto_1_1_s_q_l_helper}{S\+Q\+L\+Helper}} class. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classdto_1_1_s_q_l_helper_a0377f574d8d394022386cd99d4dfc9ef}\label{classdto_1_1_s_q_l_helper_a0377f574d8d394022386cd99d4dfc9ef}} 
+void \mbox{\hyperlink{classdto_1_1_s_q_l_helper_a0377f574d8d394022386cd99d4dfc9ef}{test\+S\+Q\+L\+Connection}} () const
+\begin{DoxyCompactList}\small\item\em Test function to check S\+QL server connectivity. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classdto_1_1_s_q_l_helper_a33c72957c41dd47da02b6ddd6acdf716}\label{classdto_1_1_s_q_l_helper_a33c72957c41dd47da02b6ddd6acdf716}} 
+void \mbox{\hyperlink{classdto_1_1_s_q_l_helper_a33c72957c41dd47da02b6ddd6acdf716}{persist\+\_\+camera}} (const \mbox{\hyperlink{structdto_1_1_camera}{Camera}} \&camera) const
+\begin{DoxyCompactList}\small\item\em Persists a camera in the database. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classdto_1_1_s_q_l_helper_ab4126980a2803f5682b76da106e157e1}\label{classdto_1_1_s_q_l_helper_ab4126980a2803f5682b76da106e157e1}} 
+void \mbox{\hyperlink{classdto_1_1_s_q_l_helper_ab4126980a2803f5682b76da106e157e1}{retrieve\+\_\+camera}} (\mbox{\hyperlink{structdto_1_1_camera}{Camera}} \&camera, const char $\ast$directory, const char $\ast$prefix, const char $\ast$scene) const
+\begin{DoxyCompactList}\small\item\em Reads camera from the database. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classdto_1_1_s_q_l_helper_ad3ee0bd0880c907ddac395986fb1717f}\label{classdto_1_1_s_q_l_helper_ad3ee0bd0880c907ddac395986fb1717f}} 
+void \mbox{\hyperlink{classdto_1_1_s_q_l_helper_ad3ee0bd0880c907ddac395986fb1717f}{persist\+\_\+track}} (const \mbox{\hyperlink{structdto_1_1_track}{Track}} \&track, const \mbox{\hyperlink{structdto_1_1_camera}{Camera}} \&camera) const
+\begin{DoxyCompactList}\small\item\em Persist a track on the database. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classdto_1_1_s_q_l_helper_a037a60754c739a9ea590db94200eea50}\label{classdto_1_1_s_q_l_helper_a037a60754c739a9ea590db94200eea50}} 
+void \mbox{\hyperlink{classdto_1_1_s_q_l_helper_a037a60754c739a9ea590db94200eea50}{persist\+\_\+persons}} (std\+::vector$<$ \mbox{\hyperlink{structdto_1_1_person}{Person}} $>$ \&persons) const
+\begin{DoxyCompactList}\small\item\em Persist a person on the database. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classdto_1_1_s_q_l_helper_ab0ab43a22bcbe59e1df275fae03c2096}\label{classdto_1_1_s_q_l_helper_ab0ab43a22bcbe59e1df275fae03c2096}} 
+void \mbox{\hyperlink{classdto_1_1_s_q_l_helper_ab0ab43a22bcbe59e1df275fae03c2096}{retrieve\+\_\+camera}} (\mbox{\hyperlink{structdto_1_1_camera}{Camera}} \&camera, int camera\+\_\+id) const
+\begin{DoxyCompactList}\small\item\em Retrieve a camera from the database. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classdto_1_1_s_q_l_helper_a8777e3aafd44fe6e407493eb3c74e1ad}\label{classdto_1_1_s_q_l_helper_a8777e3aafd44fe6e407493eb3c74e1ad}} 
+std\+::vector$<$ \mbox{\hyperlink{structdto_1_1_track}{Track}} $>$ \mbox{\hyperlink{classdto_1_1_s_q_l_helper_a8777e3aafd44fe6e407493eb3c74e1ad}{retrieve\+\_\+all\+\_\+tracks}} () const
+\begin{DoxyCompactList}\small\item\em Retrieve all tracks from the database. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classdto_1_1_s_q_l_helper_a43c91039b128818753081f9c7a5803c1}\label{classdto_1_1_s_q_l_helper_a43c91039b128818753081f9c7a5803c1}} 
+void \mbox{\hyperlink{classdto_1_1_s_q_l_helper_a43c91039b128818753081f9c7a5803c1}{backup\+\_\+database}} (char $\ast$destination) const
+\begin{DoxyCompactList}\small\item\em Backup the database on the server. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The \mbox{\hyperlink{classdto_1_1_s_q_l_helper}{S\+Q\+L\+Helper}} class contains all helper functions and manages the connection state. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/dto/\mbox{\hyperlink{_s_q_l_helper_8h}{S\+Q\+L\+Helper.\+h}}\item 
+src/dto/S\+Q\+L\+Helper.\+cpp\end{DoxyCompactItemize}

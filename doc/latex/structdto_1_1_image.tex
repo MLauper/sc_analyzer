@@ -1,0 +1,70 @@
+\hypertarget{structdto_1_1_image}{}\section{dto\+:\+:Image Struct Reference}
+\label{structdto_1_1_image}\index{dto\+::\+Image@{dto\+::\+Image}}
+
+
+The image dto struct cotnains all image properties.  
+
+
+
+
+{\ttfamily \#include $<$Image.\+h$>$}
+
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structdto_1_1_image_a42dd8e0f83770e858e9de89a12a1ae18}\label{structdto_1_1_image_a42dd8e0f83770e858e9de89a12a1ae18}} 
+std\+::string \mbox{\hyperlink{structdto_1_1_image_a42dd8e0f83770e858e9de89a12a1ae18}{path}}
+\begin{DoxyCompactList}\small\item\em The path to the original image. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structdto_1_1_image_a92a65a9b13c3e2343e116bcbde3b52c7}\label{structdto_1_1_image_a92a65a9b13c3e2343e116bcbde3b52c7}} 
+std\+::string \mbox{\hyperlink{structdto_1_1_image_a92a65a9b13c3e2343e116bcbde3b52c7}{filename}}
+\begin{DoxyCompactList}\small\item\em The filename of the original image. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structdto_1_1_image_a7274d5de7fef58621afc4d20fa1884a2}\label{structdto_1_1_image_a7274d5de7fef58621afc4d20fa1884a2}} 
+af\+::array \mbox{\hyperlink{structdto_1_1_image_a7274d5de7fef58621afc4d20fa1884a2}{af\+\_\+image\+\_\+color}}
+\begin{DoxyCompactList}\small\item\em The Array\+Fire representation of the image. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structdto_1_1_image_a19614e71fc508933feba9d88bc4762d7}\label{structdto_1_1_image_a19614e71fc508933feba9d88bc4762d7}} 
+S\+Y\+S\+T\+E\+M\+T\+I\+ME \mbox{\hyperlink{structdto_1_1_image_a19614e71fc508933feba9d88bc4762d7}{filetime}}
+\begin{DoxyCompactList}\small\item\em The time the image was recorded. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structdto_1_1_image_a9f01a32aef2c218d9c846272bb064f2c}\label{structdto_1_1_image_a9f01a32aef2c218d9c846272bb064f2c}} 
+cv\+::\+Mat \mbox{\hyperlink{structdto_1_1_image_a9f01a32aef2c218d9c846272bb064f2c}{cv\+\_\+image\+\_\+original}}
+\begin{DoxyCompactList}\small\item\em The Open\+CV representation of the original image. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structdto_1_1_image_a3ddf150c7798c653fe54c98db9b0fd39}\label{structdto_1_1_image_a3ddf150c7798c653fe54c98db9b0fd39}} 
+cv\+::\+Mat \mbox{\hyperlink{structdto_1_1_image_a3ddf150c7798c653fe54c98db9b0fd39}{cv\+\_\+image\+\_\+distorted}}
+\begin{DoxyCompactList}\small\item\em The Open\+CV representation of the distorted image. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structdto_1_1_image_a3cd219134d6758c41897a3fe52d21f15}\label{structdto_1_1_image_a3cd219134d6758c41897a3fe52d21f15}} 
+cv\+::\+Mat \mbox{\hyperlink{structdto_1_1_image_a3cd219134d6758c41897a3fe52d21f15}{cv\+\_\+image\+\_\+high\+\_\+contrast}}
+\begin{DoxyCompactList}\small\item\em The Open\+CV representation of the image with local contrast correction,. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structdto_1_1_image_afd33feae44b1a44ec506a0951fb691eb}\label{structdto_1_1_image_afd33feae44b1a44ec506a0951fb691eb}} 
+cv\+::cuda\+::\+Gpu\+Mat \mbox{\hyperlink{structdto_1_1_image_afd33feae44b1a44ec506a0951fb691eb}{cv\+\_\+gpu\+\_\+image}}
+\begin{DoxyCompactList}\small\item\em The Open\+CV cuda representation of the image. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structdto_1_1_image_a3d4c752e9e41370c087f46fc12809840}\label{structdto_1_1_image_a3d4c752e9e41370c087f46fc12809840}} 
+cv\+::\+Mat \mbox{\hyperlink{structdto_1_1_image_a3d4c752e9e41370c087f46fc12809840}{cv\+\_\+fgmask}}
+\begin{DoxyCompactList}\small\item\em The foreground mask. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structdto_1_1_image_a84a1b1a563db9ca7a4a9b06f7770260f}\label{structdto_1_1_image_a84a1b1a563db9ca7a4a9b06f7770260f}} 
+cv\+::cuda\+::\+Gpu\+Mat \mbox{\hyperlink{structdto_1_1_image_a84a1b1a563db9ca7a4a9b06f7770260f}{cv\+\_\+gpu\+\_\+fgmask}}
+\begin{DoxyCompactList}\small\item\em The Open\+CV cuda representation of the foreground mask. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structdto_1_1_image_aff738eb7e44add04b2b88949e2af3f60}\label{structdto_1_1_image_aff738eb7e44add04b2b88949e2af3f60}} 
+cv\+::\+Mat \mbox{\hyperlink{structdto_1_1_image_aff738eb7e44add04b2b88949e2af3f60}{cv\+\_\+fgimg}}
+\begin{DoxyCompactList}\small\item\em The Open\+CV representation of the foreground image. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structdto_1_1_image_acc776e85553f17667cbd07004225bd7b}\label{structdto_1_1_image_acc776e85553f17667cbd07004225bd7b}} 
+cv\+::cuda\+::\+Gpu\+Mat \mbox{\hyperlink{structdto_1_1_image_acc776e85553f17667cbd07004225bd7b}{cv\+\_\+gpu\+\_\+fgimg}}
+\begin{DoxyCompactList}\small\item\em The Open\+CV cuda representation of the foreground image. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structdto_1_1_image_a26db596e9b52e7d250988a171cdd6a75}\label{structdto_1_1_image_a26db596e9b52e7d250988a171cdd6a75}} 
+cv\+::\+Mat \mbox{\hyperlink{structdto_1_1_image_a26db596e9b52e7d250988a171cdd6a75}{cv\+\_\+bgimg}}
+\begin{DoxyCompactList}\small\item\em The Open\+CV repesentation of background image. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structdto_1_1_image_a78cae2a702af972d505bd4ab9f295c5f}\label{structdto_1_1_image_a78cae2a702af972d505bd4ab9f295c5f}} 
+cv\+::cuda\+::\+Gpu\+Mat \mbox{\hyperlink{structdto_1_1_image_a78cae2a702af972d505bd4ab9f295c5f}{cv\+\_\+gpu\+\_\+bgimg}}
+\begin{DoxyCompactList}\small\item\em The Open\+CV cuda representation of the background image. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structdto_1_1_image_ae9c1a7c8d0de66556d9d9a3d84505048}\label{structdto_1_1_image_ae9c1a7c8d0de66556d9d9a3d84505048}} 
+std\+::vector$<$ \mbox{\hyperlink{structdto_1_1_region}{Region}} $>$ \mbox{\hyperlink{structdto_1_1_image_ae9c1a7c8d0de66556d9d9a3d84505048}{regions}}
+\begin{DoxyCompactList}\small\item\em The person regions found in that image. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structdto_1_1_image_a02c9c8a46b2a4518aef5eea78111bf49}\label{structdto_1_1_image_a02c9c8a46b2a4518aef5eea78111bf49}} 
+std\+::vector$<$ bbox\+\_\+t $>$ \mbox{\hyperlink{structdto_1_1_image_a02c9c8a46b2a4518aef5eea78111bf49}{yolo\+Persons}}
+\begin{DoxyCompactList}\small\item\em The yolo bounding boxes found in that image. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The image dto struct cotnains all image properties. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/dto/\mbox{\hyperlink{_image_8h}{Image.\+h}}\end{DoxyCompactItemize}

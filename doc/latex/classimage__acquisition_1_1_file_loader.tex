@@ -1,0 +1,53 @@
+\hypertarget{classimage__acquisition_1_1_file_loader}{}\section{image\+\_\+acquisition\+:\+:File\+Loader Class Reference}
+\label{classimage__acquisition_1_1_file_loader}\index{image\+\_\+acquisition\+::\+File\+Loader@{image\+\_\+acquisition\+::\+File\+Loader}}
+
+
+This class is used to stream files in a local folder.  
+
+
+
+
+{\ttfamily \#include $<$J\+P\+G\+File\+Loader.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classimage__acquisition_1_1_file_loader_adeb64eae0fff91eae7ef4217c544c026}\label{classimage__acquisition_1_1_file_loader_adeb64eae0fff91eae7ef4217c544c026}} 
+void \mbox{\hyperlink{classimage__acquisition_1_1_file_loader_adeb64eae0fff91eae7ef4217c544c026}{Watch\+Directory}} () const
+\begin{DoxyCompactList}\small\item\em Start watching a local director fro changes. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classimage__acquisition_1_1_file_loader_abe302f9b626376389fc7acb8b0fd0749}\label{classimage__acquisition_1_1_file_loader_abe302f9b626376389fc7acb8b0fd0749}} 
+void \mbox{\hyperlink{classimage__acquisition_1_1_file_loader_abe302f9b626376389fc7acb8b0fd0749}{Process\+Files}} () const
+\begin{DoxyCompactList}\small\item\em Process all files in the configured directory. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classimage__acquisition_1_1_file_loader_af39cde17cfa4402c04ced704d4d521c7}\label{classimage__acquisition_1_1_file_loader_af39cde17cfa4402c04ced704d4d521c7}} 
+\mbox{\hyperlink{classimage__acquisition_1_1_file_loader_af39cde17cfa4402c04ced704d4d521c7}{File\+Loader}} (std\+::string directory, std\+::string prefix, \mbox{\hyperlink{classimage__segmentation_1_1_controller}{image\+\_\+segmentation\+::\+Controller}} $\ast$segmentation\+\_\+controller)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classimage__acquisition_1_1_file_loader_afc3589ac9b1fcb214a46024137b0d100}\label{classimage__acquisition_1_1_file_loader_afc3589ac9b1fcb214a46024137b0d100}} 
+\mbox{\hyperlink{classimage__acquisition_1_1_file_loader_afc3589ac9b1fcb214a46024137b0d100}{File\+Loader}} (\mbox{\hyperlink{structdto_1_1_camera}{dto\+::\+Camera}} \&camera, \mbox{\hyperlink{classimage__segmentation_1_1_controller}{image\+\_\+segmentation\+::\+Controller}} $\ast$segmentation\+\_\+controller)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classimage__acquisition_1_1_file_loader_ac72a226fed2942ec6052d912ad2fe257}\label{classimage__acquisition_1_1_file_loader_ac72a226fed2942ec6052d912ad2fe257}} 
+void \mbox{\hyperlink{classimage__acquisition_1_1_file_loader_ac72a226fed2942ec6052d912ad2fe257}{Set\+Directory}} (std\+::string directory)
+\begin{DoxyCompactList}\small\item\em Set directory for processing files. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classimage__acquisition_1_1_file_loader_ac93935284d32d03d9acff9b567f53180}\label{classimage__acquisition_1_1_file_loader_ac93935284d32d03d9acff9b567f53180}} 
+void \mbox{\hyperlink{classimage__acquisition_1_1_file_loader_ac93935284d32d03d9acff9b567f53180}{Set\+Image\+Segmentation\+Controller}} (\mbox{\hyperlink{classimage__segmentation_1_1_controller}{image\+\_\+segmentation\+::\+Controller}} $\ast$segmentation\+\_\+controller)
+\begin{DoxyCompactList}\small\item\em Set a new image segmentation controller. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classimage__acquisition_1_1_file_loader_ad33ba7e58a9c22173c88213be6cd6e42}\label{classimage__acquisition_1_1_file_loader_ad33ba7e58a9c22173c88213be6cd6e42}} 
+\mbox{\hyperlink{classimage__acquisition_1_1_file_loader_ad33ba7e58a9c22173c88213be6cd6e42}{$\sim$\+File\+Loader}} ()
+\begin{DoxyCompactList}\small\item\em Default Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classimage__acquisition_1_1_file_loader_adeda4d86794f929b413f1108632ee62a}\label{classimage__acquisition_1_1_file_loader_adeda4d86794f929b413f1108632ee62a}} 
+static bool \mbox{\hyperlink{classimage__acquisition_1_1_file_loader_adeda4d86794f929b413f1108632ee62a}{is\+Prefix}} (const char $\ast$s1, const char $\ast$s2)
+\begin{DoxyCompactList}\small\item\em Ask if one string is prefix of another string. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classimage__acquisition_1_1_file_loader_a3e2e84b7718b187c38dd4960eb37a227}\label{classimage__acquisition_1_1_file_loader_a3e2e84b7718b187c38dd4960eb37a227}} 
+static std\+::string \mbox{\hyperlink{classimage__acquisition_1_1_file_loader_a3e2e84b7718b187c38dd4960eb37a227}{extract\+\_\+filename}} (char const $\ast$path\+\_\+c)
+\begin{DoxyCompactList}\small\item\em Extract filename from file path. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class is used to stream files in a local folder. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/image\+\_\+acquisition/\mbox{\hyperlink{_j_p_g_file_loader_8h}{J\+P\+G\+File\+Loader.\+h}}\item 
+src/image\+\_\+acquisition/J\+P\+G\+File\+Loader.\+cpp\end{DoxyCompactItemize}
